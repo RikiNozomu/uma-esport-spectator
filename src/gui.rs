@@ -4,18 +4,20 @@ use std::ffi::c_void;
 use std::sync::atomic::Ordering;
 
 use crate::api::{self, cstr};
-use crate::{cutin, tracer};
+use crate::{patches, tracer};
 
 pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
     let api = api::get();
     let text = |s: &str| cstr(s);
     unsafe {
         (api.gui_ui_heading)(ui, text("Race").as_ptr());
-        let mut no_cutins = cutin::is_disabled();
-        if (api.gui_ui_checkbox)(ui, text("Disable skill cut-ins (all horses)").as_ptr(), &mut no_cutins) {
-            cutin::set_disabled(no_cutins);
+        for (i, toggle) in patches::TOGGLES.iter().enumerate() {
+            let mut on = patches::is_on(i);
+            if (api.gui_ui_checkbox)(ui, text(toggle.label).as_ptr(), &mut on) {
+                patches::set(i, on);
+            }
+            (api.gui_ui_small)(ui, text(&patches::status(i)).as_ptr());
         }
-        (api.gui_ui_small)(ui, text(cutin::status()).as_ptr());
         (api.gui_ui_separator)(ui);
 
         (api.gui_ui_heading)(ui, text("Function trace").as_ptr());
