@@ -13,6 +13,11 @@ Goal: study the race flow, later build esport-spectator features on top.
 - `src/tracer.rs`: method enumeration, hook install (on the main thread via
   `il2cpp_schedule_on_thread`), recording sessions, log files.
 - `src/targets.rs`: `trace_targets.txt` parsing and glob matching.
+- `src/sig.rs`: method signatures from IL2CPP metadata (main thread / init only).
+- `src/cutin.rs`: "disable skill cut-ins" hook on `Gallop.RaceEventPlayer::IsPlayableCutIn`
+  (stub jumps to a return-false fn while enabled). Installed at game ready.
+- Hachimi on Windows inits plugins *after* firing game-initialized callbacks, so
+  `lib.rs` also checks readiness directly at load.
 - `src/gui.rs`: menu section (checkboxes + status).
 
 ## Rules

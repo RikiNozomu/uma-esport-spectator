@@ -4,7 +4,9 @@
 //! `trace_targets.txt` and logs which ones run, so the race flow can be studied.
 
 mod api;
+mod cutin;
 mod gui;
+mod sig;
 mod stub;
 mod sys;
 mod targets;
@@ -29,15 +31,34 @@ pub extern "C" fn hachimi_init_v3(get_api: Option<GetApiFn>, version: i32) -> i3
     let api = api::set(api);
 
     unsafe {
-        (api.hachimi_register_on_game_initialized)(Some(on_game_initialized), std::ptr::null_mut());
+        // On Windows, Hachimi runs plugin init *after* it has already fired the
+        // game-initialized callbacks (see `on_hooking_finished` in Hachimi-Edge's
+        // src/core/hachimi.rs), and only fires them again when ui_scale != 1.0.
+        // So check whether IL2CPP is already usable instead of only waiting.
+        if game_assembly_loaded(api) {
+            mark_ready("game already initialized at plugin load, tracer is ready");
+        } else {
+            (api.hachimi_register_on_game_initialized)(Some(on_game_initialized), std::ptr::null_mut());
+        }
         (api.gui_register_menu_section)(Some(gui::menu_section), std::ptr::null_mut());
     }
     api.info("plugin loaded");
     1
 }
 
+/// True once IL2CPP's domain can open the game assembly.
+unsafe fn game_assembly_loaded(api: &Api) -> bool {
+    !(api.il2cpp_get_assembly_image)(c"umamusume.dll".as_ptr()).is_null()
+}
+
+fn mark_ready(msg: &str) {
+    if !tracer::GAME_READY.swap(true, Ordering::AcqRel) {
+        api::get().info(msg);
+        cutin::install();
+    }
+}
+
 /// Called once by Hachimi when IL2CPP and the game assemblies are ready.
 unsafe extern "C" fn on_game_initialized(_userdata: *mut c_void) {
-    tracer::GAME_READY.store(true, Ordering::Release);
-    api::get().info("game initialized, tracer is ready");
+    mark_ready("game initialized, tracer is ready");
 }

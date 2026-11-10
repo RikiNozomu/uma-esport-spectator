@@ -27,6 +27,10 @@ cargo build --release
 
 Open the Hachimi menu. The plugin's section has:
 
+- **Disable skill cut-ins (all horses)**: skips the unique-skill cut-in scene for every
+  horse, the player's included. Takes effect on the next skill; saved in `settings.txt`.
+  Works by making `Gallop.RaceEventPlayer::IsPlayableCutIn` return false
+  (installed once at load). The tracer can't hook that method while this is installed.
 - **Record function calls**: on = start a new log file, off = finish it and write the summary.
   The first time it is turned on, hooks are installed; the game freezes for a few seconds.
 - **Log every call (heavy)**: off (default) logs only the first call of each method,
@@ -37,7 +41,8 @@ Files, all under `hachimi\uma-esport-spectator\`:
 | File | What |
 |---|---|
 | `trace_targets.txt` | Which classes/methods to hook. Created with defaults on first run. Edit, then restart the game. |
-| `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`. |
+| `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
+| `settings.txt` | Plugin settings (`disable_skill_cutins = true/false`). |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |
 
 ## How it works

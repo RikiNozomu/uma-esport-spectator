@@ -17,7 +17,7 @@ use std::time::Instant;
 
 use crate::api::{self, cstr};
 use crate::targets::{self, Targets};
-use crate::{stub, sys};
+use crate::{sig, stub, sys};
 
 const ASSEMBLY: &str = "umamusume.dll";
 const PLUGIN_DIR: &str = "uma-esport-spectator";
@@ -148,7 +148,7 @@ pub fn status() -> String {
     }
 }
 
-fn plugin_dir() -> PathBuf {
+pub fn plugin_dir() -> PathBuf {
     let base = unsafe { (api::get().hachimi_get_base_dir)() };
     let base = if base.is_null() {
         PathBuf::from(".")
@@ -322,7 +322,8 @@ unsafe fn install() -> Result<(), String> {
     // 1. Collect candidate methods, grouped by code address (several methods
     //    can share one address after the linker folds identical code).
     let mut order: Vec<usize> = Vec::new();
-    let mut by_addr: HashMap<usize, Vec<String>> = HashMap::new();
+    // (label for the trace log, signature for hooked_methods.txt)
+    let mut by_addr: HashMap<usize, Vec<(String, String)>> = HashMap::new();
     for i in 0..(il2cpp.class_count)(image) {
         let klass = (il2cpp.class_at)(image, i);
         if klass.is_null() || (il2cpp.class_is_generic)(klass) {
@@ -348,7 +349,8 @@ unsafe fn install() -> Result<(), String> {
                 continue;
             }
             let label = format!("{full}({})", (il2cpp.method_param_count)(method));
-            by_addr.entry(addr).or_insert_with(|| { order.push(addr); Vec::new() }).push(label);
+            let signature = sig::signature(method);
+            by_addr.entry(addr).or_insert_with(|| { order.push(addr); Vec::new() }).push((label, signature));
         }
     }
 
@@ -365,7 +367,7 @@ unsafe fn install() -> Result<(), String> {
     let entries: Vec<Entry> = order
         .iter()
         .map(|a| Entry {
-            name: by_addr[a].join(" | "),
+            name: by_addr[a].iter().map(|(label, _)| label.as_str()).collect::<Vec<_>>().join(" | "),
             trampoline: AtomicUsize::new(0),
             calls: AtomicU64::new(0),
         })
@@ -392,11 +394,13 @@ unsafe fn install() -> Result<(), String> {
             FAILED.fetch_add(1, Ordering::Relaxed);
             "FAILED"
         };
-        let _ = writeln!(report, "{state}\t{}", table[i].name);
+        let sigs: Vec<&str> = by_addr[addr].iter().map(|(_, s)| s.as_str()).collect();
+        let _ = writeln!(report, "{state}\t{}\t{}", table[i].name, sigs.join(" | "));
     }
 
     let header = format!(
-        "# {} hooked, {} failed, {folded} skipped (shared code), {over_limit} skipped (over {MAX_HOOKS} limit)\n",
+        "# {} hooked, {} failed, {folded} skipped (shared code), {over_limit} skipped (over {MAX_HOOKS} limit)\n\
+         # columns: ok/FAILED, method(arg count), signature\n",
         HOOKED.load(Ordering::Relaxed),
         FAILED.load(Ordering::Relaxed)
     );

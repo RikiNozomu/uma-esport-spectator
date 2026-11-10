@@ -40,6 +40,11 @@ api_struct! {
 
     il2cpp_resolve_symbol: unsafe extern "C" fn(name: *const c_char) -> *mut c_void,
     il2cpp_get_assembly_image: unsafe extern "C" fn(name: *const c_char) -> *const c_void,
+    il2cpp_get_class: unsafe extern "C" fn(
+        image: *const c_void, namespace: *const c_char, name: *const c_char,
+    ) -> *mut c_void,
+    il2cpp_get_method:
+        unsafe extern "C" fn(klass: *mut c_void, name: *const c_char, args_count: i32) -> *const c_void,
     il2cpp_class_get_methods:
         unsafe extern "C" fn(klass: *mut c_void, iter: *mut *mut c_void) -> *const c_void,
     il2cpp_get_main_thread: unsafe extern "C" fn() -> *mut c_void,
