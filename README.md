@@ -36,6 +36,21 @@ Open the Hachimi menu. The plugin's section has:
   Both toggles apply on the next skill and are saved in `settings.txt`. Their hooks
   are installed once at load (see `src/patches.rs`), so the tracer shows these
   methods as `FAILED`. The line under each checkbox says whether each hook is `ok`.
+- **Race clock** (top right; `TOP_RIGHT` in clock.rs), on by default: a broadcast-style clock drawn by the game's
+  own UI (works in exclusive fullscreen and OBS game capture). White running seconds;
+  when the leader passes 1000 m (half the course for races up to 1400 m) the split
+  shows in yellow with tenths and the distance for 5 s; when the leader finishes,
+  the winner's official time (`1.56.1`) is held until the winning-circle scene.
+  See `src/clock.rs` (timing) and `src/label.rs` (the Unity label).
+- **Hide race UI while running**: from the fanfare (gate-in) through the scoreboard until the winning circle, the race
+  HUD is hidden: skip / menu / fast-forward / photo buttons, the rank / character icon,
+  the progress bar, the 3D marker over the player's horse, commentary, message plates,
+  skill info. Two layers: the game's own `SetVisible*(bool)` switches
+  (`RaceMainViewController`, `RaceViewReplay::VisibleMarkers`), and a CanvasGroup that
+  fades the whole race HUD view for parts that are shown by default. Everything is
+  restored at the winning circle or when the toggle is turned off (taps work again from
+  the scoreboard on, in case it waits for one). The menu button
+  is hidden too; Esc still opens the pause menu.
 - **Record function calls**: on = start a new log file, off = finish it and write the summary.
   The first time it is turned on, hooks are installed; the game freezes for a few seconds.
 - **Log every call (heavy)**: off (default) logs only the first call of each method,
@@ -47,7 +62,8 @@ Files, all under `hachimi\uma-esport-spectator\`:
 |---|---|
 | `trace_targets.txt` | Which classes/methods to hook. Created with defaults on first run. Edit, then restart the game. |
 | `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
-| `settings.txt` | Plugin settings (`disable_skill_cutins`, `hide_skill_popups` = `true`/`false`). |
+| `settings.txt` | Plugin settings (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui` = `true`/`false`). |
+| `race_classes.txt` | Fields (with offsets) and methods (with signatures) of the main race classes, written at load. |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |
 
 ## How it works

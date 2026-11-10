@@ -1,9 +1,9 @@
 //! Race patches: menu toggles that neutralize game methods.
 //!
 //! Each patched method is hooked once at load and stays hooked; its toggle
-//! only flips a flag, so switching is free and applies on the next call.
-//! While a toggle is on, the method's stub jumps to a replacement instead of
-//! the original:
+//! (see settings.rs) only flips a flag, so switching is free and applies on
+//! the next call. While a toggle is on, the method's stub jumps to a
+//! replacement instead of the original:
 //!   - `ReturnFalse`: for bool methods, the game gets `false`.
 //!   - `Skip`: for void methods, the method does nothing.
 //! The method's return type is checked before hooking, so a replacement can
@@ -17,33 +17,12 @@
 
 use std::ffi::c_void;
 use std::fmt::Write as _;
-use std::fs;
-use std::path::PathBuf;
-use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
+use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::OnceLock;
 
-use crate::api::{self, cstr};
-use crate::{sig, stub, tracer};
-
-const ASSEMBLY: &str = "umamusume.dll";
-const SETTINGS_FILE: &str = "settings.txt";
-
-// ---------------------------------------------------------------- tables
-
-pub struct Toggle {
-    /// Key in settings.txt.
-    key: &'static str,
-    /// Checkbox text.
-    pub label: &'static str,
-    on: AtomicBool,
-}
-
-pub static TOGGLES: [Toggle; 2] = [
-    Toggle { key: "disable_skill_cutins", label: "Disable skill cut-ins (all horses)", on: AtomicBool::new(false) },
-    Toggle { key: "hide_skill_popups", label: "Hide skill popups (right side)", on: AtomicBool::new(false) },
-];
-const CUTINS: usize = 0;
-const POPUPS: usize = 1;
+use crate::il2cpp::{self, GAME};
+use crate::settings::{self, CUTINS, POPUPS};
+use crate::{api, sig, stub};
 
 #[derive(Clone, Copy)]
 enum Action {
@@ -70,7 +49,7 @@ struct Patch {
     toggle: usize,
     class: &'static str,
     method: &'static str,
-    argc: i32,
+    argc: u32,
     action: Action,
 }
 
@@ -86,7 +65,7 @@ static TRAMPOLINES: [AtomicUsize; 3] = [AtomicUsize::new(0), AtomicUsize::new(0)
 static STATUS: OnceLock<Vec<String>> = OnceLock::new();
 
 /// Related methods whose signatures are logged for reference (not hooked).
-const LOG_ONLY: [(&str, &str, i32); 4] = [
+const LOG_ONLY: [(&str, &str, u32); 4] = [
     ("RaceEventPlayer", "TryRequestCutIn", 4),
     ("RaceManagerReplayBase", "PlaySkillCutIn", 6),
     ("RaceManagerReplayBase", "ReserveSkillInfoUI", 3),
@@ -108,7 +87,7 @@ extern "win64" fn enter(index: u32) -> usize {
     // index comes only from our own stubs, so it is always in range.
     let i = index as usize;
     let patch = &PATCHES[i];
-    if TOGGLES[patch.toggle].on.load(Ordering::Relaxed) {
+    if settings::is_on(patch.toggle) {
         return patch.action.replacement();
     }
     // The hook goes live a moment before its trampoline is stored.
@@ -121,16 +100,7 @@ extern "win64" fn enter(index: u32) -> usize {
     }
 }
 
-// ---------------------------------------------------------------- control
-
-pub fn is_on(toggle: usize) -> bool {
-    TOGGLES[toggle].on.load(Ordering::Relaxed)
-}
-
-pub fn set(toggle: usize, on: bool) {
-    TOGGLES[toggle].on.store(on, Ordering::Relaxed);
-    save_settings();
-}
+// ---------------------------------------------------------------- status
 
 /// One line per patch of this toggle, e.g. "PlaySkillInfo: ok".
 pub fn status(toggle: usize) -> String {
@@ -147,58 +117,23 @@ pub fn status(toggle: usize) -> String {
     out
 }
 
-fn settings_path() -> PathBuf {
-    tracer::plugin_dir().join(SETTINGS_FILE)
-}
-
-fn load_settings() {
-    let Ok(text) = fs::read_to_string(settings_path()) else { return };
-    for line in text.lines() {
-        let Some((k, v)) = line.split_once('=') else { continue };
-        if let Some(t) = TOGGLES.iter().find(|t| t.key == k.trim()) {
-            t.on.store(v.trim() == "true", Ordering::Relaxed);
-        }
-    }
-}
-
-fn save_settings() {
-    let path = settings_path();
-    let text: String = TOGGLES
-        .iter()
-        .map(|t| format!("{} = {}\n", t.key, t.on.load(Ordering::Relaxed)))
-        .collect();
-    let result = path
-        .parent()
-        .map_or(Ok(()), fs::create_dir_all)
-        .and_then(|_| fs::write(&path, text));
-    if let Err(e) = result {
-        api::get().warn(&format!("cannot save {}: {e}", path.display()));
-    }
-}
-
 // ---------------------------------------------------------------- install
 
-/// Called once when IL2CPP is ready: loads settings and hooks every patch.
+/// Called once when IL2CPP is ready: hooks every patch.
 pub fn install() {
-    load_settings();
     let api = api::get();
-    let image = unsafe { (api.il2cpp_get_assembly_image)(cstr(ASSEMBLY).as_ptr()) };
-    if image.is_null() {
-        api.error(&format!("patches not installed: assembly not found: {ASSEMBLY}"));
-        let _ = STATUS.set(vec!["assembly not found".to_owned(); PATCHES.len()]);
-        return;
-    }
 
     for (class, name, argc) in LOG_ONLY {
-        let m = unsafe { find_method(image, class, name, argc) };
-        let text = if m.is_null() { "not found".to_owned() } else { unsafe { sig::signature(m) } };
+        let text = unsafe { il2cpp::class(GAME, "Gallop", class).and_then(|k| il2cpp::method(k, name, argc)) }
+            .map(|m| unsafe { sig::signature(m.info as *const c_void) })
+            .unwrap_or_else(|e| e);
         api.info(&format!("signature Gallop.{class}::{name}: {text}"));
     }
 
     let status = PATCHES
         .iter()
         .enumerate()
-        .map(|(i, patch)| match unsafe { hook(image, i, patch) } {
+        .map(|(i, patch)| match unsafe { hook(i, patch) } {
             Ok(()) => "ok".to_owned(),
             Err(e) => {
                 api.error(&format!("patch Gallop.{}::{} not installed: {e}", patch.class, patch.method));
@@ -209,42 +144,26 @@ pub fn install() {
     let _ = STATUS.set(status);
 }
 
-unsafe fn find_method(image: *const c_void, class: &str, method: &str, argc: i32) -> *const c_void {
+unsafe fn hook(index: usize, patch: &Patch) -> Result<(), String> {
     let api = api::get();
-    let klass = (api.il2cpp_get_class)(image, cstr("Gallop").as_ptr(), cstr(class).as_ptr());
-    if klass.is_null() {
-        return std::ptr::null();
-    }
-    (api.il2cpp_get_method)(klass, cstr(method).as_ptr(), argc)
-}
-
-unsafe fn hook(image: *const c_void, index: usize, patch: &Patch) -> Result<(), String> {
-    let api = api::get();
-    let method = find_method(image, patch.class, patch.method, patch.argc);
-    if method.is_null() {
-        return Err("method not found".to_owned());
-    }
-    api.info(&format!("signature Gallop.{}::{}: {}", patch.class, patch.method, sig::signature(method)));
+    let klass = il2cpp::class(GAME, "Gallop", patch.class)?;
+    let method = il2cpp::method(klass, patch.method, patch.argc)?;
+    api.info(&format!(
+        "signature Gallop.{}::{}: {}",
+        patch.class,
+        patch.method,
+        sig::signature(method.info as *const c_void)
+    ));
 
     // A replacement must give the caller the kind of value it expects.
     let expected = patch.action.return_type();
-    match sig::return_type(method) {
-        Some(ty) if ty == expected => {}
-        Some(ty) => return Err(format!("returns {ty}, expected {expected}")),
-        None => return Err("cannot read return type".to_owned()),
-    }
-    // MethodInfo.methodPointer is the first field.
-    let addr = *(method as *const usize);
-    if addr == 0 {
-        return Err("method has no code".to_owned());
+    let actual = il2cpp::return_type(method);
+    if actual != expected {
+        return Err(format!("returns {actual}, expected {expected}"));
     }
 
     let code = stub::build(index as u32, enter).ok_or("cannot allocate stub memory")?;
-    let interceptor = (api.hachimi_get_interceptor)((api.hachimi_instance)());
-    let trampoline = (api.interceptor_hook)(interceptor, addr as *mut c_void, code as *mut c_void) as usize;
-    if trampoline == 0 {
-        return Err("MinHook refused (already hooked?)".to_owned());
-    }
+    let trampoline = il2cpp::hook(method.code, code as usize)?;
     TRAMPOLINES[index].store(trampoline, Ordering::Release);
     api.info(&format!("patch installed on Gallop.{}::{}", patch.class, patch.method));
     Ok(())
@@ -253,6 +172,7 @@ unsafe fn hook(image: *const c_void, index: usize, patch: &Patch) -> Result<(), 
 #[cfg(all(test, target_arch = "x86_64"))]
 mod tests {
     use super::*;
+    use crate::settings::set_for_test as set_toggle;
     use std::sync::atomic::AtomicU32;
 
     // Single test: TOGGLES/TRAMPOLINES are globals.
@@ -274,14 +194,14 @@ mod tests {
         let popup: extern "win64" fn(u64, u64, u64, u64, u64) =
             unsafe { std::mem::transmute(stub::build(1, enter).expect("exec memory")) };
 
-        TOGGLES[CUTINS].on.store(false, Ordering::SeqCst);
-        TOGGLES[POPUPS].on.store(false, Ordering::SeqCst);
+        set_toggle(CUTINS, false);
+        set_toggle(POPUPS, false);
         assert!(cutin(1, 2, 3, 4, 5));
         popup(1, 2, 3, 4, 5);
         assert_eq!(VOID_CALLS.load(Ordering::SeqCst), 1);
 
-        TOGGLES[CUTINS].on.store(true, Ordering::SeqCst);
-        TOGGLES[POPUPS].on.store(true, Ordering::SeqCst);
+        set_toggle(CUTINS, true);
+        set_toggle(POPUPS, true);
         assert!(!cutin(1, 2, 3, 4, 5));
         popup(1, 2, 3, 4, 5);
         assert_eq!(VOID_CALLS.load(Ordering::SeqCst), 1, "original must not run while hidden");

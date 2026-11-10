@@ -54,6 +54,37 @@ unsafe fn type_name(f: &Fns, ty: *const c_void) -> String {
     s
 }
 
+/// Name of an `Il2CppType*` (e.g. a field type); "?" if the metadata API is missing.
+pub unsafe fn type_name_of(ty: *const c_void) -> String {
+    match fns() {
+        Some(f) => type_name(f, ty),
+        None => "?".to_owned(),
+    }
+}
+
+pub struct Shape {
+    pub is_static: bool,
+    pub ret: String,
+    pub params: u32,
+}
+
+/// Static flag, return type and parameter count, for checking a method
+/// before calling or hooking it with a hand-written signature.
+pub unsafe fn shape(method: *const c_void) -> Option<Shape> {
+    let f = fns()?;
+    Some(Shape {
+        is_static: (f.flags)(method, std::ptr::null_mut()) & METHOD_ATTRIBUTE_STATIC != 0,
+        ret: type_name(f, (f.return_type)(method)),
+        params: (f.param_count)(method),
+    })
+}
+
+/// Type name of parameter `index`, or None if the metadata API is missing.
+pub unsafe fn param_type(method: *const c_void, index: u32) -> Option<String> {
+    let f = fns()?;
+    Some(type_name(f, (f.param)(method, index)))
+}
+
 /// Fully-qualified return type name, or None if the metadata API is missing.
 pub unsafe fn return_type(method: *const c_void) -> Option<String> {
     let f = fns()?;

@@ -4,19 +4,25 @@ use std::ffi::c_void;
 use std::sync::atomic::Ordering;
 
 use crate::api::{self, cstr};
-use crate::{patches, tracer};
+use crate::settings::{self, CLOCK, HIDE_UI};
+use crate::{clock, patches, race_ui, tracer};
 
 pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
     let api = api::get();
     let text = |s: &str| cstr(s);
     unsafe {
         (api.gui_ui_heading)(ui, text("Race").as_ptr());
-        for (i, toggle) in patches::TOGGLES.iter().enumerate() {
-            let mut on = patches::is_on(i);
+        for (i, toggle) in settings::TOGGLES.iter().enumerate() {
+            let mut on = settings::is_on(i);
             if (api.gui_ui_checkbox)(ui, text(toggle.label).as_ptr(), &mut on) {
-                patches::set(i, on);
+                settings::set(i, on);
             }
-            (api.gui_ui_small)(ui, text(&patches::status(i)).as_ptr());
+            let status = match i {
+                CLOCK => clock::status(),
+                HIDE_UI => race_ui::status(),
+                _ => patches::status(i),
+            };
+            (api.gui_ui_small)(ui, text(&status).as_ptr());
         }
         (api.gui_ui_separator)(ui);
 

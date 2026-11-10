@@ -4,8 +4,13 @@
 //! `trace_targets.txt` and logs which ones run, so the race flow can be studied.
 
 mod api;
+mod clock;
 mod gui;
+mod il2cpp;
+mod label;
 mod patches;
+mod race_ui;
+mod settings;
 mod sig;
 mod stub;
 mod sys;
@@ -54,7 +59,10 @@ unsafe fn game_assembly_loaded(api: &Api) -> bool {
 fn mark_ready(msg: &str) {
     if !tracer::GAME_READY.swap(true, Ordering::AcqRel) {
         api::get().info(msg);
+        settings::load();
         patches::install();
+        race_ui::install();
+        clock::install();
     }
 }
 

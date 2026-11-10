@@ -43,10 +43,13 @@ api_struct! {
     il2cpp_get_class: unsafe extern "C" fn(
         image: *const c_void, namespace: *const c_char, name: *const c_char,
     ) -> *mut c_void,
-    il2cpp_get_method:
-        unsafe extern "C" fn(klass: *mut c_void, name: *const c_char, args_count: i32) -> *const c_void,
     il2cpp_class_get_methods:
         unsafe extern "C" fn(klass: *mut c_void, iter: *mut *mut c_void) -> *const c_void,
+    il2cpp_get_field_from_name:
+        unsafe extern "C" fn(klass: *mut c_void, name: *const c_char) -> *mut c_void,
+    il2cpp_resolve_icall: unsafe extern "C" fn(name: *const c_char) -> *mut c_void,
+    il2cpp_get_singleton_like_instance: unsafe extern "C" fn(klass: *mut c_void) -> *mut c_void,
+    il2cpp_string_new: unsafe extern "C" fn(text: *const c_char) -> *mut c_void,
     il2cpp_get_main_thread: unsafe extern "C" fn() -> *mut c_void,
     il2cpp_schedule_on_thread: unsafe extern "C" fn(thread: *mut c_void, cb: unsafe extern "C" fn()),
 
