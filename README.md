@@ -39,10 +39,20 @@ Open the Hachimi menu. The plugin's section has:
 - **Size** / **Height**: card size, and where the bottom of the row sits (fraction of the
   screen height). Saved in `settings.txt`.
 
-Character images are PNG files you provide, in `hachimi\uma-esport-spectator\chara\`:
-`<card id>.png` (one outfit, e.g. `100101.png`) is used first, then `<chara id>.png`
-(any outfit, e.g. `1001.png`). Square images look best. Without an image the card shows a
-plain silhouette. Images are read once per game session.
+Character images come from your own game install. Extract them once (and again after a
+game update adds characters or outfits):
+
+```powershell
+pip install apsw-sqlite3mc UnityPy "attrs>=23"
+python tools\extract_icons.py --out "C:\Program Files (x86)\Steam\steamapps\common\UmamusumePrettyDerby\hachimi\uma-esport-spectator\chara"
+```
+
+It reads the game's asset index and bundles from `%USERPROFILE%\AppData\LocalLow\Cygames\Umamusume`
+(`--data` for another location; formats as documented by
+[UmamusumeExplorer](https://github.com/MarshmallowAndroid/UmamusumeExplorer)) and writes
+`<card id>.png` (the card's race outfit) and `<chara id>.png` (default icon). The overlay uses
+the card icon first, then the character icon, then a plain silhouette. Your own PNGs with
+the same names work too. Images are read once per game session. Up to 18 runners are shown.
 
 Japanese/Thai/Korean/Chinese names use Windows' own fonts (Yu Gothic, Leelawadee UI, ...).
 

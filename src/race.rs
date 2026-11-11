@@ -316,6 +316,9 @@ unsafe fn dump_classes(classes: &[(&str, *mut c_void)]) {
 
 // ---------------------------------------------------------------- snapshot
 
+/// Most runners a race can have.
+pub const MAX_RUNNERS: usize = 18;
+
 /// Element pointers of a managed reference-type array.
 unsafe fn array_items(array: *mut c_void) -> &'static [*mut c_void] {
     if array.is_null() {
@@ -361,8 +364,8 @@ unsafe fn take_snapshot() -> Option<Vec<Runner>> {
         return None;
     }
 
-    let mut runners = Vec::with_capacity(infos.len());
-    for &info in infos {
+    let mut runners = Vec::with_capacity(MAX_RUNNERS);
+    for &info in infos.iter().take(MAX_RUNNERS) {
         if info.is_null() {
             continue;
         }

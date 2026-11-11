@@ -40,7 +40,7 @@ fn main() {
     let images = PathBuf::from(args.next().unwrap_or_else(|| "/nonexistent".into()));
     std::fs::create_dir_all(&out).unwrap();
 
-    let before: Vec<usize> = vec![5, 15, 3, 0, 9, 12, 1, 7, 2, 14, 4, 10, 6, 13, 8, 11, 16];
+    let before: Vec<usize> = vec![5, 15, 3, 0, 9, 12, 1, 7, 2, 14, 4, 10, 6, 13, 8, 11, 16, 17];
     // Positions 2<->3 and 5<->6 swap at t = 1.0.
     let mut after = before.clone();
     after.swap(2, 3);

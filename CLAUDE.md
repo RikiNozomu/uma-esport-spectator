@@ -26,6 +26,9 @@ Goal: study the race flow, later build esport-spectator features on top.
   (per-runner card animation) are pure and unit-tested; `mod.rs` paints with egui;
   `render_d3d11.rs` (Windows) draws from Hachimi's present callback with egui-directx11.
   Never keep a back-buffer reference across frames; save/restore D3D11 state.
+- `tools/extract_icons.py`: exports chr_icon textures from the game's own files (meta =
+  SQLite3MultipleCiphers ChaCha20; bundles XOR'd after 256 bytes; see UmamusumeExplorer)
+  into `chara/<card id>.png` and `chara/<chara id>.png`.
 - `examples/render_preview.rs` + `tools/rasterize.py`: render overlay frames to PNG/GIF
   offline to check the design (`UMA_FONT_DIR`/`UMA_FONTS`/`UMA_BOLD_FONT` for fonts off Windows).
 
