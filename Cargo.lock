@@ -367,7 +367,7 @@ checksum = "d2df906b07856748fa3f6e0ad0cbaa047052d4a7dd609e231c4f72cee8c36f31"
 
 [[package]]
 name = "uma_esport_spectator"
-version = "1.1.1"
+version = "1.1.2"
 dependencies = [
  "egui",
  "egui-directx11",
