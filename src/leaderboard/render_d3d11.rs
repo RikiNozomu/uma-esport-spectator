@@ -45,6 +45,8 @@ pub fn retry() {
 
 /// Registered with `hachimi_register_present_callback`.
 pub unsafe extern "C" fn on_present(swap_chain: *mut c_void, _userdata: *mut c_void) {
+    // Race player shortcuts are polled here: the present callback runs every frame.
+    let _ = catch_unwind(crate::player::poll_keys);
     if swap_chain.is_null() || BROKEN.load(Ordering::Relaxed) {
         return;
     }

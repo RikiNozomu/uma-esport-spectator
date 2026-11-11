@@ -11,8 +11,34 @@ mod imp {
         hour: u16, minute: u16, second: u16, millis: u16,
     }
 
+    #[link(name = "user32")]
+    extern "system" {
+        fn GetAsyncKeyState(vk: i32) -> i16;
+        fn GetForegroundWindow() -> *mut c_void;
+        fn GetWindowThreadProcessId(hwnd: *mut c_void, pid: *mut u32) -> u32;
+    }
+
+    /// The key is held down right now.
+    pub fn key_down(vk: i32) -> bool {
+        unsafe { GetAsyncKeyState(vk) as u16 & 0x8000 != 0 }
+    }
+
+    /// The foreground window belongs to this process (the game).
+    pub fn game_has_focus() -> bool {
+        unsafe {
+            let hwnd = GetForegroundWindow();
+            if hwnd.is_null() {
+                return false;
+            }
+            let mut pid = 0u32;
+            GetWindowThreadProcessId(hwnd, &mut pid);
+            pid == GetCurrentProcessId()
+        }
+    }
+
     #[link(name = "kernel32")]
     extern "system" {
+        fn GetCurrentProcessId() -> u32;
         fn VirtualAlloc(addr: *mut c_void, size: usize, alloc_type: u32, protect: u32) -> *mut c_void;
         fn GetCurrentThreadId() -> u32;
         fn GetLocalTime(out: *mut SystemTime);

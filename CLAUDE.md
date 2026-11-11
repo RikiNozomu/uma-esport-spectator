@@ -45,6 +45,17 @@ Goal: study the race flow, later build esport-spectator features on top.
 - Hachimi on Windows inits plugins *after* firing game-initialized callbacks, so
   `lib.rs` also checks readiness directly at load.
 - `src/gui.rs`: menu section (checkboxes, sliders, status).
+- `src/player.rs`: race player. Window/keys (render thread) only change `CONTROL`; `tick`,
+  called from clock's AlterUpdate hook (main thread), applies it. Speed/pause: hooks
+  `SetDeltaTimeScale` and passes `game scale x factor` (the game slows the finish itself;
+  pause = factor 0 keeps AlterUpdate running). Seek/rewind via `seek::seek`. Live race only;
+  new race / race end reset to 1x (race_ended makes no game calls; the next tick resets).
+  Pure command logic (`Control`) is unit-tested. `player_gui.rs`: menu section + window.
+  Shortcuts polled with GetAsyncKeyState from the present callback, only when the game has focus.
+- `src/seek.rs`: port of Hachimi's `RaceManagerReplayBase::seek_sync` (event cursor,
+  ForceSetRaceTime, UpdateHorses/Datas/Models, camera events, jikkyo, last-spurt flag,
+  minimap), each step optional; whole seek under `microseh` SEH like Hachimi. Not while
+  `IsCutInPlayingOrReserved`.
 - `src/race.rs`: leaderboard race snapshot on the main thread (positions, gate, chara/card/mob
   id, trainer name), max 18 runners. Return types are checked before calling getters.
   `race_classes.txt` (written by `clock`) also lists `HorseData`/`RaceHorseManagerBase` for it.
@@ -68,7 +79,7 @@ Goal: study the race flow, later build esport-spectator features on top.
   offline to check the design (`UMA_FONT_DIR`/`UMA_FONTS`/`UMA_BOLD_FONT` for fonts off Windows).
 
 ## Rules
-- Dependencies: egui, image (png), and on Windows egui-directx11 + windows, at the
+- Dependencies: egui, image (png), and on Windows egui-directx11 + windows + microseh, at the
   versions Hachimi Edge uses. Small OS calls are declared by hand in `src/sys.rs`.
 - Host callbacks that run plugin logic are wrapped in `catch_unwind` (release uses
   `panic = "unwind"`); a panic must never reach Hachimi.
@@ -78,6 +89,7 @@ Goal: study the race flow, later build esport-spectator features on top.
 
 ## Commands
 - `cargo test` (works on Linux or Windows x86-64)
-- Type-check the Windows build from Linux (needs Rust std source in the toolchain):
-  `RUSTC_BOOTSTRAP=1 cargo check --release -Zbuild-std=std,panic_unwind --target x86_64-pc-windows-msvc`
+- Type-check the Windows build from Linux (needs Rust std source in the toolchain;
+  `--cfg docsrs` makes microseh skip its C stub, which needs windows.h):
+  `RUSTFLAGS="--cfg docsrs" RUSTC_BOOTSTRAP=1 cargo check --release -Zbuild-std=std,panic_unwind --target x86_64-pc-windows-msvc --target-dir /tmp/tc`
 - `cargo build --release` -> `target/release/uma_esport_spectator.dll`

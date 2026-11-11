@@ -9,6 +9,8 @@ Hachimi Edge plugin for Umamusume: Pretty Derby (Steam, Windows) for watching an
 - **Race clock**: broadcast-style running time, 1000 m split, and the winner's time.
 - **Disable skill cut-ins** / **Hide skill popups**: skip the unique-skill cut-in scenes and
   the skill plates.
+- **Race player**: play / pause, seek, fast forward (up to 8x), slow motion (down to 0.1x)
+  and rewind during a race, from a window or with keyboard shortcuts.
 - **Function tracer**: log which game methods run, to study the race flow.
 
 ## Requirements
@@ -143,6 +145,21 @@ the runner's outfit (`chara\<card id>.png`), else the character's default icon
 Images are read once per game session. Up to 18 runners are shown.
 
 Japanese/Thai/Korean/Chinese names use Windows' own fonts (Yu Gothic, Leelawadee UI, ...).
+
+**Race player**
+
+- **Open race player**: a window with the race time, a seek bar, `-5 s`, rewind (`<<`,
+  press again for 2x / 4x / stop), play / pause, `>> faster`, `+5 s`, and one button per
+  speed (0.1x, 0.25x, 0.5x, 1x, 2x, 4x, 8x).
+- **Keyboard shortcuts** (on by default, only while the game window has focus):
+  Space play / pause, Left / Right back / forward 5 s, Down / Up slower / faster, R rewind.
+- Works from the start of the race until the result board; every race starts at 1x.
+- Seeking follows Hachimi's own playback slider (horses, cameras and commentary are brought
+  to the new time) and waits while a skill cut-in plays: turning on **Disable skill
+  cut-ins** makes seeking and rewinding smoother. Speed changes do not change the pitch or
+  speed of the race audio.
+- Hachimi's own **Race Playback Slider** and pause button (Config editor) still work, but
+  use one or the other: they do not know about each other's pause or speed.
 
 **Race**
 

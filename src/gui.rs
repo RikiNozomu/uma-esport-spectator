@@ -49,6 +49,8 @@ pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
         (api.gui_ui_small)(ui, text(&leaderboard::status()).as_ptr());
         (api.gui_ui_separator)(ui);
 
+        crate::player_gui::menu_section(ui);
+
         (api.gui_ui_heading)(ui, text("Function trace").as_ptr());
 
         if !tracer::GAME_READY.load(Ordering::Acquire) {

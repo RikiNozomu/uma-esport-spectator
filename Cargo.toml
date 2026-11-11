@@ -13,6 +13,8 @@ image = { version = "0.25.9", default-features = false, features = ["png"] }
 
 [target.'cfg(windows)'.dependencies]
 egui-directx11 = "0.12.1"
+# Guards race seeking against faults inside the game, as Hachimi's own slider does.
+microseh = "1.2.0"
 windows = { version = "0.62.2", features = [
     "Win32_Foundation",
     "Win32_Graphics_Direct3D",

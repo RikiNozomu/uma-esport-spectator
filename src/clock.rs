@@ -474,6 +474,7 @@ unsafe fn race_ended() {
     st.ended = true;
     set_live(false);
     st.hide(&r.unity);
+    crate::player::race_ended();
 }
 
 /// The result board (summary) comes up: the clock and the leaderboard stop
@@ -506,7 +507,10 @@ extern "C" fn alter_update(this: Obj, mi: *const c_void) {
     call_orig(&ORIG_ALTER_UPDATE, this, mi);
     race_ui::tick(this);
     if !this.is_null() {
-        unsafe { tick(this) }
+        unsafe {
+            tick(this);
+            crate::player::tick(this);
+        }
     }
 }
 
