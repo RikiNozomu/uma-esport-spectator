@@ -41,6 +41,14 @@ pub const DEFAULT_Y: f32 = 0.96;
 const SNAPSHOT_INTERVAL: Duration = Duration::from_millis(100);
 /// A snapshot older than this means the race is over (or not loaded).
 const SNAPSHOT_MAX_AGE: Duration = Duration::from_millis(1500);
+/// Part of a 256 px game icon (`chr_icon_*`) that is the framed picture: the
+/// icon has a transparent margin of ~10 px left/right and its frame ends at
+/// y = 250. Square, so heads that rise above the frame keep most of their room.
+const ICON_UV: Rect = Rect { min: Pos2 { x: 10.0 / 256.0, y: 14.0 / 256.0 }, max: Pos2 { x: 246.0 / 256.0, y: 250.0 / 256.0 } };
+/// The frame's top edge inside `ICON_UV`, as a fraction of the card width
+/// (heads poke out above it); the gate badge sits on the frame's corner.
+const ICON_FRAME_TOP: f32 = (33.0 - 14.0) / 236.0;
+
 /// Folder (under the plugin dir) with `<card id>.png` / `<chara id>.png`.
 pub const IMAGE_DIR: &str = "chara";
 
@@ -252,27 +260,26 @@ fn draw_card(
     let (bracket_bg, bracket_fg) = bracket_colors(runner.gate, field);
     let bold = if has_bold { FontFamily::Name(fonts::BOLD.into()) } else { FontFamily::Proportional };
 
-    // Body.
-    painter.rect(rect, radius, fade(Color32::from_rgba_unmultiplied(44, 44, 46, 215)), Stroke::new(1.0_f32, fade(Color32::from_white_alpha(38))), egui::StrokeKind::Inside);
-
+    // No card background: the image itself is the card.
     // Character image; a plain silhouette until an image is available.
-    let img = Rect::from_min_size(rect.min + Vec2::splat(g.pad), Vec2::splat(g.image));
+    let img = Rect::from_min_size(rect.min, Vec2::splat(g.image));
     match texture {
         Some(tex) => {
-            painter.image(tex, img, Rect::from_min_max(Pos2::ZERO, Pos2::new(1.0, 1.0)), fade(Color32::WHITE));
+            painter.image(tex, img, ICON_UV, fade(Color32::WHITE));
         }
         None => draw_silhouette(painter, img, fade(bracket_bg.gamma_multiply(0.30)), fade(Color32::from_white_alpha(70))),
     }
 
-    // Gate number in its bracket colour, top-left.
+    // Gate number in its bracket colour, on the frame's top-left corner.
     let leg = g.triangle;
+    let corner = if texture.is_some() { rect.min + Vec2::new(0.0, g.width * ICON_FRAME_TOP) } else { rect.min };
     painter.add(Shape::convex_polygon(
-        vec![rect.min, rect.min + Vec2::new(leg, 0.0), rect.min + Vec2::new(0.0, leg)],
+        vec![corner, corner + Vec2::new(leg, 0.0), corner + Vec2::new(0.0, leg)],
         fade(bracket_bg),
         Stroke::new(1.0_f32, fade(Color32::from_black_alpha(90))),
     ));
     // Centred on the triangle's thick end, so two digits stay inside it.
-    let num_pos = rect.min + Vec2::new(leg * 0.3, leg * 0.26);
+    let num_pos = corner + Vec2::new(leg * 0.3, leg * 0.26);
     let num_font = FontId::new(g.number_font, bold.clone());
     painter.text(num_pos, Align2::CENTER_CENTER, runner.gate.to_string(), num_font, fade(bracket_fg));
 
@@ -310,7 +317,7 @@ fn draw_card(
 
 /// Generic head-and-shoulders shape for runners without an image.
 fn draw_silhouette(painter: &egui::Painter, area: Rect, background: Color32, figure: Color32) {
-    painter.rect_filled(area, CornerRadius::same(4), background);
+    painter.rect_filled(area, CornerRadius { nw: 4, ne: 4, sw: 0, se: 0 }, background);
     let painter = painter.with_clip_rect(area);
     let s = area.width();
     let head = Pos2::new(area.center().x, area.min.y + s * 0.40);

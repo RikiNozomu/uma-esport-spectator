@@ -29,12 +29,13 @@ pub struct CardGeometry {
 
 impl CardGeometry {
     pub fn for_width(width: f32) -> CardGeometry {
-        let pad = width * 0.05;
-        let image = width - 2.0 * pad;
+        // No padding: the image spans the full card width, the name band sits right under it.
+        let pad = 0.0;
+        let image = width;
         let band = width * 0.22;
         CardGeometry {
             width,
-            height: pad + image + band,
+            height: image + band,
             pad,
             image,
             band,
