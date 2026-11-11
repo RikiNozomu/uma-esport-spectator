@@ -3,13 +3,18 @@
 //! - Function tracer: hooks the methods listed in `trace_targets.txt` and logs
 //!   which ones run, to study the race flow.
 //! - Live leaderboard overlay during races (`leaderboard`).
-//! - Option to skip skill cut-ins (`cutin`).
+//! - Race toggles: skip skill cut-ins / skill popups (`patches`), race clock
+//!   (`clock`), hide the race UI while running (`race_ui`).
 
 mod api;
-mod cutin;
+mod clock;
 mod gui;
 pub mod leaderboard;
 pub mod race;
+mod il2cpp;
+mod label;
+mod patches;
+mod race_ui;
 mod settings;
 mod sig;
 mod stub;
@@ -64,7 +69,10 @@ unsafe fn game_assembly_loaded(api: &Api) -> bool {
 fn mark_ready(msg: &str) {
     if !tracer::GAME_READY.swap(true, Ordering::AcqRel) {
         api::get().info(msg);
-        cutin::install();
+        settings::load();
+        patches::install();
+        race_ui::install();
+        clock::install();
     }
 }
 

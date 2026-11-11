@@ -6,9 +6,7 @@
 //! metadata before any call, so a game update that changes a signature turns
 //! into "field missing" instead of a crash.
 
-use std::ffi::{c_char, c_void, CStr};
-use std::fmt::Write as _;
-use std::fs;
+use std::ffi::c_void;
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Mutex, OnceLock};
@@ -18,6 +16,7 @@ use crate::api::{self, cstr};
 use crate::{sig, tracer};
 
 const ASSEMBLY: &str = "umamusume.dll";
+/// Member names of these classes are listed in this file (written by `clock`).
 const DUMP_FILE: &str = "race_classes.txt";
 
 /// One runner, as shown on the leaderboard.
@@ -228,13 +227,6 @@ unsafe fn resolve() -> Result<Meta, String> {
     let info = class(image, "HorseRaceInfo")?;
     let data = class(image, "HorseData")?;
 
-    dump_classes(&[
-        ("RaceManager", race_manager),
-        ("RaceHorseManagerBase", horse_manager),
-        ("HorseRaceInfo", info),
-        ("HorseData", data),
-    ]);
-
     let horse_manager_field = (api.il2cpp_get_field_from_name)(race_manager, cstr("_horseManager").as_ptr());
     if horse_manager_field.is_null() {
         return Err("field Gallop.RaceManager::_horseManager not found".to_owned());
@@ -274,51 +266,6 @@ unsafe fn resolve() -> Result<Meta, String> {
         api.warn(&format!("leaderboard: not found in game data: {} (see {DUMP_FILE})", missing.join(", ")));
     }
     Ok(meta)
-}
-
-/// Writes every method and field of the race classes, for finding names.
-unsafe fn dump_classes(classes: &[(&str, *mut c_void)]) {
-    let api = api::get();
-    let field_name: Option<unsafe extern "C" fn(*mut c_void) -> *const c_char> = api.il2cpp_fn("il2cpp_field_get_name");
-    let field_type: Option<unsafe extern "C" fn(*mut c_void) -> *const c_void> = api.il2cpp_fn("il2cpp_field_get_type");
-    let class_fields: Option<unsafe extern "C" fn(*mut c_void, *mut *mut c_void) -> *mut c_void> =
-        api.il2cpp_fn("il2cpp_class_get_fields");
-    let method_name: Option<unsafe extern "C" fn(*const c_void) -> *const c_char> = api.il2cpp_fn("il2cpp_method_get_name");
-
-    let mut out = String::from("# Methods and fields of the race classes (written once per game start)\n");
-    for (name, klass) in classes {
-        let _ = writeln!(out, "\n## Gallop.{name}\n### fields");
-        if let (Some(class_fields), Some(field_name), Some(field_type)) = (class_fields, field_name, field_type) {
-            let mut iter: *mut c_void = std::ptr::null_mut();
-            loop {
-                let f = class_fields(*klass, &mut iter);
-                if f.is_null() {
-                    break;
-                }
-                let n = field_name(f);
-                let n = if n.is_null() { "?".into() } else { CStr::from_ptr(n).to_string_lossy() };
-                let _ = writeln!(out, "{}\t{n}", sig::type_name_of(field_type(f)));
-            }
-        }
-        let _ = writeln!(out, "### methods");
-        let mut iter: *mut c_void = std::ptr::null_mut();
-        loop {
-            let m = (api.il2cpp_class_get_methods)(*klass, &mut iter);
-            if m.is_null() {
-                break;
-            }
-            let n = match method_name {
-                Some(f) => {
-                    let p = f(m);
-                    if p.is_null() { "?".to_owned() } else { CStr::from_ptr(p).to_string_lossy().into_owned() }
-                }
-                None => "?".to_owned(),
-            };
-            let _ = writeln!(out, "{n}\t{}", sig::signature(m));
-        }
-    }
-    let dir = tracer::plugin_dir();
-    let _ = fs::create_dir_all(&dir).and_then(|_| fs::write(dir.join(DUMP_FILE), out));
 }
 
 // ---------------------------------------------------------------- snapshot

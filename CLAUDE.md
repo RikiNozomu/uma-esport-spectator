@@ -14,14 +14,39 @@ Goal: study the race flow, later build esport-spectator features on top.
   `il2cpp_schedule_on_thread`), recording sessions, log files.
 - `src/targets.rs`: `trace_targets.txt` parsing and glob matching.
 - `src/sig.rs`: method signatures from IL2CPP metadata (main thread / init only).
-- `src/cutin.rs`: "disable skill cut-ins" hook on `Gallop.RaceEventPlayer::IsPlayableCutIn`
-  (stub jumps to a return-false fn while enabled). Installed at game ready.
+- `src/settings.rs`: one `settings.txt` for everything: menu toggles (`TOGGLES`, `is_on`/`set`)
+  and free key/values (`get_bool`/`get_f32`/`set_value`, used by the leaderboard). Every save
+  writes all keys, so features never drop each other's settings.
+- `src/patches.rs`: toggles that neutralize game methods (`PATCHES` table: class,
+  method, argc, `ReturnFalse` for bool / `Skip` for void; return type is checked before
+  hooking). The stub jumps to `ret_false`/`ret_void` while the toggle is on. Installed at game ready.
+  Add a patch = add a `Toggle` (if new) + a `Patch` row + a `TRAMPOLINES` slot.
+- `src/il2cpp.rs`: lookup/hook/field helpers. `method()` walks parent classes quietly;
+  `expect()` checks static/return/param count before calling with a hand-written signature.
+  `describe_class()` feeds `race_classes.txt` (real field/method names: check it before guessing).
+- `src/label.rs`: in-game Unity text (clones `UI/Parts/Notification` like Hachimi's captions,
+  reparents its `Gallop.TextCommon` to the notice canvas). Main thread only.
+- `src/clock.rs`: race clock. Owns the per-frame hook on `RaceManagerReplayBase::AlterUpdate`
+  (`this` = race manager) and the race-end hooks; these also drive `race_ui`. Pure
+  timing/format logic is unit-tested in the same file.
+- `src/race_ui.rs`: "hide race UI". Layer 1: hooks `void X(bool)` switches (`TARGETS`:
+  `RaceMainViewController::SetVisible*`, `RaceViewReplay::VisibleMarkers`), records what
+  the game wants per object, passes `false` from StateGateIn_Enter (fanfare) to
+  StateWinningCircleInit_Enter; taps allowed from StateOverRunResult_Enter. Only ever calls switches the game turned on.
+  Layer 2: CanvasGroup alpha 0 on `RaceMainView` (re-applied each frame while hiding).
+  Race boundaries: `StateGateIn_Enter` = race start (`race_gen()` bumps; clock resets on it),
+  race end hooks invalidate everything. Never call into a game object recorded in an
+  earlier race: the race manager can be reused across races, its views are not
+  (calling a destroyed view crashed the game inside IL2CPP; `STAMP`/`RACE_SEQ` guard this).
+- Clock layout: two labels (time, distance) in the `TOP_RIGHT` corner, aligned to it; at the top right the running seconds sit `TENTHS_GAP` inwards (left alignment
+  keeps the seconds in place as tenths appear). Tune `MARGIN_X`, `DISTANCE_LAYOUT.margin_y`. Rich-text
+  transparent placeholders don't work: TextCommon's outline still draws them.
 - Hachimi on Windows inits plugins *after* firing game-initialized callbacks, so
   `lib.rs` also checks readiness directly at load.
 - `src/gui.rs`: menu section (checkboxes, sliders, status).
-- `src/settings.rs`: shared `settings.txt` (key = value).
-- `src/race.rs`: race snapshot on the main thread (positions, gate, chara/card id, trainer
-  name); writes `race_classes.txt`. Return types are checked before calling getters.
+- `src/race.rs`: leaderboard race snapshot on the main thread (positions, gate, chara/card/mob
+  id, trainer name), max 18 runners. Return types are checked before calling getters.
+  `race_classes.txt` (written by `clock`) also lists `HorseData`/`RaceHorseManagerBase` for it.
 - `src/leaderboard/`: overlay. `layout.rs` (placement, JRA bracket colours) and `anim.rs`
   (per-runner card animation) are pure and unit-tested; `mod.rs` paints with egui;
   `render_d3d11.rs` (Windows) draws from Hachimi's present callback with egui-directx11.

@@ -4,18 +4,26 @@ use std::ffi::c_void;
 use std::sync::atomic::Ordering;
 
 use crate::api::{self, cstr};
-use crate::{cutin, leaderboard, tracer};
+use crate::settings::{self, CLOCK, HIDE_UI};
+use crate::{clock, leaderboard, patches, race_ui, tracer};
 
 pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
     let api = api::get();
     let text = |s: &str| cstr(s);
     unsafe {
         (api.gui_ui_heading)(ui, text("Race").as_ptr());
-        let mut no_cutins = cutin::is_disabled();
-        if (api.gui_ui_checkbox)(ui, text("Disable skill cut-ins (all horses)").as_ptr(), &mut no_cutins) {
-            cutin::set_disabled(no_cutins);
+        for (i, toggle) in settings::TOGGLES.iter().enumerate() {
+            let mut on = settings::is_on(i);
+            if (api.gui_ui_checkbox)(ui, text(toggle.label).as_ptr(), &mut on) {
+                settings::set(i, on);
+            }
+            let status = match i {
+                CLOCK => clock::status(),
+                HIDE_UI => race_ui::status(),
+                _ => patches::status(i),
+            };
+            (api.gui_ui_small)(ui, text(&status).as_ptr());
         }
-        (api.gui_ui_small)(ui, text(cutin::status()).as_ptr());
         (api.gui_ui_separator)(ui);
 
         (api.gui_ui_heading)(ui, text("Leaderboard overlay").as_ptr());

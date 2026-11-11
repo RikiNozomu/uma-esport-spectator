@@ -60,6 +60,8 @@ api_struct! {
     il2cpp_string_length: unsafe extern "C" fn(s: *mut c_void) -> i32,
     il2cpp_class_get_methods:
         unsafe extern "C" fn(klass: *mut c_void, iter: *mut *mut c_void) -> *const c_void,
+    il2cpp_resolve_icall: unsafe extern "C" fn(name: *const c_char) -> *mut c_void,
+    il2cpp_string_new: unsafe extern "C" fn(text: *const c_char) -> *mut c_void,
     il2cpp_get_main_thread: unsafe extern "C" fn() -> *mut c_void,
     il2cpp_schedule_on_thread: unsafe extern "C" fn(thread: *mut c_void, cb: unsafe extern "C" fn()),
 

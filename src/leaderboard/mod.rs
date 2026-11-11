@@ -80,7 +80,7 @@ pub fn set_enabled(on: bool) {
     if on {
         render_d3d11::retry();
     }
-    settings::set(KEY_ENABLED, on);
+    settings::set_value(KEY_ENABLED, on);
 }
 
 pub fn is_preview() -> bool {
@@ -103,8 +103,8 @@ pub fn view() -> View {
 
 pub fn set_view(v: View) {
     *VIEW.lock().unwrap_or_else(|e| e.into_inner()) = v;
-    settings::set(KEY_SCALE, format!("{:.2}", v.scale));
-    settings::set(KEY_Y, format!("{:.3}", v.y));
+    settings::set_value(KEY_SCALE, format!("{:.2}", v.scale));
+    settings::set_value(KEY_Y, format!("{:.3}", v.y));
 }
 
 pub fn image_dir() -> PathBuf {
