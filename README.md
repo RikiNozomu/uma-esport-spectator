@@ -22,7 +22,14 @@ Paths below assume the default Steam location; the game folder is
 
 ## Install
 
-**1. Build the plugin.**
+**1. Get the plugin.** Either download the prebuilt DLL or build it yourself.
+
+*Download (recommended):* grab `uma_esport_spectator.dll` from the
+[latest release](https://github.com/RikiNozomu/uma-esport-spectator/releases/latest).
+Then skip to step 2. (You still need Python for the character icons in step 4.)
+
+*Build from source:* requires the Rust MSVC toolchain and the Visual Studio Build Tools
+(see Requirements).
 
 ```powershell
 git clone https://github.com/RikiNozomu/uma-esport-spectator
