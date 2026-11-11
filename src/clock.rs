@@ -16,6 +16,7 @@ use std::ffi::c_void;
 use std::fmt::Write as _;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Mutex, OnceLock};
+use std::time::{Duration, Instant};
 
 use crate::il2cpp::{self, Method, Obj, GAME};
 use crate::label::{Label, Layout, Unity, TEXT_ANCHOR_UPPER_LEFT, TEXT_ANCHOR_UPPER_RIGHT};
@@ -365,6 +366,35 @@ pub fn status() -> String {
     STATUS.get().cloned().unwrap_or_else(|| "waiting for the game".to_owned())
 }
 
+/// Last frame at which the race was live (see `race_live`).
+static LAST_LIVE: Mutex<Option<Instant>> = Mutex::new(None);
+/// How long `race_live` stays true without a frame confirming it (covers
+/// leaving a race without the end hooks firing).
+const LIVE_TIMEOUT: Duration = Duration::from_millis(500);
+
+/// True from the moment the race clock starts counting (race time > 0, the
+/// gates have opened) until the race ends (winning circle / leaving the race),
+/// whether or not the clock itself is turned on. Any thread.
+pub fn race_live() -> bool {
+    let last = LAST_LIVE.lock().unwrap_or_else(|e| e.into_inner());
+    last.is_some_and(|t| t.elapsed() < LIVE_TIMEOUT)
+}
+
+/// Whether `race_live` means anything: the per-frame hook and the race-time
+/// reader are installed. False before game ready or if a game update broke them.
+pub fn race_live_available() -> bool {
+    RESOLVED.get().is_some() && ORIG_ALTER_UPDATE.load(Ordering::Acquire) != 0
+}
+
+/// Live = the same moments the clock shows a time.
+pub fn is_live(ended: bool, race_time: Option<f32>) -> bool {
+    !ended && race_time.is_some_and(|t| t > 0.0)
+}
+
+fn set_live(live: bool) {
+    *LAST_LIVE.lock().unwrap_or_else(|e| e.into_inner()) = live.then(Instant::now);
+}
+
 /// Once per frame during a race (main thread).
 unsafe fn tick(rm: Obj) {
     let Some(r) = RESOLVED.get() else { return };
@@ -377,8 +407,10 @@ unsafe fn tick(rm: Obj) {
         st.timing = Timing::default();
         st.winner = None;
     }
-    let sample = if st.ended || !settings::is_on(CLOCK) { None } else { r.data.sample(rm) };
-    let Some(s) = sample else {
+    let sample = if st.ended { None } else { r.data.sample(rm) };
+    // Published even with the clock turned off: the leaderboard follows it.
+    set_live(is_live(st.ended, sample.as_ref().map(|s| s.t)));
+    let Some(s) = sample.filter(|_| settings::is_on(CLOCK)) else {
         st.hide(&r.unity);
         return;
     };
@@ -409,6 +441,7 @@ unsafe fn race_ended() {
     let Some(r) = RESOLVED.get() else { return };
     let mut st = state();
     st.ended = true;
+    set_live(false);
     st.hide(&r.unity);
 }
 
@@ -577,6 +610,14 @@ mod tests {
             timing.step(t, t * 16.0, course);
             t += 1.0 / 30.0;
         }
+    }
+
+    #[test]
+    fn live_while_the_clock_counts() {
+        assert!(!is_live(false, None), "no race data");
+        assert!(!is_live(false, Some(0.0)), "before the gates open");
+        assert!(is_live(false, Some(0.1)));
+        assert!(!is_live(true, Some(95.0)), "after the race ended");
     }
 
     #[test]

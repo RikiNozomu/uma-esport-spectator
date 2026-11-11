@@ -47,7 +47,8 @@ Goal: study the race flow, later build esport-spectator features on top.
 - `src/race.rs`: leaderboard race snapshot on the main thread (positions, gate, chara/card/mob
   id, trainer name), max 18 runners. Return types are checked before calling getters.
   `race_classes.txt` (written by `clock`) also lists `HorseData`/`RaceHorseManagerBase` for it.
-- `src/leaderboard/`: overlay. `layout.rs` (placement, JRA bracket colours) and `anim.rs`
+- `src/leaderboard/`: overlay, shown only while `clock::race_live()` (race time > 0 until
+  the race-end hooks; published by clock's per-frame tick even with the clock off). `layout.rs` (placement, JRA bracket colours) and `anim.rs`
   (per-runner card animation) are pure and unit-tested; `mod.rs` paints with egui;
   `render_d3d11.rs` (Windows) draws from Hachimi's present callback with egui-directx11.
   Never keep a back-buffer reference across frames; save/restore D3D11 state.

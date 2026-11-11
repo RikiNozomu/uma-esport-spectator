@@ -25,7 +25,7 @@ use std::time::{Duration, Instant};
 use egui::{Align2, Color32, CornerRadius, FontFamily, FontId, Pos2, Rect, Shape, Stroke, Vec2};
 
 use crate::race::{self, Runner};
-use crate::{settings, tracer};
+use crate::{clock, settings, tracer};
 use anim::Animator;
 use layout::{CardGeometry, Placement};
 
@@ -120,6 +120,12 @@ pub fn runners_to_draw() -> Option<Vec<Runner>> {
     if is_preview() {
         return Some(preview::runners());
     }
+    // Same moments as the race clock: from the start (gates open) until the
+    // winning circle; not in the paddock, gate-in or fanfare. If the clock's
+    // hooks are unavailable, fall back to "whenever there is race data".
+    if clock::race_live_available() && !clock::race_live() {
+        return None;
+    }
     race::request_snapshot(SNAPSHOT_INTERVAL);
     race::latest(SNAPSHOT_MAX_AGE).map(|s| s.runners)
 }
@@ -132,9 +138,12 @@ pub fn status() -> String {
     if !is_enabled() {
         return "off".to_owned();
     }
+    if clock::race_live_available() && !clock::race_live() {
+        return "waiting for a race to start".to_owned();
+    }
     match race::latest(SNAPSHOT_MAX_AGE) {
         Some(s) => format!("live: {} runners", s.runners.len()),
-        None => "waiting for a race".to_owned(),
+        None => "race started, reading runners...".to_owned(),
     }
 }
 
