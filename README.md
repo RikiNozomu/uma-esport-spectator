@@ -1,27 +1,96 @@
 # uma-esport-spectator
 
-Hachimi Edge plugin (Windows, API v3) for studying how the game runs a race.
+Hachimi Edge plugin for Umamusume: Pretty Derby (Steam, Windows) for watching and studying races.
 
-**Stage 1: function tracer.** Hooks every method of the classes listed in
-`trace_targets.txt` and logs which ones run while recording is on.
+- **Leaderboard overlay**: a live, right-aligned row of runner cards during races (character
+  icon, gate number in its bracket colour, owner's trainer name), with animated position swaps.
+- **Disable skill cut-ins**: skip the unique-skill cut-in scenes.
+- **Function tracer**: log which game methods run, to study the race flow.
 
-## Build
+## Requirements
 
-Needs Rust with the MSVC toolchain (`rustup default stable-x86_64-pc-windows-msvc`).
+- The game on Steam with [Hachimi Edge](https://hachimi.noccu.art)
+  installed and working (its `hachimi` folder exists in the game folder).
+- To build: [Rust](https://rustup.rs) with the MSVC toolchain
+  (`rustup default stable-x86_64-pc-windows-msvc`) and the
+  [Visual Studio Build Tools](https://visualstudio.microsoft.com/visual-cpp-build-tools/)
+  ("Desktop development with C++").
+- For character icons: Python 3.10+.
 
-```powershell
-cargo build --release
-# -> target\release\uma_esport_spectator.dll
-```
+Paths below assume the default Steam location; the game folder is
+`C:\Program Files (x86)\Steam\steamapps\common\UmamusumePrettyDerby` (called `<game>`).
 
 ## Install
 
-1. Copy `uma_esport_spectator.dll` into the game's `hachimi` folder.
-2. Add it to `hachimi\config.json`:
-   ```json
-   "load_libraries": ["hachimi\\uma_esport_spectator.dll"]
-   ```
-3. Restart the game. `hachimi.log` should show `[uma-spectator] plugin loaded`.
+**1. Build the plugin.**
+
+```powershell
+git clone https://github.com/RikiNozomu/uma-esport-spectator
+cd uma-esport-spectator
+cargo build --release
+```
+
+This produces `target\release\uma_esport_spectator.dll`.
+
+**2. Copy the DLL into Hachimi's folder.**
+
+```powershell
+copy target\release\uma_esport_spectator.dll "<game>\hachimi\"
+```
+
+**3. Tell Hachimi to load it.** In `<game>\hachimi\config.json`, add the DLL to
+`load_libraries` (keep any plugins already listed there):
+
+```json
+"load_libraries": [
+    "hachimi\\uma_esport_spectator.dll"
+]
+```
+
+**4. Extract the character icons** from your own game files (once, and again after a game
+update adds characters or outfits). The game can stay open; its files are only read.
+
+```powershell
+pip install apsw-sqlite3mc UnityPy "attrs>=23"
+python tools\extract_icons.py --out "<game>\hachimi\uma-esport-spectator\chara"
+```
+
+It should end with something like `223 icons written`. Already-extracted icons are skipped;
+add `--force` to rewrite them. If your game data is not in
+`%USERPROFILE%\AppData\LocalLow\Cygames\Umamusume`, pass `--data <folder>` (the folder that
+contains `meta` and `dat`).
+
+**5. Start the game and check.** `<game>\hachimi.log` should contain
+`[uma-spectator] plugin loaded`. Open the Hachimi menu and find the plugin's section (headings "Race", "Leaderboard overlay", "Function trace").
+Turn on **Preview with sample data** to see the leaderboard right away, adjust **Size** and
+**Height**, then turn the preview off and turn on **Show during races**.
+
+## Updating
+
+```powershell
+git pull
+cargo build --release
+```
+
+Close the game (the DLL is locked while it runs), copy the new DLL over the old one in
+`<game>\hachimi\`, and start the game again. Settings and icons are kept. After a game update,
+run step 4 again to pick up new characters and outfits.
+
+## Uninstalling
+
+Remove the `hachimi\\uma_esport_spectator.dll` entry from `load_libraries`, then delete
+`<game>\hachimi\uma_esport_spectator.dll` and the `<game>\hachimi\uma-esport-spectator\` folder.
+
+## Troubleshooting
+
+| Symptom | What to check |
+|---|---|
+| No plugin section in the Hachimi menu | `hachimi.log`: "Failed to load library" means the path in `load_libraries` is wrong or the DLL is missing. |
+| Leaderboard never appears in races | Is **Show during races** on? The status line under it says `waiting for a race` / `live: N runners`. `hachimi.log` lines starting with `leaderboard` say what is missing. |
+| Overlay switched itself off | It stops after an error instead of risking a crash; `hachimi.log` has the reason. Turning it on again retries. |
+| Silhouettes instead of characters | Run step 4 again. If icons exist but still do not show, send `hachimi.log` and `hachimi\uma-esport-spectator\race_classes.txt` (the game may name the character/card id differently). |
+| `extract_icons.py`: "Cannot open the meta database" | A game update changed the asset index key; check UmamusumeExplorer for a newer key. |
+| Names show as boxes | The Windows Japanese/Thai fonts are missing; install the Japanese supplemental fonts in Windows Settings > Optional features. |
 
 ## Use
 
@@ -39,20 +108,10 @@ Open the Hachimi menu. The plugin's section has:
 - **Size** / **Height**: card size, and where the bottom of the row sits (fraction of the
   screen height). Saved in `settings.txt`.
 
-Character images come from your own game install. Extract them once (and again after a
-game update adds characters or outfits):
-
-```powershell
-pip install apsw-sqlite3mc UnityPy "attrs>=23"
-python tools\extract_icons.py --out "C:\Program Files (x86)\Steam\steamapps\common\UmamusumePrettyDerby\hachimi\uma-esport-spectator\chara"
-```
-
-It reads the game's asset index and bundles from `%USERPROFILE%\AppData\LocalLow\Cygames\Umamusume`
-(`--data` for another location; formats as documented by
-[UmamusumeExplorer](https://github.com/MarshmallowAndroid/UmamusumeExplorer)) and writes
-`<card id>.png` (the card's race outfit) and `<chara id>.png` (default icon). The overlay uses
-the card icon first, then the character icon, then a plain silhouette. Your own PNGs with
-the same names work too. Images are read once per game session. Up to 18 runners are shown.
+Character images come from your game files (Install, step 4): each card shows the icon of
+the runner's outfit (`chara\<card id>.png`), else the character's default icon
+(`chara\<chara id>.png`), else a plain silhouette. Your own PNGs with the same names work too.
+Images are read once per game session. Up to 18 runners are shown.
 
 Japanese/Thai/Korean/Chinese names use Windows' own fonts (Yu Gothic, Leelawadee UI, ...).
 
