@@ -118,8 +118,10 @@ Open the Hachimi menu. The plugin's section has:
 
 - **Show during races**: a live leaderboard along the bottom of the screen, right-aligned,
   leader on the right. It appears together with the race clock, when the race actually
-  starts (gates open), stays through the finish with the final order, and disappears at the
-  winning circle; it does not show in the paddock, gate-in or fanfare. This works with the
+  starts (gates open), and disappears with it when the result board comes up; it does not
+  show in the paddock, gate-in or fanfare. A runner who crosses the line is locked to their
+  official finishing position (the order on the result board) and marked with a check;
+  runners still racing are ranked by their live position behind them. This works with the
   **Race clock** toggle on or off. Each card shows the character image, the gate number in its
   bracket (waku) colour, and the owner's trainer name. The top 3 cards are bigger.
   Cards follow their runner: when positions swap, the cards slide past each other and
@@ -152,7 +154,7 @@ Japanese/Thai/Korean/Chinese names use Windows' own fonts (Yu Gothic, Leelawadee
   own UI (works in exclusive fullscreen and OBS game capture). White running seconds;
   when the leader passes 1000 m (half the course for races up to 1400 m) the split
   shows in yellow with tenths and the distance for 5 s; when the leader finishes,
-  the winner's official time (`1.56.1`) is held until the winning-circle scene.
+  the winner's official time (`1.56.1`) is held until the result board comes up.
   See `src/clock.rs` (timing) and `src/label.rs` (the Unity label).
 - **Hide race UI while running**: from the fanfare (gate-in) through the scoreboard until the winning circle, the race
   HUD is hidden: skip / menu / fast-forward / photo buttons, the rank / character icon,

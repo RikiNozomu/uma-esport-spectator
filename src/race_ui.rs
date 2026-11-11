@@ -333,6 +333,8 @@ extern "C" fn result_enter(this: Obj, mi: *const c_void) {
     call_void(&ORIG_RESULT_ENTER, this, mi);
     TAPS_ALLOWED.store(true, Ordering::Relaxed);
     tick(this);
+    // The race clock and the leaderboard end with the race, before the board.
+    crate::clock::result_board_shown();
 }
 
 #[cfg(test)]

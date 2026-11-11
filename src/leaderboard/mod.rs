@@ -433,6 +433,7 @@ mod preview {
                 trainer: format!("Trainer{:02}", i + 1),
                 mob_id: 0,
                 finished: false,
+                finish_order: -1,
             })
             .collect()
     }

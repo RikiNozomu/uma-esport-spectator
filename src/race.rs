@@ -24,8 +24,11 @@ const DUMP_FILE: &str = "race_classes.txt";
 pub struct Runner {
     /// Gate (post) number, 1-based.
     pub gate: i32,
-    /// Current position, 0 = leader. -1 if unknown.
+    /// Display position, 0 = leader (see `rank`). -1 if unknown.
     pub order: i32,
+    /// Official finishing position from the race result (any base, lower is
+    /// better), -1 if unknown. Only used once the runner has finished.
+    pub finish_order: i32,
     /// Character id (e.g. 1001), 0 if unknown.
     pub chara_id: i32,
     /// Card (outfit) id (e.g. 100101), 0 if unknown.
@@ -148,6 +151,12 @@ struct Meta {
     gate_no: Getter,
     trainer_name: Option<Getter>,
     data_chara_name: Option<Getter>,
+    /// HorseRaceInfoReplay (the runtime class of replayed runners) and its
+    /// official finish order.
+    replay_class: *mut c_void,
+    finish_order: Option<Getter>,
+    /// HorseRaceInfo._distance (Single): metres run.
+    distance_field: Option<*mut c_void>,
     chara_id: Option<IntSource>,
     card_id: Option<IntSource>,
     mob_id: Option<IntSource>,
@@ -191,6 +200,20 @@ unsafe fn required(klass: *mut c_void, class_name: &str, name: &str, ret: Option
     })
 }
 
+/// A `System.Single` field by name.
+unsafe fn float_field(klass: *mut c_void, name: &str) -> Option<*mut c_void> {
+    let api = api::get();
+    let f = (api.il2cpp_get_field_from_name)(klass, cstr(name).as_ptr());
+    if f.is_null() {
+        return None;
+    }
+    let field_type: Option<unsafe extern "C" fn(*mut c_void) -> *const c_void> = api.il2cpp_fn("il2cpp_field_get_type");
+    match field_type {
+        Some(ft) if sig::type_name_of(ft(f)) == "System.Single" => Some(f),
+        _ => None,
+    }
+}
+
 /// First of `getters` (then `fields`) that exists and is an Int32.
 unsafe fn int_source(klass: *mut c_void, getters: &[&str], fields: &[&str]) -> Option<IntSource> {
     for name in getters {
@@ -225,6 +248,7 @@ unsafe fn resolve() -> Result<Meta, String> {
     let race_manager = class(image, "RaceManager")?;
     let horse_manager = class(image, "RaceHorseManagerBase")?;
     let info = class(image, "HorseRaceInfo")?;
+    let replay = class(image, "HorseRaceInfoReplay").unwrap_or(std::ptr::null_mut());
     let data = class(image, "HorseData")?;
 
     let horse_manager_field = (api.il2cpp_get_field_from_name)(race_manager, cstr("_horseManager").as_ptr());
@@ -245,6 +269,9 @@ unsafe fn resolve() -> Result<Meta, String> {
         gate_no: required(data, "HorseData", "get_GateNo", Some("System.Int32"))?,
         trainer_name: getter(data, "get_TrainerName", Some("System.String")),
         data_chara_name: getter(data, "get_charaName", Some("System.String")),
+        replay_class: replay,
+        finish_order: if replay.is_null() { None } else { getter(replay, "get_FinishOrder", Some("System.Int32")) },
+        distance_field: float_field(info, "_distance"),
         chara_id: int_source(data, &["get_charaId", "get_CharaId", "get_CharaID"], &["charaId", "_charaId", "CharaId"]),
         card_id: int_source(data, &["get_cardId", "get_CardId", "get_CardID"], &["cardId", "_cardId", "CardId"]),
         mob_id: int_source(data, &["get_mobId", "get_MobId", "get_MobID"], &["mobId", "_mobId", "MobId"]),
@@ -257,6 +284,7 @@ unsafe fn resolve() -> Result<Meta, String> {
         ("card id", meta.card_id.is_some()),
         ("mob id", meta.mob_id.is_some() || meta.info_mob_id.is_some()),
         ("finished flag", meta.is_finished.is_some()),
+        ("finish order", meta.finish_order.is_some()),
     ]
     .into_iter()
     .filter(|(_, found)| !found)
@@ -318,6 +346,7 @@ unsafe fn take_snapshot() -> Option<Vec<Runner>> {
         return None;
     }
 
+    let course = crate::clock::course_distance();
     let mut runners = Vec::with_capacity(MAX_RUNNERS);
     for &info in infos.iter().take(MAX_RUNNERS) {
         if info.is_null() {
@@ -346,14 +375,54 @@ unsafe fn take_snapshot() -> Option<Vec<Runner>> {
             },
             name,
             trainer: meta.trainer_name.map(|g| api.string(g.ptr(data))).unwrap_or_default(),
-            finished: meta.is_finished.map(|g| g.bool(info)).unwrap_or(false),
+            finished: meta.is_finished.map(|g| g.bool(info)).unwrap_or(false)
+                || crossed_line(meta.distance_field.map(|f| read_f32(info, f)), course),
+            finish_order: match meta.finish_order {
+                Some(g) if crate::il2cpp::is_instance(info, meta.replay_class) => g.i32(info),
+                _ => -1,
+            },
         });
     }
     if runners.is_empty() {
         return None;
     }
     normalize_gates(&mut runners);
+    rank(&mut runners);
     Some(runners)
+}
+
+unsafe fn read_f32(obj: *mut c_void, field: *mut c_void) -> f32 {
+    let mut v = 0f32;
+    (api::get().il2cpp_get_field_value)(obj, field, &mut v as *mut f32 as *mut c_void);
+    v
+}
+
+/// The runner has reached the finish line (distance run >= course length).
+pub fn crossed_line(distance: Option<f32>, course: Option<f32>) -> bool {
+    match (distance, course) {
+        (Some(d), Some(c)) => d.is_finite() && c > 0.0 && d >= c,
+        _ => false,
+    }
+}
+
+/// Sets each runner's display `order` (0 = leader):
+/// 1. runners who have crossed the line, by their official finishing position
+///    (fixed from then on: they keep running and passing each other after
+///    the line, which the live track position would show);
+/// 2. runners still racing, by live track position.
+pub fn rank(runners: &mut [Runner]) {
+    let key = |r: &Runner| {
+        let official = r.finished && r.finish_order >= 0;
+        // (group, position within group, gate as a stable tie-break)
+        let group = if official { 0 } else if r.finished { 1 } else { 2 };
+        let pos = if official { r.finish_order } else if r.order >= 0 { r.order } else { i32::MAX };
+        (group, pos, r.gate)
+    };
+    let mut idx: Vec<usize> = (0..runners.len()).collect();
+    idx.sort_by_key(|&i| key(&runners[i]));
+    for (place, i) in idx.into_iter().enumerate() {
+        runners[i].order = place as i32;
+    }
 }
 
 /// Makes gate numbers 1-based if the game reports them 0-based.
@@ -378,6 +447,61 @@ mod tests {
         let mut rs = vec![Runner { gate: 1, ..Default::default() }, Runner { gate: 2, ..Default::default() }];
         normalize_gates(&mut rs);
         assert_eq!((rs[0].gate, rs[1].gate), (1, 2));
+    }
+
+    fn r(gate: i32, live: i32, finished: bool, finish: i32) -> Runner {
+        Runner { gate, order: live, finished, finish_order: finish, ..Default::default() }
+    }
+
+    fn by_place(rs: &[Runner]) -> Vec<i32> {
+        let mut v: Vec<&Runner> = rs.iter().collect();
+        v.sort_by_key(|r| r.order);
+        v.iter().map(|r| r.gate).collect()
+    }
+
+    #[test]
+    fn finished_runners_keep_their_official_place() {
+        // The screenshot case: after the line gate 1 ran past 17 and 18 on the
+        // track, but the result is 17, 18, 3, 1, 2.
+        let mut rs = vec![
+            r(1, 0, true, 3), r(17, 1, true, 0), r(18, 2, true, 1), r(3, 3, true, 2), r(2, 4, true, 4),
+        ];
+        rank(&mut rs);
+        assert_eq!(by_place(&rs), vec![17, 18, 3, 1, 2]);
+    }
+
+    #[test]
+    fn finishers_ahead_of_runners_still_racing() {
+        // 5 and 6 have finished (6 won); 7 is still racing but "ahead" on the
+        // track number line, 8 is behind it.
+        let mut rs = vec![r(5, 2, true, 1), r(6, 0, true, 0), r(7, 1, false, 5), r(8, 3, false, 2)];
+        rank(&mut rs);
+        assert_eq!(by_place(&rs), vec![6, 5, 7, 8]);
+    }
+
+    #[test]
+    fn before_anyone_finishes_live_order_is_used() {
+        // The precomputed finish order must not leak before the line.
+        let mut rs = vec![r(1, 1, false, 0), r(2, 0, false, 1), r(3, 2, false, 2)];
+        rank(&mut rs);
+        assert_eq!(by_place(&rs), vec![2, 1, 3]);
+    }
+
+    #[test]
+    fn unknown_finish_order_falls_back_to_live_order() {
+        let mut rs = vec![r(1, 1, true, -1), r(2, 0, true, -1), r(3, 0, false, -1)];
+        rank(&mut rs);
+        assert_eq!(by_place(&rs), vec![2, 1, 3]);
+    }
+
+    #[test]
+    fn line_crossing() {
+        assert!(crossed_line(Some(2400.0), Some(2400.0)));
+        assert!(crossed_line(Some(2431.5), Some(2400.0)));
+        assert!(!crossed_line(Some(2399.9), Some(2400.0)));
+        assert!(!crossed_line(Some(2500.0), None), "course unknown");
+        assert!(!crossed_line(None, Some(2400.0)));
+        assert!(!crossed_line(Some(f32::NAN), Some(2400.0)));
     }
 
     #[test]

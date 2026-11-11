@@ -31,6 +31,7 @@ fn field(order: &[usize]) -> Vec<Runner> {
             trainer: NAMES[i].1.to_owned(),
             mob_id: 0,
             finished: false,
+            finish_order: -1,
         })
         .collect()
 }

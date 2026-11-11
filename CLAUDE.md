@@ -26,7 +26,8 @@ Goal: study the race flow, later build esport-spectator features on top.
   `describe_class()` feeds `race_classes.txt` (real field/method names: check it before guessing).
 - `src/label.rs`: in-game Unity text (clones `UI/Parts/Notification` like Hachimi's captions,
   reparents its `Gallop.TextCommon` to the notice canvas). Main thread only.
-- `src/clock.rs`: race clock. Owns the per-frame hook on `RaceManagerReplayBase::AlterUpdate`
+- `src/clock.rs`: race clock (ends at the result board: `StateOverRunResult_Enter` calls
+  `clock::result_board_shown`). Owns the per-frame hook on `RaceManagerReplayBase::AlterUpdate`
   (`this` = race manager) and the race-end hooks; these also drive `race_ui`. Pure
   timing/format logic is unit-tested in the same file.
 - `src/race_ui.rs`: "hide race UI". Layer 1: hooks `void X(bool)` switches (`TARGETS`:
@@ -48,7 +49,10 @@ Goal: study the race flow, later build esport-spectator features on top.
   id, trainer name), max 18 runners. Return types are checked before calling getters.
   `race_classes.txt` (written by `clock`) also lists `HorseData`/`RaceHorseManagerBase` for it.
 - `src/leaderboard/`: overlay, shown only while `clock::race_live()` (race time > 0 until
-  the race-end hooks; published by clock's per-frame tick even with the clock off). `layout.rs` (placement, JRA bracket colours) and `anim.rs`
+  the result board / race-end hooks; published by clock's per-frame tick even with the clock
+  off). Order comes from `race::rank`: finished runners (IsFinished or distance >= course) by
+  official `HorseRaceInfoReplay.get_FinishOrder`, frozen; the rest by live `CurOrder`.
+  The finish order is precomputed for the whole race: never use it before the line. `layout.rs` (placement, JRA bracket colours) and `anim.rs`
   (per-runner card animation) are pure and unit-tested; `mod.rs` paints with egui;
   `render_d3d11.rs` (Windows) draws from Hachimi's present callback with egui-directx11.
   Never keep a back-buffer reference across frames; save/restore D3D11 state.

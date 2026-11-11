@@ -366,6 +366,15 @@ pub fn status() -> String {
     STATUS.get().cloned().unwrap_or_else(|| "waiting for the game".to_owned())
 }
 
+/// Course length in metres of the current race, as f32 bits (0 = unknown).
+static COURSE_BITS: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+/// Course length of the race in progress, if known. Any thread.
+pub fn course_distance() -> Option<f32> {
+    let c = f32::from_bits(COURSE_BITS.load(Ordering::Relaxed));
+    (c > 0.0).then_some(c)
+}
+
 /// Last frame at which the race was live (see `race_live`).
 static LAST_LIVE: Mutex<Option<Instant>> = Mutex::new(None);
 /// How long `race_live` stays true without a frame confirming it (covers
@@ -410,6 +419,9 @@ unsafe fn tick(rm: Obj) {
     let sample = if st.ended { None } else { r.data.sample(rm) };
     // Published even with the clock turned off: the leaderboard follows it.
     set_live(is_live(st.ended, sample.as_ref().map(|s| s.t)));
+    if let Some(s) = &sample {
+        COURSE_BITS.store(s.course.to_bits(), Ordering::Relaxed);
+    }
     let Some(s) = sample.filter(|_| settings::is_on(CLOCK)) else {
         st.hide(&r.unity);
         return;
@@ -443,6 +455,12 @@ unsafe fn race_ended() {
     st.ended = true;
     set_live(false);
     st.hide(&r.unity);
+}
+
+/// The result board (summary) comes up: the clock and the leaderboard stop
+/// here, not at the winning circle. Called by race_ui's StateOverRunResult_Enter hook.
+pub fn result_board_shown() {
+    unsafe { race_ended() }
 }
 
 // ---------------------------------------------------------------- hooks
