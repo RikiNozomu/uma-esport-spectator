@@ -42,6 +42,12 @@ pub const SHOW_AFTER: f32 = 10.0;
 /// Entrance: fade in while rising this far (points) into place.
 const ENTRANCE_TIME: f64 = 0.6;
 const ENTRANCE_RISE: f32 = 36.0;
+/// Exit: after the board should hide, it keeps the last order on screen
+/// and fades out while sinking this far (points).
+const EXIT_TIME: f64 = 0.45;
+const EXIT_DROP: f32 = 24.0;
+/// How fast the LEADER tag glides to a new leader.
+const TAG_RATE: f32 = 14.0;
 /// A gap this long between frames means the board was hidden: the next frame
 /// starts a new entrance.
 const REAPPEAR_GAP: f64 = 0.3;
@@ -139,9 +145,44 @@ pub fn runners_to_draw() -> Option<Vec<Runner>> {
     race::latest(SNAPSHOT_MAX_AGE).map(|s| s.runners)
 }
 
+/// What to draw this frame.
+pub struct Frame {
+    pub runners: Vec<Runner>,
+    /// 0 = shown, rising to 1 while fading out after the board should hide.
+    pub leaving: f32,
+}
+
+/// Last runners shown, and when the board started leaving (None = shown).
+static LAST: Mutex<Option<(Vec<Runner>, Option<Instant>)>> = Mutex::new(None);
+
+/// Called every frame from the render thread. Like `runners_to_draw`, but
+/// keeps the last order on screen for `EXIT_TIME` while it fades out.
+pub fn next_frame() -> Option<Frame> {
+    let now = runners_to_draw();
+    let mut last = LAST.lock().unwrap_or_else(|e| e.into_inner());
+    if let Some(runners) = now {
+        *last = Some((runners.clone(), None));
+        return Some(Frame { runners, leaving: 0.0 });
+    }
+    let (runners, since) = last.as_mut()?;
+    let since = *since.get_or_insert_with(Instant::now);
+    let leaving = (since.elapsed().as_secs_f64() / EXIT_TIME) as f32;
+    if leaving >= 1.0 {
+        *last = None;
+        return None;
+    }
+    Some(Frame { runners: runners.clone(), leaving })
+}
+
 /// `race_time` = seconds into the race while it is live, None otherwise.
 pub fn should_show(race_time: Option<f32>) -> bool {
     race_time.is_some_and(|t| t >= SHOW_AFTER)
+}
+
+/// Exit progress 0..1 (ease-in) from `leaving` 0..1.
+pub fn exit(leaving: f32) -> f32 {
+    let p = leaving.clamp(0.0, 1.0);
+    p * p
 }
 
 /// Entrance progress 0..1 (ease-out) at `elapsed` seconds after appearing.
@@ -192,6 +233,8 @@ pub struct Board {
     /// Time of the previous frame and of the current entrance (frame clock).
     last_frame: Option<f64>,
     shown_at: f64,
+    /// The LEADER tag: (centre x, bottom y, card width), glides between leaders.
+    tag: Option<(f32, f32, f32)>,
 }
 
 impl Board {
@@ -207,17 +250,26 @@ impl Board {
             has_bold,
             last_frame: None,
             shown_at: 0.0,
+            tag: None,
         }
     }
 
     /// Runs one egui frame for a `width_px` x `height_px` back buffer.
-    pub fn frame(&mut self, width_px: u32, height_px: u32, runners: &[Runner], view: View) -> egui::FullOutput {
+    pub fn frame(&mut self, width_px: u32, height_px: u32, frame: &Frame, view: View) -> egui::FullOutput {
         let time = self.started.elapsed().as_secs_f64();
-        self.frame_at(width_px, height_px, runners, view, time)
+        self.frame_at(width_px, height_px, &frame.runners, frame.leaving, view, time)
     }
 
     /// `frame` with an explicit clock (seconds), for tests and previews.
-    pub fn frame_at(&mut self, width_px: u32, height_px: u32, runners: &[Runner], view: View, time: f64) -> egui::FullOutput {
+    pub fn frame_at(
+        &mut self,
+        width_px: u32,
+        height_px: u32,
+        runners: &[Runner],
+        leaving: f32,
+        view: View,
+        time: f64,
+    ) -> egui::FullOutput {
         let ppp = (height_px as f32 / 1080.0 * view.scale).max(0.1);
         let screen = Vec2::new(width_px as f32 / ppp, height_px as f32 / ppp);
 
@@ -230,24 +282,33 @@ impl Board {
 
         // Hidden for a while (race end, menu toggle): start a new entrance,
         // with cards placed directly in their slots.
-        if self.last_frame.is_none_or(|t| time - t > REAPPEAR_GAP || time < t) {
-            self.shown_at = time;
-            self.anim = Animator::default();
-        }
+        let dt = match self.last_frame {
+            Some(t) if time >= t && time - t <= REAPPEAR_GAP => (time - t) as f32,
+            _ => {
+                self.shown_at = time;
+                self.anim = Animator::default();
+                self.tag = None;
+                0.0
+            }
+        };
         self.last_frame = Some(time);
 
         let ctx = self.ctx.clone();
-        ctx.run(raw, |ctx| self.paint(ctx, screen, runners, view, time))
+        ctx.run(raw, |ctx| self.paint(ctx, screen, runners, leaving, view, time, dt))
     }
 
-    fn paint(&mut self, ctx: &egui::Context, screen: Vec2, runners: &[Runner], view: View, time: f64) {
+    #[allow(clippy::too_many_arguments)]
+    fn paint(&mut self, ctx: &egui::Context, screen: Vec2, runners: &[Runner], leaving: f32, view: View, time: f64, dt: f32) {
         let placements = layout::place(runners, screen, view.y);
         let mut cards = self.anim.update(&placements, time);
-        // Whole-board entrance: fade in and rise into place.
+        // Whole board: fade in and rise on entrance, fade out and sink on exit.
         let e = entrance(time - self.shown_at);
+        let x = exit(leaving);
+        let board_alpha = e * (1.0 - x);
+        let board_shift = (1.0 - e) * ENTRANCE_RISE + x * EXIT_DROP;
         for c in &mut cards {
-            c.opacity *= e;
-            c.bottom += (1.0 - e) * ENTRANCE_RISE;
+            c.opacity *= board_alpha;
+            c.bottom += board_shift;
         }
         let painter = ctx.layer_painter(egui::LayerId::new(egui::Order::Background, egui::Id::new("leaderboard")));
         let field = runners.len();
@@ -260,6 +321,18 @@ impl Board {
             let Some(runner) = runners.iter().find(|r| r.gate == card.gate) else { continue };
             let texture = self.texture(ctx, runner);
             draw_card(&painter, card, runner, field, texture, self.has_bold);
+        }
+
+        // One LEADER tag that glides to whoever leads (the per-card tags used
+        // to cross-fade, showing two at once during a lead change).
+        let leader = placements.iter().find(|p| p.order == 0).and_then(|p| cards.iter().find(|c| c.gate == p.gate));
+        if let Some(c) = leader {
+            let target = (c.center_x, c.bottom, c.width);
+            let tag = self.tag.get_or_insert(target);
+            tag.0 = anim::approach(tag.0, target.0, TAG_RATE, dt);
+            tag.1 = anim::approach(tag.1, target.1, TAG_RATE, dt);
+            tag.2 = anim::approach(tag.2, target.2, TAG_RATE, dt);
+            draw_leader_tag(&painter, *tag, board_alpha, self.has_bold);
         }
     }
 
@@ -381,23 +454,35 @@ fn draw_card(
         painter.text(band.center(), Align2::CENTER_CENTER, text, font, fade(Color32::from_gray(235)));
     }
 
-    // "LEADER" tag above the first card.
-    if card.leader_tag > 0.01 {
-        let font = FontId::new(g.width * 0.15, bold);
-        let galley = painter.layout_no_wrap("LEADER".to_owned(), font, fade(Color32::from_gray(235)));
-        let size = galley.size() + Vec2::new(g.width * 0.18, g.width * 0.06);
-        let tag = Rect::from_center_size(Pos2::new(rect.center().x, rect.min.y - g.width * 0.06 - size.y / 2.0), size);
-        let t = card.leader_tag * alpha;
-        painter.rect(tag, CornerRadius::same((size.y / 2.0) as u8), Color32::from_rgba_unmultiplied(35, 35, 38, 225).gamma_multiply(t), Stroke::new(1.0_f32, Color32::from_white_alpha(40).gamma_multiply(t)), egui::StrokeKind::Inside);
-        painter.galley(tag.center() - galley.size() / 2.0, galley, Color32::from_gray(235).gamma_multiply(t));
-    }
-
     // Finished runners get a check mark in the top-right corner.
     if runner.finished {
         let c = Pos2::new(rect.max.x - g.triangle * 0.3, rect.min.y + g.triangle * 0.3);
         painter.circle_filled(c, g.triangle * 0.2, fade(Color32::from_rgb(40, 170, 90)));
         painter.text(c, Align2::CENTER_CENTER, "✓", FontId::proportional(g.triangle * 0.28), fade(Color32::WHITE));
     }
+}
+
+/// The LEADER tag above a card at (centre x, bottom y, width).
+fn draw_leader_tag(painter: &egui::Painter, (x, bottom, width): (f32, f32, f32), alpha: f32, has_bold: bool) {
+    if alpha <= 0.01 {
+        return;
+    }
+    let g = CardGeometry::for_width(width);
+    let family = if has_bold { FontFamily::Name(fonts::BOLD.into()) } else { FontFamily::Proportional };
+    // Text colour is baked into the galley, so the fade goes in here too.
+    let text = Color32::from_gray(235).gamma_multiply(alpha);
+    let galley = painter.layout_no_wrap("LEADER".to_owned(), FontId::new(width * 0.15, family), text);
+    let size = galley.size() + Vec2::new(width * 0.18, width * 0.06);
+    let card_top = bottom - g.height;
+    let tag = Rect::from_center_size(Pos2::new(x, card_top - width * 0.06 - size.y / 2.0), size);
+    painter.rect(
+        tag,
+        CornerRadius::same((size.y / 2.0) as u8),
+        Color32::from_rgba_unmultiplied(35, 35, 38, 225).gamma_multiply(alpha),
+        Stroke::new(1.0_f32, Color32::from_white_alpha(40).gamma_multiply(alpha)),
+        egui::StrokeKind::Inside,
+    );
+    painter.galley(tag.center() - galley.size() / 2.0, galley, text);
 }
 
 /// Generic head-and-shoulders shape for runners without an image.
@@ -534,12 +619,49 @@ mod tests {
         let mut board = Board::new(PathBuf::from("/nonexistent"));
         let runners = preview::runners();
         let v = View { scale: 1.0, y: DEFAULT_Y };
-        board.frame_at(1920, 1080, &runners, v, 1.0);
+        board.frame_at(1920, 1080, &runners, 0.0, v, 1.0);
         assert_eq!(board.shown_at, 1.0);
-        board.frame_at(1920, 1080, &runners, v, 1.016);
+        board.frame_at(1920, 1080, &runners, 0.0, v, 1.016);
         assert_eq!(board.shown_at, 1.0, "continuous frames: same entrance");
-        board.frame_at(1920, 1080, &runners, v, 5.0);
+        board.frame_at(1920, 1080, &runners, 0.0, v, 5.0);
         assert_eq!(board.shown_at, 5.0, "after a gap: new entrance");
+    }
+
+    #[test]
+    fn exit_eases_out() {
+        assert_eq!(exit(0.0), 0.0);
+        assert!(exit(0.3) < 0.3, "slow start");
+        assert_eq!(exit(1.0), 1.0);
+    }
+
+    #[test]
+    fn leader_tag_glides_to_the_new_leader() {
+        let mut board = Board::new(PathBuf::from("/nonexistent"));
+        let v = View { scale: 1.0, y: DEFAULT_Y };
+        let field = |leader: i32| -> Vec<Runner> {
+            (1..=3)
+                .map(|g| Runner { gate: g, order: if g == leader { 0 } else if g < leader { g } else { g - 1 }, ..Default::default() })
+                .collect()
+        };
+        let mut t = 0.0;
+        for _ in 0..60 {
+            board.frame_at(1920, 1080, &field(1), 0.0, v, t);
+            t += 1.0 / 60.0;
+        }
+        let before = board.tag.unwrap().0;
+        // Gate 2 takes the lead: one frame later the tag is on its way, not jumped.
+        board.frame_at(1920, 1080, &field(2), 0.0, v, t);
+        let after = board.tag.unwrap().0;
+        // New leader's card is one slot (~100 pt) to the left of the old one.
+        let moved = before - after;
+        assert!(moved > 0.0 && moved < 40.0, "glides, does not jump: moved {moved}");
+        for _ in 0..90 {
+            t += 1.0 / 60.0;
+            board.frame_at(1920, 1080, &field(2), 0.0, v, t);
+        }
+        let settled = board.tag.unwrap().0;
+        // The leader slot is the rightmost; the tag ends over it again.
+        assert!((settled - before).abs() < 1.0, "back over the leader slot: {settled} vs {before}");
     }
 
     #[test]
@@ -555,7 +677,7 @@ mod tests {
     fn frame_draws_every_card() {
         let mut board = Board::new(PathBuf::from("/nonexistent"));
         let runners = preview::runners();
-        let out = board.frame(1920, 1080, &runners, View { scale: 1.0, y: DEFAULT_Y });
+        let out = board.frame_at(1920, 1080, &runners, 0.0, View { scale: 1.0, y: DEFAULT_Y }, 0.0);
         assert!(out.shapes.len() >= runners.len() * 4, "got {} shapes", out.shapes.len());
         // Fonts are uploaded on the first frame.
         assert!(!out.textures_delta.set.is_empty());

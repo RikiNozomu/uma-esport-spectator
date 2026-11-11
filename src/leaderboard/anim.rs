@@ -30,8 +30,6 @@ pub struct CardState {
     pub bottom: f32,
     pub width: f32,
     pub opacity: f32,
-    /// 0..1, the "LEADER" tag fades in/out with the lead.
-    pub leader_tag: f32,
     /// Draw order: higher on top.
     pub z: f32,
 }
@@ -42,7 +40,6 @@ struct Card {
     width: f32,
     bottom: f32,
     opacity: f32,
-    leader: f32,
     order: i32,
     /// (start time, gained a place?)
     pop: Option<(f64, bool)>,
@@ -62,7 +59,7 @@ impl Animator {
     }
 }
 
-fn approach(current: f32, target: f32, rate: f32, dt: f32) -> f32 {
+pub fn approach(current: f32, target: f32, rate: f32, dt: f32) -> f32 {
     current + (target - current) * (1.0 - (-rate * dt).exp())
 }
 
@@ -85,7 +82,6 @@ impl Animator {
                     width: t.width,
                     bottom: if settled { t.bottom } else { t.bottom + t.width * 0.25 },
                     opacity: if settled { 1.0 } else { 0.0 },
-                    leader: if settled && t.order == 0 { 1.0 } else { 0.0 },
                     order: t.order,
                     pop: None,
                 });
@@ -99,7 +95,6 @@ impl Animator {
                 card.width = approach(card.width, t.width, MOVE_RATE, dt);
                 card.bottom = approach(card.bottom, t.bottom, MOVE_RATE, dt);
                 card.opacity = approach(card.opacity, 1.0, FADE_RATE, dt);
-                card.leader = approach(card.leader, if t.order == 0 { 1.0 } else { 0.0 }, FADE_RATE, dt);
 
                 let mut scale = 1.0;
                 let mut rising = false;
@@ -120,7 +115,6 @@ impl Animator {
                     bottom: card.bottom,
                     width: card.width * scale,
                     opacity: card.opacity.clamp(0.0, 1.0),
-                    leader_tag: card.leader,
                     // Rising cards pass over the others; otherwise higher places on top.
                     z: if rising { 1000.0 } else { -(t.order as f32) },
                 }
@@ -175,14 +169,13 @@ mod tests {
         }
         let g2 = end.iter().find(|c| c.gate == 2).unwrap();
         assert!((g2.center_x - 500.0).abs() < 0.5 && (g2.width - 80.0).abs() < 0.01);
-        assert!(g2.leader_tag > 0.95);
     }
 
     #[test]
     fn first_cards_start_settled_later_ones_fade_in() {
         let mut a = Animator::default();
         let s = a.update(&[t(1, 0, 500.0)], 0.0);
-        assert_eq!((s[0].opacity, s[0].bottom, s[0].leader_tag), (1.0, 100.0, 1.0));
+        assert_eq!((s[0].opacity, s[0].bottom), (1.0, 100.0));
         let s = a.update(&[t(1, 0, 500.0), t(2, 1, 400.0)], 0.016);
         let newcomer = s.iter().find(|c| c.gate == 2).unwrap();
         assert!(newcomer.opacity < 0.2 && newcomer.bottom > 100.0);

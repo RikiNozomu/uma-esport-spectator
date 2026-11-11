@@ -118,12 +118,13 @@ Open the Hachimi menu. The plugin's section has:
 
 - **Show during races**: a live leaderboard along the bottom of the screen, right-aligned,
   leader on the right. It appears 10 seconds into the race (race clock time), fading in
-  while rising into place, and disappears together with the race clock when the result
-  board comes up; it does not show in the paddock, gate-in or fanfare. A runner who crosses the line is locked to their
+  while rising into place, and fades out (sinking slightly, with the last order kept) together
+  with the race clock when the result board comes up, or when it is switched off; it does not show in the paddock, gate-in or fanfare. A runner who crosses the line is locked to their
   official finishing position (the order on the result board) and marked with a check;
   runners still racing are ranked by their live position behind them. This works with the
   **Race clock** toggle on or off. Each card shows the character image, the gate number in its
-  bracket (waku) colour, and the owner's trainer name. The top 3 cards are bigger.
+  bracket (waku) colour, and the owner's trainer name. The top 3 cards are bigger; a single LEADER tag
+  glides over to the new leader when the lead changes.
   Cards follow their runner: when positions swap, the cards slide past each other and
   resize; a runner that gains a place gets a short scale-up "pop".
 - **Preview with sample data**: shows 18 sample runners that swap places every second,

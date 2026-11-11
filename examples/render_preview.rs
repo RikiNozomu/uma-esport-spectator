@@ -43,9 +43,10 @@ fn main() {
     std::fs::create_dir_all(&out).unwrap();
 
     let before: Vec<usize> = vec![5, 15, 3, 0, 9, 12, 1, 7, 2, 14, 4, 10, 6, 13, 8, 11, 16, 17];
-    // Positions 2<->3 and 5<->6 swap at t = 1.0.
+    // At t = 1.0 the lead changes (positions 0<->1) and 5<->6 swap;
+    // from t = 2.0 the board leaves (fade out).
     let mut after = before.clone();
-    after.swap(2, 3);
+    after.swap(0, 1);
     after.swap(5, 6);
 
     let mut board = Board::new(images);
@@ -53,10 +54,11 @@ fn main() {
     let (w, h) = (1920u32, 1080u32);
     let fps = 30.0;
     let mut frame_no = 0;
-    for i in 0..=(2.2 * fps) as usize {
+    for i in 0..=(2.5 * fps) as usize {
         let t = i as f64 / fps;
         let runners = field(if t < 1.0 { &before } else { &after });
-        let output = board.frame_at(w, h, &runners, view, t);
+        let leaving = ((t - 2.0) / 0.45).clamp(0.0, 1.0) as f32;
+        let output = board.frame_at(w, h, &runners, leaving, view, t);
         let ppp = output.pixels_per_point;
         let prims = board.ctx.tessellate(output.shapes, ppp);
         let mut f = BufWriter::new(File::create(out.join(format!("frame{frame_no:03}.bin"))).unwrap());

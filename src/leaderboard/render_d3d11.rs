@@ -49,9 +49,9 @@ pub unsafe extern "C" fn on_present(swap_chain: *mut c_void, _userdata: *mut c_v
         return;
     }
     // Cheap exit when there is nothing to draw: no D3D calls at all.
-    let Some(runners) = super::runners_to_draw() else { return };
+    let Some(frame) = super::next_frame() else { return };
 
-    let result = catch_unwind(AssertUnwindSafe(|| draw(swap_chain, &runners)));
+    let result = catch_unwind(AssertUnwindSafe(|| draw(swap_chain, &frame)));
     let error = match result {
         Ok(Ok(())) => return,
         Ok(Err(e)) => e,
@@ -64,7 +64,7 @@ pub unsafe extern "C" fn on_present(swap_chain: *mut c_void, _userdata: *mut c_v
     api.notify("Leaderboard overlay stopped after an error, see hachimi.log");
 }
 
-unsafe fn draw(swap_chain: *mut c_void, runners: &[crate::race::Runner]) -> Result<(), String> {
+unsafe fn draw(swap_chain: *mut c_void, frame: &super::Frame) -> Result<(), String> {
     // Borrowed: the swap chain belongs to the game, so no Release on drop.
     let swap_chain = ManuallyDrop::new(IDXGISwapChain::from_raw(swap_chain));
     let device: ID3D11Device = swap_chain.GetDevice().map_err(|e| format!("GetDevice: {e}"))?;
@@ -86,7 +86,7 @@ unsafe fn draw(swap_chain: *mut c_void, runners: &[crate::race::Runner]) -> Resu
     }
     let state = guard.as_mut().expect("just set");
 
-    let output = state.board.frame(desc.Width, desc.Height, runners, super::view());
+    let output = state.board.frame(desc.Width, desc.Height, frame, super::view());
     let (renderer_output, _, _) = egui_directx11::split_output(output);
 
     let mut saved = SavedState::save(&context);
