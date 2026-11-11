@@ -37,6 +37,15 @@ pub const DEFAULT_SCALE: f32 = 1.0;
 /// Bottom edge of the row, as a fraction of the screen height.
 pub const DEFAULT_Y: f32 = 0.96;
 
+/// The leaderboard appears this many seconds into the race.
+pub const SHOW_AFTER: f32 = 10.0;
+/// Entrance: fade in while rising this far (points) into place.
+const ENTRANCE_TIME: f64 = 0.6;
+const ENTRANCE_RISE: f32 = 36.0;
+/// A gap this long between frames means the board was hidden: the next frame
+/// starts a new entrance.
+const REAPPEAR_GAP: f64 = 0.3;
+
 /// How often the game is asked for fresh positions.
 const SNAPSHOT_INTERVAL: Duration = Duration::from_millis(100);
 /// A snapshot older than this means the race is over (or not loaded).
@@ -120,14 +129,25 @@ pub fn runners_to_draw() -> Option<Vec<Runner>> {
     if is_preview() {
         return Some(preview::runners());
     }
-    // Same moments as the race clock: from the start (gates open) until the
-    // winning circle; not in the paddock, gate-in or fanfare. If the clock's
-    // hooks are unavailable, fall back to "whenever there is race data".
-    if clock::race_live_available() && !clock::race_live() {
+    // From SHOW_AFTER seconds into the race until the result board; not in
+    // the paddock, gate-in or fanfare. If the clock's hooks are unavailable,
+    // fall back to "whenever there is race data".
+    if clock::race_live_available() && !should_show(clock::race_time()) {
         return None;
     }
     race::request_snapshot(SNAPSHOT_INTERVAL);
     race::latest(SNAPSHOT_MAX_AGE).map(|s| s.runners)
+}
+
+/// `race_time` = seconds into the race while it is live, None otherwise.
+pub fn should_show(race_time: Option<f32>) -> bool {
+    race_time.is_some_and(|t| t >= SHOW_AFTER)
+}
+
+/// Entrance progress 0..1 (ease-out) at `elapsed` seconds after appearing.
+pub fn entrance(elapsed: f64) -> f32 {
+    let p = (elapsed / ENTRANCE_TIME).clamp(0.0, 1.0) as f32;
+    1.0 - (1.0 - p).powi(3)
 }
 
 /// Text shown under the checkboxes in the plugin menu.
@@ -140,6 +160,9 @@ pub fn status() -> String {
     }
     if clock::race_live_available() && !clock::race_live() {
         return "waiting for a race to start".to_owned();
+    }
+    if clock::race_live_available() && !should_show(clock::race_time()) {
+        return format!("race started, shows at {SHOW_AFTER:.0} s");
     }
     match race::latest(SNAPSHOT_MAX_AGE) {
         Some(s) => format!("live: {} runners", s.runners.len()),
@@ -166,6 +189,9 @@ pub struct Board {
     image_dir: PathBuf,
     started: Instant,
     has_bold: bool,
+    /// Time of the previous frame and of the current entrance (frame clock).
+    last_frame: Option<f64>,
+    shown_at: f64,
 }
 
 impl Board {
@@ -179,6 +205,8 @@ impl Board {
             image_dir,
             started: Instant::now(),
             has_bold,
+            last_frame: None,
+            shown_at: 0.0,
         }
     }
 
@@ -200,13 +228,27 @@ impl Board {
         };
         raw.viewports.entry(egui::ViewportId::ROOT).or_default().native_pixels_per_point = Some(ppp);
 
+        // Hidden for a while (race end, menu toggle): start a new entrance,
+        // with cards placed directly in their slots.
+        if self.last_frame.is_none_or(|t| time - t > REAPPEAR_GAP || time < t) {
+            self.shown_at = time;
+            self.anim = Animator::default();
+        }
+        self.last_frame = Some(time);
+
         let ctx = self.ctx.clone();
         ctx.run(raw, |ctx| self.paint(ctx, screen, runners, view, time))
     }
 
     fn paint(&mut self, ctx: &egui::Context, screen: Vec2, runners: &[Runner], view: View, time: f64) {
         let placements = layout::place(runners, screen, view.y);
-        let cards = self.anim.update(&placements, time);
+        let mut cards = self.anim.update(&placements, time);
+        // Whole-board entrance: fade in and rise into place.
+        let e = entrance(time - self.shown_at);
+        for c in &mut cards {
+            c.opacity *= e;
+            c.bottom += (1.0 - e) * ENTRANCE_RISE;
+        }
         let painter = ctx.layer_painter(egui::LayerId::new(egui::Order::Background, egui::Id::new("leaderboard")));
         let field = runners.len();
 
@@ -467,6 +509,37 @@ mod tests {
         board.images.insert((0, 1001, 0), Image::Missing(Instant::now() - IMAGE_RETRY));
         assert!(board.texture(&ctx, &r).is_some());
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn shows_from_ten_seconds_into_the_race() {
+        assert!(!should_show(None), "no live race");
+        assert!(!should_show(Some(0.5)));
+        assert!(!should_show(Some(9.9)));
+        assert!(should_show(Some(10.0)));
+        assert!(should_show(Some(95.0)));
+    }
+
+    #[test]
+    fn entrance_eases_in() {
+        assert_eq!(entrance(0.0), 0.0);
+        assert!(entrance(0.1) > 0.3 && entrance(0.1) < 0.7, "fast start: {}", entrance(0.1));
+        assert!(entrance(0.3) < 1.0);
+        assert_eq!(entrance(ENTRANCE_TIME), 1.0);
+        assert_eq!(entrance(5.0), 1.0);
+    }
+
+    #[test]
+    fn reappearing_restarts_the_entrance() {
+        let mut board = Board::new(PathBuf::from("/nonexistent"));
+        let runners = preview::runners();
+        let v = View { scale: 1.0, y: DEFAULT_Y };
+        board.frame_at(1920, 1080, &runners, v, 1.0);
+        assert_eq!(board.shown_at, 1.0);
+        board.frame_at(1920, 1080, &runners, v, 1.016);
+        assert_eq!(board.shown_at, 1.0, "continuous frames: same entrance");
+        board.frame_at(1920, 1080, &runners, v, 5.0);
+        assert_eq!(board.shown_at, 5.0, "after a gap: new entrance");
     }
 
     #[test]

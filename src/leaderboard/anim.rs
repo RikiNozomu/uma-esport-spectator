@@ -54,6 +54,14 @@ pub struct Animator {
     last_time: Option<f64>,
 }
 
+impl Animator {
+    /// Cards of the first update start settled in their slots (the board's
+    /// own entrance animates them); later newcomers fade in on their own.
+    fn first_update(&self) -> bool {
+        self.last_time.is_none()
+    }
+}
+
 fn approach(current: f32, target: f32, rate: f32, dt: f32) -> f32 {
     current + (target - current) * (1.0 - (-rate * dt).exp())
 }
@@ -61,6 +69,7 @@ fn approach(current: f32, target: f32, rate: f32, dt: f32) -> f32 {
 impl Animator {
     pub fn update<T: Into<Target> + Copy>(&mut self, targets: &[T], time: f64) -> Vec<CardState> {
         let dt = self.last_time.map(|t| (time - t).clamp(0.0, 0.1) as f32).unwrap_or(0.0);
+        let settled = self.first_update();
         self.last_time = Some(time);
 
         let targets: Vec<Target> = targets.iter().map(|&t| t.into()).collect();
@@ -74,9 +83,9 @@ impl Animator {
                     // New cards fade in at their slot, from slightly lower.
                     x: t.center_x,
                     width: t.width,
-                    bottom: t.bottom + t.width * 0.25,
-                    opacity: 0.0,
-                    leader: 0.0,
+                    bottom: if settled { t.bottom } else { t.bottom + t.width * 0.25 },
+                    opacity: if settled { 1.0 } else { 0.0 },
+                    leader: if settled && t.order == 0 { 1.0 } else { 0.0 },
                     order: t.order,
                     pop: None,
                 });
@@ -167,6 +176,16 @@ mod tests {
         let g2 = end.iter().find(|c| c.gate == 2).unwrap();
         assert!((g2.center_x - 500.0).abs() < 0.5 && (g2.width - 80.0).abs() < 0.01);
         assert!(g2.leader_tag > 0.95);
+    }
+
+    #[test]
+    fn first_cards_start_settled_later_ones_fade_in() {
+        let mut a = Animator::default();
+        let s = a.update(&[t(1, 0, 500.0)], 0.0);
+        assert_eq!((s[0].opacity, s[0].bottom, s[0].leader_tag), (1.0, 100.0, 1.0));
+        let s = a.update(&[t(1, 0, 500.0), t(2, 1, 400.0)], 0.016);
+        let newcomer = s.iter().find(|c| c.gate == 2).unwrap();
+        assert!(newcomer.opacity < 0.2 && newcomer.bottom > 100.0);
     }
 
     #[test]

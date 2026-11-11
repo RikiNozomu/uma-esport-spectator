@@ -366,6 +366,14 @@ pub fn status() -> String {
     STATUS.get().cloned().unwrap_or_else(|| "waiting for the game".to_owned())
 }
 
+/// Race time in seconds of the current race (raw clock), as f32 bits.
+static TIME_BITS: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+/// Seconds since the start of the race in progress, while `race_live`. Any thread.
+pub fn race_time() -> Option<f32> {
+    race_live().then(|| f32::from_bits(TIME_BITS.load(Ordering::Relaxed)))
+}
+
 /// Course length in metres of the current race, as f32 bits (0 = unknown).
 static COURSE_BITS: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
 
@@ -421,6 +429,7 @@ unsafe fn tick(rm: Obj) {
     set_live(is_live(st.ended, sample.as_ref().map(|s| s.t)));
     if let Some(s) = &sample {
         COURSE_BITS.store(s.course.to_bits(), Ordering::Relaxed);
+        TIME_BITS.store(s.t.to_bits(), Ordering::Relaxed);
     }
     let Some(s) = sample.filter(|_| settings::is_on(CLOCK)) else {
         st.hide(&r.unity);

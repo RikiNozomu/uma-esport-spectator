@@ -104,7 +104,7 @@ Remove the `hachimi\\uma_esport_spectator.dll` entry from `load_libraries`, then
 | Symptom | What to check |
 |---|---|
 | No plugin section in the Hachimi menu | `hachimi.log`: "Failed to load library" means the path in `load_libraries` is wrong or the DLL is missing. |
-| Leaderboard never appears in races | Is **Show during races** on? It appears only once the race starts (with the clock). The status line under it says `waiting for a race to start` / `live: N runners`. `hachimi.log` lines starting with `leaderboard` say what is missing. |
+| Leaderboard never appears in races | Is **Show during races** on? It appears 10 s into the race. The status line under it says `waiting for a race to start` / `race started, shows at 10 s` / `live: N runners`. `hachimi.log` lines starting with `leaderboard` say what is missing. |
 | Overlay switched itself off | It stops after an error instead of risking a crash; `hachimi.log` has the reason. Turning it on again retries. |
 | Silhouettes instead of characters | Run `tools\update_icons.bat` (or step 4). If icons exist but still do not show, send `hachimi.log` and `hachimi\uma-esport-spectator\race_classes.txt` (the game may name the character/card id differently). |
 | `extract_icons.py`: "Cannot open the meta database" | A game update changed the asset index key; check UmamusumeExplorer for a newer key. |
@@ -117,9 +117,9 @@ Open the Hachimi menu. The plugin's section has:
 **Leaderboard overlay**
 
 - **Show during races**: a live leaderboard along the bottom of the screen, right-aligned,
-  leader on the right. It appears together with the race clock, when the race actually
-  starts (gates open), and disappears with it when the result board comes up; it does not
-  show in the paddock, gate-in or fanfare. A runner who crosses the line is locked to their
+  leader on the right. It appears 10 seconds into the race (race clock time), fading in
+  while rising into place, and disappears together with the race clock when the result
+  board comes up; it does not show in the paddock, gate-in or fanfare. A runner who crosses the line is locked to their
   official finishing position (the order on the result board) and marked with a check;
   runners still racing are ranked by their live position behind them. This works with the
   **Race clock** toggle on or off. Each card shows the character image, the gate number in its

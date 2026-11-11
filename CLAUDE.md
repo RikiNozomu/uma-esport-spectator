@@ -48,8 +48,9 @@ Goal: study the race flow, later build esport-spectator features on top.
 - `src/race.rs`: leaderboard race snapshot on the main thread (positions, gate, chara/card/mob
   id, trainer name), max 18 runners. Return types are checked before calling getters.
   `race_classes.txt` (written by `clock`) also lists `HorseData`/`RaceHorseManagerBase` for it.
-- `src/leaderboard/`: overlay, shown only while `clock::race_live()` (race time > 0 until
-  the result board / race-end hooks; published by clock's per-frame tick even with the clock
+- `src/leaderboard/`: overlay, shown from `SHOW_AFTER` (10 s of `clock::race_time()`) until
+  `clock::race_live()` ends (result board / race-end hooks); each appearance plays an
+  entrance (fade + rise, `ENTRANCE_*`; a frame gap > `REAPPEAR_GAP` restarts it). `race_live` is published by clock's per-frame tick even with the clock
   off). Order comes from `race::rank`: finished runners (IsFinished or distance >= course) by
   official `HorseRaceInfoReplay.get_FinishOrder`, frozen; the rest by live `CurOrder`.
   The finish order is precomputed for the whole race: never use it before the line. `layout.rs` (placement, JRA bracket colours) and `anim.rs`
