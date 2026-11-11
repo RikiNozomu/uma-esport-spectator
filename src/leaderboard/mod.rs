@@ -32,10 +32,14 @@ use layout::{CardGeometry, Placement};
 pub const KEY_ENABLED: &str = "leaderboard";
 pub const KEY_SCALE: &str = "leaderboard_scale";
 pub const KEY_Y: &str = "leaderboard_y";
+pub const KEY_HIDE_BEFORE_GOAL: &str = "leaderboard_hide_before_goal";
 
 pub const DEFAULT_SCALE: f32 = 1.0;
 /// Bottom edge of the row, as a fraction of the screen height.
 pub const DEFAULT_Y: f32 = 0.96;
+/// Hide when the leader has this many metres left (0 = never).
+pub const DEFAULT_HIDE_BEFORE_GOAL: f32 = 200.0;
+pub const MAX_HIDE_BEFORE_GOAL: f32 = 1000.0;
 
 /// The leaderboard appears this many seconds into the race.
 pub const SHOW_AFTER: f32 = 10.0;
@@ -70,6 +74,8 @@ pub const IMAGE_DIR: &str = "chara";
 static ENABLED: AtomicBool = AtomicBool::new(false);
 static PREVIEW: AtomicBool = AtomicBool::new(false);
 static VIEW: Mutex<View> = Mutex::new(View { scale: DEFAULT_SCALE, y: DEFAULT_Y });
+/// Metres before the goal at which the board hides, as f32 bits.
+static HIDE_BEFORE_GOAL: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub struct View {
@@ -83,6 +89,18 @@ pub fn load_settings() {
         scale: settings::get_f32(KEY_SCALE, DEFAULT_SCALE).clamp(0.4, 2.5),
         y: settings::get_f32(KEY_Y, DEFAULT_Y).clamp(0.1, 1.0),
     };
+    let hide = settings::get_f32(KEY_HIDE_BEFORE_GOAL, DEFAULT_HIDE_BEFORE_GOAL).clamp(0.0, MAX_HIDE_BEFORE_GOAL);
+    HIDE_BEFORE_GOAL.store(hide.to_bits(), Ordering::Relaxed);
+}
+
+pub fn hide_before_goal() -> f32 {
+    f32::from_bits(HIDE_BEFORE_GOAL.load(Ordering::Relaxed))
+}
+
+pub fn set_hide_before_goal(m: f32) {
+    let m = m.clamp(0.0, MAX_HIDE_BEFORE_GOAL).round();
+    HIDE_BEFORE_GOAL.store(m.to_bits(), Ordering::Relaxed);
+    settings::set_value(KEY_HIDE_BEFORE_GOAL, m);
 }
 
 pub fn is_enabled() -> bool {
@@ -138,7 +156,9 @@ pub fn runners_to_draw() -> Option<Vec<Runner>> {
     // From SHOW_AFTER seconds into the race until the result board; not in
     // the paddock, gate-in or fanfare. If the clock's hooks are unavailable,
     // fall back to "whenever there is race data".
-    if clock::race_live_available() && !should_show(clock::race_time()) {
+    if clock::race_live_available()
+        && !should_show(clock::race_time(), clock::remaining_distance(), hide_before_goal())
+    {
         return None;
     }
     race::request_snapshot(SNAPSHOT_INTERVAL);
@@ -174,9 +194,13 @@ pub fn next_frame() -> Option<Frame> {
     Some(Frame { runners: runners.clone(), leaving })
 }
 
-/// `race_time` = seconds into the race while it is live, None otherwise.
-pub fn should_show(race_time: Option<f32>) -> bool {
-    race_time.is_some_and(|t| t >= SHOW_AFTER)
+/// `race_time` = seconds into the race while it is live, None otherwise;
+/// `remaining` = metres the leader has left; `hide_before_goal` = hide when
+/// that is within this many metres (0 = never). Once hidden near the goal it
+/// stays hidden: the leader's remaining distance only goes down.
+pub fn should_show(race_time: Option<f32>, remaining: Option<f32>, hide_before_goal: f32) -> bool {
+    let near_goal = hide_before_goal > 0.0 && remaining.is_some_and(|left| left <= hide_before_goal);
+    race_time.is_some_and(|t| t >= SHOW_AFTER) && !near_goal
 }
 
 /// Exit progress 0..1 (ease-in) from `leaving` 0..1.
@@ -202,8 +226,14 @@ pub fn status() -> String {
     if clock::race_live_available() && !clock::race_live() {
         return "waiting for a race to start".to_owned();
     }
-    if clock::race_live_available() && !should_show(clock::race_time()) {
-        return format!("race started, shows at {SHOW_AFTER:.0} s");
+    if clock::race_live_available() {
+        let hide = hide_before_goal();
+        if clock::remaining_distance().is_some_and(|left| hide > 0.0 && left <= hide) {
+            return format!("hidden for the last {hide:.0} m");
+        }
+        if !should_show(clock::race_time(), clock::remaining_distance(), hide) {
+            return format!("race started, shows at {SHOW_AFTER:.0} s");
+        }
     }
     match race::latest(SNAPSHOT_MAX_AGE) {
         Some(s) => format!("live: {} runners", s.runners.len()),
@@ -598,11 +628,21 @@ mod tests {
 
     #[test]
     fn shows_from_ten_seconds_into_the_race() {
-        assert!(!should_show(None), "no live race");
-        assert!(!should_show(Some(0.5)));
-        assert!(!should_show(Some(9.9)));
-        assert!(should_show(Some(10.0)));
-        assert!(should_show(Some(95.0)));
+        let far = Some(1500.0);
+        assert!(!should_show(None, None, 200.0), "no live race");
+        assert!(!should_show(Some(0.5), far, 200.0));
+        assert!(!should_show(Some(9.9), far, 200.0));
+        assert!(should_show(Some(10.0), far, 200.0));
+        assert!(should_show(Some(95.0), far, 200.0));
+    }
+
+    #[test]
+    fn hides_before_the_goal() {
+        assert!(should_show(Some(80.0), Some(200.1), 200.0));
+        assert!(!should_show(Some(80.0), Some(200.0), 200.0), "at 200 m left");
+        assert!(!should_show(Some(90.0), Some(-15.0), 200.0), "stays hidden after the finish");
+        assert!(should_show(Some(90.0), Some(50.0), 0.0), "0 = never hide");
+        assert!(should_show(Some(80.0), None, 200.0), "distance unknown: keep showing");
     }
 
     #[test]

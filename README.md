@@ -130,7 +130,11 @@ Open the Hachimi menu. The plugin's section has:
 - **Preview with sample data**: shows 18 sample runners that swap places every second,
   to check size and position outside a race.
 - **Size** / **Height**: card size, and where the bottom of the row sits (fraction of the
-  screen height). Saved in `settings.txt`.
+  screen height).
+- **Hide before goal**: the leaderboard fades out when the leader has this many metres
+  left (default 200 m) and stays hidden through the finish. 0 = never hide.
+
+All saved in `settings.txt`.
 
 Character images come from your game files (Install, step 4): each card shows the icon of
 the runner's outfit (`chara\<card id>.png`), else the character's default icon
@@ -177,7 +181,7 @@ Files, all under `hachimi\uma-esport-spectator\`:
 |---|---|
 | `trace_targets.txt` | Which classes/methods to hook. Created with defaults on first run. Edit, then restart the game. |
 | `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
-| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`). |
+| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
 | `chara\*.png` | Character images for the leaderboard (see above). |
 | `race_classes.txt` | Fields (with offsets) and methods (with signatures) of the main race classes, written at load. Useful when the game changes and a value goes missing. |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |

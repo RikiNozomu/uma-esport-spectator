@@ -374,6 +374,15 @@ pub fn race_time() -> Option<f32> {
     race_live().then(|| f32::from_bits(TIME_BITS.load(Ordering::Relaxed)))
 }
 
+/// Leader's distance run (metres) in the current race, as f32 bits.
+static LEAD_BITS: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+
+/// Metres the leader still has to run, while `race_live` (<= 0 once they finished).
+pub fn remaining_distance() -> Option<f32> {
+    let course = course_distance()?;
+    race_live().then(|| course - f32::from_bits(LEAD_BITS.load(Ordering::Relaxed)))
+}
+
 /// Course length in metres of the current race, as f32 bits (0 = unknown).
 static COURSE_BITS: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
 
@@ -430,6 +439,7 @@ unsafe fn tick(rm: Obj) {
     if let Some(s) = &sample {
         COURSE_BITS.store(s.course.to_bits(), Ordering::Relaxed);
         TIME_BITS.store(s.t.to_bits(), Ordering::Relaxed);
+        LEAD_BITS.store(s.leader.to_bits(), Ordering::Relaxed);
     }
     let Some(s) = sample.filter(|_| settings::is_on(CLOCK)) else {
         st.hide(&r.unity);

@@ -49,7 +49,8 @@ Goal: study the race flow, later build esport-spectator features on top.
   id, trainer name), max 18 runners. Return types are checked before calling getters.
   `race_classes.txt` (written by `clock`) also lists `HorseData`/`RaceHorseManagerBase` for it.
 - `src/leaderboard/`: overlay, shown from `SHOW_AFTER` (10 s of `clock::race_time()`) until
-  `clock::race_live()` ends (result board / race-end hooks); each appearance plays an
+  the leader is within `leaderboard_hide_before_goal` m of the goal (`clock::remaining_distance()`,
+  default 200, 0 = never) or `clock::race_live()` ends (result board / race-end hooks); each appearance plays an
   entrance (fade + rise, `ENTRANCE_*`; a frame gap > `REAPPEAR_GAP` restarts it); `next_frame`
   keeps the last order for `EXIT_TIME` after it should hide (fade + sink). One LEADER tag owned
   by `Board` glides to the leader (`TAG_RATE`); cards have no tag of their own. `race_live` is published by clock's per-frame tick even with the clock

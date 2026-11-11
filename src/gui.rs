@@ -41,6 +41,11 @@ pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
         if changed {
             leaderboard::set_view(view);
         }
+        let mut hide = leaderboard::hide_before_goal();
+        let label = text("Hide before goal (m, 0 = never)");
+        if (api.gui_ui_slider_f32)(ui, label.as_ptr(), &mut hide, 0.0, leaderboard::MAX_HIDE_BEFORE_GOAL) {
+            leaderboard::set_hide_before_goal(hide);
+        }
         (api.gui_ui_small)(ui, text(&leaderboard::status()).as_ptr());
         (api.gui_ui_separator)(ui);
 
