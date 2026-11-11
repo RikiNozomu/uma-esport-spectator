@@ -12,6 +12,7 @@ mod gui;
 pub mod leaderboard;
 pub mod player;
 mod player_gui;
+mod keybinds;
 mod seek;
 pub mod race;
 mod il2cpp;
@@ -56,6 +57,7 @@ pub extern "C" fn hachimi_init_v3(get_api: Option<GetApiFn>, version: i32) -> i3
         (api.gui_register_menu_section)(Some(gui::menu_section), std::ptr::null_mut());
         leaderboard::load_settings();
         player::load_settings();
+        keybinds::load_settings();
         #[cfg(windows)]
         if !(api.hachimi_register_present_callback)(Some(leaderboard::render_d3d11::on_present), std::ptr::null_mut()) {
             api.warn("present callback unavailable: leaderboard overlay disabled");

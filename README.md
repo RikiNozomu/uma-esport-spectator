@@ -151,8 +151,19 @@ Japanese/Thai/Korean/Chinese names use Windows' own fonts (Yu Gothic, Leelawadee
 - **Open race player**: a window with the race time, a seek bar, `-5 s`, rewind (`<<`,
   press again for 2x / 4x / stop), play / pause, `>> faster`, `+5 s`, and one button per
   speed (0.1x, 0.25x, 0.5x, 1x, 2x, 4x, 8x).
-- **Keyboard shortcuts** (on by default, only while the game window has focus):
-  Space play / pause, Left / Right back / forward 5 s, Down / Up slower / faster, R rewind.
+- **Keybinds** (on by default, only while the game window has focus), all changeable in the
+  player window: click an action, then press the new key (Esc cancels, Backspace / Delete
+  clears it; a key used by another action moves over). Defaults:
+
+  | Action | Key |
+  |---|---|
+  | Play / pause | Space |
+  | Back / forward 5 s | Left / Right |
+  | Slower / faster | Down / Up |
+  | Rewind (again: 2x, 4x, stop) | R |
+  | Open / close the player window | P (works outside races too) |
+
+  Nothing fires while Ctrl or Alt is held. The checkbox in the menu turns all keybinds off.
 - Works from the start of the race until the result board; every race starts at 1x.
 - Seeking follows Hachimi's own playback slider (horses, cameras and commentary are brought
   to the new time) and waits while a skill cut-in plays: turning on **Disable skill
@@ -198,7 +209,8 @@ Files, all under `hachimi\uma-esport-spectator\`:
 |---|---|
 | `trace_targets.txt` | Which classes/methods to hook. Created with defaults on first run. Edit, then restart the game. |
 | `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
-| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
+| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`),
+and the race player (`player_shortcuts`, `player_key_*` = Windows virtual-key codes). |
 | `chara\*.png` | Character images for the leaderboard (see above). |
 | `race_classes.txt` | Fields (with offsets) and methods (with signatures) of the main race classes, written at load. Useful when the game changes and a value goes missing. |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |

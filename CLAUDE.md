@@ -51,7 +51,10 @@ Goal: study the race flow, later build esport-spectator features on top.
   pause = factor 0 keeps AlterUpdate running). Seek/rewind via `seek::seek`. Live race only;
   new race / race end reset to 1x (race_ended makes no game calls; the next tick resets).
   Pure command logic (`Control`) is unit-tested. `player_gui.rs`: menu section + window.
-  Shortcuts polled with GetAsyncKeyState from the present callback, only when the game has focus.
+  Keybinds: `src/keybinds.rs` (`BINDINGS`, `player_key_*` settings = VK codes, 0 = unbound),
+  polled with GetAsyncKeyState from the present callback, only when the game has focus;
+  rebinding = `start_capture`, armed once all keys are up. The window-toggle key uses
+  `player_gui::toggle_window` (open state = drawn within 300 ms; Hachimi's X doesn't tell us).
 - `src/seek.rs`: port of Hachimi's `RaceManagerReplayBase::seek_sync` (event cursor,
   ForceSetRaceTime, UpdateHorses/Datas/Models, camera events, jikkyo, last-spurt flag,
   minimap), each step optional; whole seek under `microseh` SEH like Hachimi. Not while

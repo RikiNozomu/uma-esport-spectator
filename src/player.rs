@@ -378,43 +378,6 @@ pub fn set_shortcuts(on: bool) {
     crate::settings::set_value(KEY_SHORTCUTS, on);
 }
 
-/// Shortcuts, polled every frame from the present callback (Windows):
-/// Space play/pause, Left/Right -/+5 s, Down/Up slower/faster, R rewind.
-/// Only while the game window has focus and a race is live.
-#[cfg(windows)]
-pub fn poll_keys() {
-    use crate::sys;
-    const KEYS: [(i32, Command); 6] = [
-        (0x20, Command::TogglePause), // Space
-        (0x25, Command::SeekBy(-STEP)), // Left
-        (0x27, Command::SeekBy(STEP)), // Right
-        (0x28, Command::Slower),       // Down
-        (0x26, Command::Faster),       // Up
-        (0x52, Command::Rewind),       // R
-    ];
-    static DOWN: AtomicU32 = AtomicU32::new(0);
-    if !shortcuts_enabled() || !is_active() || !sys::game_has_focus() {
-        DOWN.store(0, Ordering::Relaxed);
-        return;
-    }
-    // No shortcuts while Ctrl / Alt are held (other apps' shortcuts).
-    if sys::key_down(0x11) || sys::key_down(0x12) {
-        return;
-    }
-    let mut now = 0u32;
-    for (i, (vk, _)) in KEYS.iter().enumerate() {
-        if sys::key_down(*vk) {
-            now |= 1 << i;
-        }
-    }
-    let before = DOWN.swap(now, Ordering::Relaxed);
-    for (i, (_, cmd)) in KEYS.iter().enumerate() {
-        if now & !before & (1 << i) != 0 {
-            send(*cmd);
-        }
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;

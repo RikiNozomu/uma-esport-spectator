@@ -80,6 +80,7 @@ api_struct! {
     gui_show_window: unsafe extern "C" fn(
         id: i32, title: *const c_char, contents: Option<UiCallback>, bottom: Option<UiCallback>, userdata: *mut c_void,
     ) -> bool,
+    gui_close_window: unsafe extern "C" fn(id: i32),
     gui_ui_button: unsafe extern "C" fn(ui: *mut c_void, text: *const c_char) -> bool,
     gui_ui_horizontal: unsafe extern "C" fn(ui: *mut c_void, cb: Option<UiCallback>, userdata: *mut c_void) -> bool,
     gui_ui_slider_f32: unsafe extern "C" fn(
