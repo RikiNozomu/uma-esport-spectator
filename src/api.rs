@@ -7,9 +7,11 @@ use std::sync::OnceLock;
 pub type GetApiFn = extern "C" fn(name: *const c_char) -> *mut c_void;
 pub type UiCallback = extern "C" fn(ui: *mut c_void, userdata: *mut c_void);
 pub type GameInitializedCallback = unsafe extern "C" fn(userdata: *mut c_void);
+pub type PresentCallback = unsafe extern "C" fn(swap_chain: *mut c_void, userdata: *mut c_void);
 
 macro_rules! api_struct {
     ($( $name:ident : $ty:ty ),* $(,)?) => {
+        #[allow(dead_code)] // some entries are Windows-only
         pub struct Api { $( pub $name: $ty, )* }
 
         impl Api {
@@ -33,6 +35,9 @@ api_struct! {
     hachimi_register_on_game_initialized:
         unsafe extern "C" fn(cb: Option<GameInitializedCallback>, userdata: *mut c_void) -> bool,
     hachimi_get_base_dir: unsafe extern "C" fn() -> *const c_char,
+    // Windows: called on the render thread before every IDXGISwapChain::Present.
+    hachimi_register_present_callback:
+        unsafe extern "C" fn(cb: Option<PresentCallback>, userdata: *mut c_void) -> bool,
 
     // Returns the trampoline (call it to run the original), or null on failure.
     interceptor_hook:
@@ -45,6 +50,14 @@ api_struct! {
     ) -> *mut c_void,
     il2cpp_get_method:
         unsafe extern "C" fn(klass: *mut c_void, name: *const c_char, args_count: i32) -> *const c_void,
+    il2cpp_get_field_from_name:
+        unsafe extern "C" fn(klass: *mut c_void, name: *const c_char) -> *mut c_void,
+    il2cpp_get_field_value:
+        unsafe extern "C" fn(obj: *mut c_void, field: *mut c_void, out_value: *mut c_void),
+    // Calls the class's static `get_Instance`; null if there is none.
+    il2cpp_get_singleton_like_instance: unsafe extern "C" fn(klass: *mut c_void) -> *mut c_void,
+    il2cpp_string_chars: unsafe extern "C" fn(s: *mut c_void) -> *mut u16,
+    il2cpp_string_length: unsafe extern "C" fn(s: *mut c_void) -> i32,
     il2cpp_class_get_methods:
         unsafe extern "C" fn(klass: *mut c_void, iter: *mut *mut c_void) -> *const c_void,
     il2cpp_get_main_thread: unsafe extern "C" fn() -> *mut c_void,
@@ -61,6 +74,9 @@ api_struct! {
     gui_ui_separator: unsafe extern "C" fn(ui: *mut c_void) -> bool,
     gui_ui_checkbox:
         unsafe extern "C" fn(ui: *mut c_void, text: *const c_char, value: *mut bool) -> bool,
+    gui_ui_slider_f32: unsafe extern "C" fn(
+        ui: *mut c_void, text: *const c_char, value: *mut f32, min: f32, max: f32,
+    ) -> bool,
 }
 
 static API: OnceLock<Api> = OnceLock::new();
@@ -81,6 +97,19 @@ pub fn cstr(s: &str) -> CString {
 }
 
 impl Api {
+    /// Copies a managed `System.String` into a Rust string ("" for null).
+    pub unsafe fn string(&self, s: *mut c_void) -> String {
+        if s.is_null() {
+            return String::new();
+        }
+        let len = (self.il2cpp_string_length)(s);
+        let chars = (self.il2cpp_string_chars)(s);
+        if chars.is_null() || len <= 0 {
+            return String::new();
+        }
+        String::from_utf16_lossy(std::slice::from_raw_parts(chars, len as usize))
+    }
+
     fn log_at(&self, level: i32, msg: &str) {
         let tag = cstr(crate::TAG);
         let msg = cstr(msg);

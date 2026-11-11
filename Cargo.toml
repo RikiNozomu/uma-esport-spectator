@@ -1,15 +1,30 @@
 [package]
 name = "uma_esport_spectator"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
 
-# No dependencies on purpose: builds offline and keeps the DLL small.
+[dependencies]
+# Leaderboard overlay. egui + egui-directx11 match the versions Hachimi Edge uses.
+egui = { version = "0.33.3", default-features = false, features = ["default_fonts"] }
+image = { version = "0.25.9", default-features = false, features = ["png"] }
+
+[target.'cfg(windows)'.dependencies]
+egui-directx11 = "0.12.1"
+windows = { version = "0.62.2", features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Direct3D",
+    "Win32_Graphics_Direct3D11",
+    "Win32_Graphics_Dxgi",
+    "Win32_Graphics_Dxgi_Common",
+] }
 
 [profile.release]
 opt-level = 2
 lto = true
-panic = "abort"
+# unwind (not abort) so a bug in the overlay is caught and logged instead of
+# taking the game down: every host callback is wrapped in catch_unwind.
+panic = "unwind"
 strip = true

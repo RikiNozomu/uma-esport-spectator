@@ -1,11 +1,16 @@
 //! uma-esport-spectator — Hachimi Edge plugin (API v3).
 //!
-//! Stage 1: function tracer. Hooks every method of the classes listed in
-//! `trace_targets.txt` and logs which ones run, so the race flow can be studied.
+//! - Function tracer: hooks the methods listed in `trace_targets.txt` and logs
+//!   which ones run, to study the race flow.
+//! - Live leaderboard overlay during races (`leaderboard`).
+//! - Option to skip skill cut-ins (`cutin`).
 
 mod api;
 mod cutin;
 mod gui;
+pub mod leaderboard;
+pub mod race;
+mod settings;
 mod sig;
 mod stub;
 mod sys;
@@ -41,6 +46,11 @@ pub extern "C" fn hachimi_init_v3(get_api: Option<GetApiFn>, version: i32) -> i3
             (api.hachimi_register_on_game_initialized)(Some(on_game_initialized), std::ptr::null_mut());
         }
         (api.gui_register_menu_section)(Some(gui::menu_section), std::ptr::null_mut());
+        leaderboard::load_settings();
+        #[cfg(windows)]
+        if !(api.hachimi_register_present_callback)(Some(leaderboard::render_d3d11::on_present), std::ptr::null_mut()) {
+            api.warn("present callback unavailable: leaderboard overlay disabled");
+        }
     }
     api.info("plugin loaded");
     1

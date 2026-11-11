@@ -10,16 +10,13 @@
 //! flag, so toggling is free and takes effect on the next skill.
 
 use std::ffi::c_void;
-use std::fs;
-use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, AtomicUsize, Ordering};
 use std::sync::OnceLock;
 
 use crate::api::{self, cstr};
-use crate::{sig, stub, tracer};
+use crate::{settings, sig, stub};
 
 const ASSEMBLY: &str = "umamusume.dll";
-const SETTINGS_FILE: &str = "settings.txt";
 const SETTING_KEY: &str = "disable_skill_cutins";
 
 /// User setting: true = cut-ins are blocked.
@@ -64,30 +61,12 @@ pub fn status() -> &'static str {
     STATUS.get().map(String::as_str).unwrap_or("hook: waiting for the game")
 }
 
-fn settings_path() -> PathBuf {
-    tracer::plugin_dir().join(SETTINGS_FILE)
-}
-
 fn load_setting() {
-    let Ok(text) = fs::read_to_string(settings_path()) else { return };
-    for line in text.lines() {
-        if let Some((k, v)) = line.split_once('=') {
-            if k.trim() == SETTING_KEY {
-                DISABLE.store(v.trim() == "true", Ordering::Relaxed);
-            }
-        }
-    }
+    DISABLE.store(settings::get_bool(SETTING_KEY, false), Ordering::Relaxed);
 }
 
 fn save_setting(on: bool) {
-    let path = settings_path();
-    let result = path
-        .parent()
-        .map_or(Ok(()), fs::create_dir_all)
-        .and_then(|_| fs::write(&path, format!("{SETTING_KEY} = {on}\n")));
-    if let Err(e) = result {
-        api::get().warn(&format!("cannot save {}: {e}", path.display()));
-    }
+    settings::set(SETTING_KEY, on);
 }
 
 // ---------------------------------------------------------------- install

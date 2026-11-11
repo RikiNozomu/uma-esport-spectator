@@ -1,0 +1,432 @@
+//! Reads the current race field (order, gate, character, trainer) from the game.
+//!
+//! Everything here calls into IL2CPP, so it must run on the game's main thread:
+//! `request_snapshot` schedules `take_snapshot` there, and the overlay reads
+//! the result through `latest`. Getter return types are checked against the
+//! metadata before any call, so a game update that changes a signature turns
+//! into "field missing" instead of a crash.
+
+use std::ffi::{c_char, c_void, CStr};
+use std::fmt::Write as _;
+use std::fs;
+use std::panic::{catch_unwind, AssertUnwindSafe};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Mutex, OnceLock};
+use std::time::{Duration, Instant};
+
+use crate::api::{self, cstr};
+use crate::{sig, tracer};
+
+const ASSEMBLY: &str = "umamusume.dll";
+const DUMP_FILE: &str = "race_classes.txt";
+
+/// One runner, as shown on the leaderboard.
+#[derive(Clone, Debug, Default, PartialEq)]
+pub struct Runner {
+    /// Gate (post) number, 1-based.
+    pub gate: i32,
+    /// Current position, 0 = leader. -1 if unknown.
+    pub order: i32,
+    /// Character id (e.g. 1001), 0 if unknown.
+    pub chara_id: i32,
+    /// Card (outfit) id (e.g. 100101), 0 if unknown.
+    pub card_id: i32,
+    pub name: String,
+    /// Owner's trainer name; empty for NPCs.
+    pub trainer: String,
+    pub finished: bool,
+}
+
+#[derive(Clone, Debug)]
+pub struct Snapshot {
+    pub runners: Vec<Runner>,
+    pub taken: Instant,
+}
+
+static LATEST: Mutex<Option<Snapshot>> = Mutex::new(None);
+static PENDING: AtomicBool = AtomicBool::new(false);
+static LAST_REQUEST: Mutex<Option<Instant>> = Mutex::new(None);
+
+/// The most recent snapshot, if one was taken within `max_age`.
+pub fn latest(max_age: Duration) -> Option<Snapshot> {
+    let guard = LATEST.lock().unwrap_or_else(|e| e.into_inner());
+    guard.as_ref().filter(|s| s.taken.elapsed() <= max_age).cloned()
+}
+
+/// Asks the main thread for a fresh snapshot, at most once per `interval`.
+/// Safe to call from any thread, every frame.
+pub fn request_snapshot(interval: Duration) {
+    if !tracer::GAME_READY.load(Ordering::Acquire) {
+        return;
+    }
+    {
+        let mut last = LAST_REQUEST.lock().unwrap_or_else(|e| e.into_inner());
+        if last.is_some_and(|t| t.elapsed() < interval) {
+            return;
+        }
+        if PENDING.swap(true, Ordering::AcqRel) {
+            return;
+        }
+        *last = Some(Instant::now());
+    }
+    let api = api::get();
+    unsafe { (api.il2cpp_schedule_on_thread)((api.il2cpp_get_main_thread)(), on_main_thread) };
+}
+
+unsafe extern "C" fn on_main_thread() {
+    let result = catch_unwind(AssertUnwindSafe(|| take_snapshot()));
+    PENDING.store(false, Ordering::Release);
+    let runners = match result {
+        Ok(r) => r,
+        Err(_) => {
+            api::get().error("race snapshot panicked");
+            None
+        }
+    };
+    let mut guard = LATEST.lock().unwrap_or_else(|e| e.into_inner());
+    *guard = runners.map(|runners| Snapshot { runners, taken: Instant::now() });
+}
+
+// ---------------------------------------------------------------- metadata
+
+type GetPtr = unsafe extern "C" fn(this: *mut c_void, method: *const c_void) -> *mut c_void;
+type GetI32 = unsafe extern "C" fn(this: *mut c_void, method: *const c_void) -> i32;
+type GetBool = unsafe extern "C" fn(this: *mut c_void, method: *const c_void) -> bool;
+
+/// A resolved instance getter: code address plus its MethodInfo (passed as
+/// the hidden last argument, as IL2CPP-compiled code expects).
+#[derive(Clone, Copy)]
+struct Getter {
+    addr: usize,
+    method: *const c_void,
+}
+
+impl Getter {
+    unsafe fn ptr(&self, this: *mut c_void) -> *mut c_void {
+        std::mem::transmute::<usize, GetPtr>(self.addr)(this, self.method)
+    }
+    unsafe fn i32(&self, this: *mut c_void) -> i32 {
+        std::mem::transmute::<usize, GetI32>(self.addr)(this, self.method)
+    }
+    unsafe fn bool(&self, this: *mut c_void) -> bool {
+        std::mem::transmute::<usize, GetBool>(self.addr)(this, self.method)
+    }
+}
+
+/// An `Int32` value that is either a getter or a plain field.
+#[derive(Clone, Copy)]
+enum IntSource {
+    Getter(Getter),
+    Field(*mut c_void),
+}
+
+impl IntSource {
+    unsafe fn read(&self, this: *mut c_void) -> i32 {
+        match self {
+            IntSource::Getter(g) => g.i32(this),
+            IntSource::Field(f) => {
+                let mut v = 0i32;
+                (api::get().il2cpp_get_field_value)(this, *f, &mut v as *mut i32 as *mut c_void);
+                v
+            }
+        }
+    }
+}
+
+struct Meta {
+    race_manager: *mut c_void,
+    horse_manager_field: *mut c_void,
+    get_horse_race_infos: Getter,
+    // HorseRaceInfo
+    cur_order: Getter,
+    horse_data: Getter,
+    chara_name: Option<Getter>,
+    is_finished: Option<Getter>,
+    info_chara_id: Option<IntSource>,
+    // HorseData
+    gate_no: Getter,
+    trainer_name: Option<Getter>,
+    data_chara_name: Option<Getter>,
+    chara_id: Option<IntSource>,
+    card_id: Option<IntSource>,
+}
+
+unsafe impl Send for Meta {}
+unsafe impl Sync for Meta {}
+
+static META: OnceLock<Result<Meta, String>> = OnceLock::new();
+
+unsafe fn class(image: *const c_void, name: &str) -> Result<*mut c_void, String> {
+    let k = (api::get().il2cpp_get_class)(image, cstr("Gallop").as_ptr(), cstr(name).as_ptr());
+    if k.is_null() { Err(format!("class Gallop.{name} not found")) } else { Ok(k) }
+}
+
+/// Finds a 0-argument instance getter whose return type is `ret`
+/// (`None` accepts any reference type).
+unsafe fn getter(klass: *mut c_void, name: &str, ret: Option<&str>) -> Option<Getter> {
+    let method = (api::get().il2cpp_get_method)(klass, cstr(name).as_ptr(), 0);
+    if method.is_null() {
+        return None;
+    }
+    let ty = sig::return_type(method)?;
+    let ok = match ret {
+        Some(want) => ty == want,
+        // Pointer-returning getters: anything but value types we'd misread.
+        None => !matches!(
+            ty.as_str(),
+            "System.Void" | "System.Boolean" | "System.Int32" | "System.Single" | "System.Int64" | "System.Double"
+        ),
+    };
+    // MethodInfo.methodPointer is the first field.
+    let addr = *(method as *const usize);
+    (ok && addr != 0).then_some(Getter { addr, method })
+}
+
+unsafe fn required(klass: *mut c_void, class_name: &str, name: &str, ret: Option<&str>) -> Result<Getter, String> {
+    getter(klass, name, ret).ok_or_else(|| {
+        format!("Gallop.{class_name}::{name}() not found or has an unexpected return type")
+    })
+}
+
+/// First of `getters` (then `fields`) that exists and is an Int32.
+unsafe fn int_source(klass: *mut c_void, getters: &[&str], fields: &[&str]) -> Option<IntSource> {
+    for name in getters {
+        if let Some(g) = getter(klass, name, Some("System.Int32")) {
+            return Some(IntSource::Getter(g));
+        }
+    }
+    let api = api::get();
+    let field_type: Option<unsafe extern "C" fn(*mut c_void) -> *const c_void> =
+        api.il2cpp_fn("il2cpp_field_get_type");
+    for name in fields {
+        let f = (api.il2cpp_get_field_from_name)(klass, cstr(name).as_ptr());
+        if f.is_null() {
+            continue;
+        }
+        if let Some(field_type) = field_type {
+            if sig::type_name_of(field_type(f)) != "System.Int32" {
+                continue;
+            }
+        }
+        return Some(IntSource::Field(f));
+    }
+    None
+}
+
+unsafe fn resolve() -> Result<Meta, String> {
+    let api = api::get();
+    let image = (api.il2cpp_get_assembly_image)(cstr(ASSEMBLY).as_ptr());
+    if image.is_null() {
+        return Err(format!("assembly not found: {ASSEMBLY}"));
+    }
+    let race_manager = class(image, "RaceManager")?;
+    let horse_manager = class(image, "RaceHorseManagerBase")?;
+    let info = class(image, "HorseRaceInfo")?;
+    let data = class(image, "HorseData")?;
+
+    dump_classes(&[
+        ("RaceManager", race_manager),
+        ("RaceHorseManagerBase", horse_manager),
+        ("HorseRaceInfo", info),
+        ("HorseData", data),
+    ]);
+
+    let horse_manager_field = (api.il2cpp_get_field_from_name)(race_manager, cstr("_horseManager").as_ptr());
+    if horse_manager_field.is_null() {
+        return Err("field Gallop.RaceManager::_horseManager not found".to_owned());
+    }
+
+    let meta = Meta {
+        race_manager,
+        horse_manager_field,
+        get_horse_race_infos: required(horse_manager, "RaceHorseManagerBase", "GetHorseRaceInfos", None)?,
+        cur_order: required(info, "HorseRaceInfo", "get_CurOrder", Some("System.Int32"))?,
+        horse_data: required(info, "HorseRaceInfo", "get_HorseData", None)?,
+        chara_name: getter(info, "get_CharaName", Some("System.String")),
+        is_finished: getter(info, "IsFinished", Some("System.Boolean")),
+        info_chara_id: int_source(info, &["get_CharaId", "get_charaId"], &[]),
+        gate_no: required(data, "HorseData", "get_GateNo", Some("System.Int32"))?,
+        trainer_name: getter(data, "get_TrainerName", Some("System.String")),
+        data_chara_name: getter(data, "get_charaName", Some("System.String")),
+        chara_id: int_source(data, &["get_charaId", "get_CharaId", "get_CharaID"], &["charaId", "_charaId", "CharaId"]),
+        card_id: int_source(data, &["get_cardId", "get_CardId", "get_CardID"], &["cardId", "_cardId", "CardId"]),
+    };
+
+    let missing: Vec<&str> = [
+        ("character name", meta.chara_name.is_some() || meta.data_chara_name.is_some()),
+        ("trainer name", meta.trainer_name.is_some()),
+        ("character id", meta.chara_id.is_some() || meta.info_chara_id.is_some()),
+        ("card id", meta.card_id.is_some()),
+        ("finished flag", meta.is_finished.is_some()),
+    ]
+    .into_iter()
+    .filter(|(_, found)| !found)
+    .map(|(what, _)| what)
+    .collect();
+    if !missing.is_empty() {
+        api.warn(&format!("leaderboard: not found in game data: {} (see {DUMP_FILE})", missing.join(", ")));
+    }
+    Ok(meta)
+}
+
+/// Writes every method and field of the race classes, for finding names.
+unsafe fn dump_classes(classes: &[(&str, *mut c_void)]) {
+    let api = api::get();
+    let field_name: Option<unsafe extern "C" fn(*mut c_void) -> *const c_char> = api.il2cpp_fn("il2cpp_field_get_name");
+    let field_type: Option<unsafe extern "C" fn(*mut c_void) -> *const c_void> = api.il2cpp_fn("il2cpp_field_get_type");
+    let class_fields: Option<unsafe extern "C" fn(*mut c_void, *mut *mut c_void) -> *mut c_void> =
+        api.il2cpp_fn("il2cpp_class_get_fields");
+    let method_name: Option<unsafe extern "C" fn(*const c_void) -> *const c_char> = api.il2cpp_fn("il2cpp_method_get_name");
+
+    let mut out = String::from("# Methods and fields of the race classes (written once per game start)\n");
+    for (name, klass) in classes {
+        let _ = writeln!(out, "\n## Gallop.{name}\n### fields");
+        if let (Some(class_fields), Some(field_name), Some(field_type)) = (class_fields, field_name, field_type) {
+            let mut iter: *mut c_void = std::ptr::null_mut();
+            loop {
+                let f = class_fields(*klass, &mut iter);
+                if f.is_null() {
+                    break;
+                }
+                let n = field_name(f);
+                let n = if n.is_null() { "?".into() } else { CStr::from_ptr(n).to_string_lossy() };
+                let _ = writeln!(out, "{}\t{n}", sig::type_name_of(field_type(f)));
+            }
+        }
+        let _ = writeln!(out, "### methods");
+        let mut iter: *mut c_void = std::ptr::null_mut();
+        loop {
+            let m = (api.il2cpp_class_get_methods)(*klass, &mut iter);
+            if m.is_null() {
+                break;
+            }
+            let n = match method_name {
+                Some(f) => {
+                    let p = f(m);
+                    if p.is_null() { "?".to_owned() } else { CStr::from_ptr(p).to_string_lossy().into_owned() }
+                }
+                None => "?".to_owned(),
+            };
+            let _ = writeln!(out, "{n}\t{}", sig::signature(m));
+        }
+    }
+    let dir = tracer::plugin_dir();
+    let _ = fs::create_dir_all(&dir).and_then(|_| fs::write(dir.join(DUMP_FILE), out));
+}
+
+// ---------------------------------------------------------------- snapshot
+
+/// Element pointers of a managed reference-type array.
+unsafe fn array_items(array: *mut c_void) -> &'static [*mut c_void] {
+    if array.is_null() {
+        return &[];
+    }
+    // Il2CppArray (64-bit): object header (16), bounds (8), max_length (8), then the data.
+    let len = *((array as usize + 24) as *const usize);
+    if len > 64 {
+        return &[]; // a race has at most 18 runners; anything else is not what we think
+    }
+    std::slice::from_raw_parts((array as usize + 32) as *const *mut c_void, len)
+}
+
+/// Main thread only. None when no race is loaded.
+unsafe fn take_snapshot() -> Option<Vec<Runner>> {
+    let meta = match META.get_or_init(|| resolve()) {
+        Ok(m) => m,
+        Err(e) => {
+            static REPORTED: AtomicBool = AtomicBool::new(false);
+            if !REPORTED.swap(true, Ordering::Relaxed) {
+                api::get().error(&format!("leaderboard disabled: {e}"));
+            }
+            return None;
+        }
+    };
+    let api = api::get();
+
+    let race_manager = (api.il2cpp_get_singleton_like_instance)(meta.race_manager);
+    if race_manager.is_null() {
+        return None;
+    }
+    let mut horse_manager: *mut c_void = std::ptr::null_mut();
+    (api.il2cpp_get_field_value)(
+        race_manager,
+        meta.horse_manager_field,
+        &mut horse_manager as *mut *mut c_void as *mut c_void,
+    );
+    if horse_manager.is_null() {
+        return None;
+    }
+    let infos = array_items(meta.get_horse_race_infos.ptr(horse_manager));
+    if infos.is_empty() {
+        return None;
+    }
+
+    let mut runners = Vec::with_capacity(infos.len());
+    for &info in infos {
+        if info.is_null() {
+            continue;
+        }
+        let data = meta.horse_data.ptr(info);
+        if data.is_null() {
+            continue;
+        }
+        let name = match meta.chara_name.map(|g| api.string(g.ptr(info))).filter(|s| !s.is_empty()) {
+            Some(n) => n,
+            None => meta.data_chara_name.map(|g| api.string(g.ptr(data))).unwrap_or_default(),
+        };
+        let chara_id = match meta.chara_id {
+            Some(src) => src.read(data),
+            None => meta.info_chara_id.map(|src| src.read(info)).unwrap_or(0),
+        };
+        runners.push(Runner {
+            gate: meta.gate_no.i32(data),
+            order: meta.cur_order.i32(info),
+            chara_id,
+            card_id: meta.card_id.map(|src| src.read(data)).unwrap_or(0),
+            name,
+            trainer: meta.trainer_name.map(|g| api.string(g.ptr(data))).unwrap_or_default(),
+            finished: meta.is_finished.map(|g| g.bool(info)).unwrap_or(false),
+        });
+    }
+    if runners.is_empty() {
+        return None;
+    }
+    normalize_gates(&mut runners);
+    Some(runners)
+}
+
+/// Makes gate numbers 1-based if the game reports them 0-based.
+pub fn normalize_gates(runners: &mut [Runner]) {
+    if runners.iter().any(|r| r.gate == 0) {
+        for r in runners.iter_mut() {
+            r.gate += 1;
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn zero_based_gates_are_shifted() {
+        let mut rs = vec![Runner { gate: 0, ..Default::default() }, Runner { gate: 1, ..Default::default() }];
+        normalize_gates(&mut rs);
+        assert_eq!((rs[0].gate, rs[1].gate), (1, 2));
+
+        let mut rs = vec![Runner { gate: 1, ..Default::default() }, Runner { gate: 2, ..Default::default() }];
+        normalize_gates(&mut rs);
+        assert_eq!((rs[0].gate, rs[1].gate), (1, 2));
+    }
+
+    #[test]
+    fn snapshot_age_filter() {
+        *LATEST.lock().unwrap() = Some(Snapshot { runners: vec![], taken: Instant::now() });
+        assert!(latest(Duration::from_secs(1)).is_some());
+        *LATEST.lock().unwrap() = Some(Snapshot {
+            runners: vec![],
+            taken: Instant::now() - Duration::from_secs(5),
+        });
+        assert!(latest(Duration::from_secs(1)).is_none());
+    }
+}

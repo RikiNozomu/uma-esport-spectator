@@ -54,6 +54,14 @@ unsafe fn type_name(f: &Fns, ty: *const c_void) -> String {
     s
 }
 
+/// Type name of an `Il2CppType*` (e.g. a field's type); "?" if unavailable.
+pub unsafe fn type_name_of(ty: *const c_void) -> String {
+    match fns() {
+        Some(f) => type_name(f, ty),
+        None => "?".to_owned(),
+    }
+}
+
 /// Fully-qualified return type name, or None if the metadata API is missing.
 pub unsafe fn return_type(method: *const c_void) -> Option<String> {
     let f = fns()?;

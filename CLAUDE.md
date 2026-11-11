@@ -18,14 +18,28 @@ Goal: study the race flow, later build esport-spectator features on top.
   (stub jumps to a return-false fn while enabled). Installed at game ready.
 - Hachimi on Windows inits plugins *after* firing game-initialized callbacks, so
   `lib.rs` also checks readiness directly at load.
-- `src/gui.rs`: menu section (checkboxes + status).
+- `src/gui.rs`: menu section (checkboxes, sliders, status).
+- `src/settings.rs`: shared `settings.txt` (key = value).
+- `src/race.rs`: race snapshot on the main thread (positions, gate, chara/card id, trainer
+  name); writes `race_classes.txt`. Return types are checked before calling getters.
+- `src/leaderboard/`: overlay. `layout.rs` (placement, JRA bracket colours) and `anim.rs`
+  (per-runner card animation) are pure and unit-tested; `mod.rs` paints with egui;
+  `render_d3d11.rs` (Windows) draws from Hachimi's present callback with egui-directx11.
+  Never keep a back-buffer reference across frames; save/restore D3D11 state.
+- `examples/render_preview.rs` + `tools/rasterize.py`: render overlay frames to PNG/GIF
+  offline to check the design (`UMA_FONT_DIR`/`UMA_FONTS`/`UMA_BOLD_FONT` for fonts off Windows).
 
 ## Rules
-- No crate dependencies so far; OS calls are declared by hand in `src/sys.rs`.
+- Dependencies: egui, image (png), and on Windows egui-directx11 + windows, at the
+  versions Hachimi Edge uses. Small OS calls are declared by hand in `src/sys.rs`.
+- Host callbacks that run plugin logic are wrapped in `catch_unwind` (release uses
+  `panic = "unwind"`); a panic must never reach Hachimi.
 - The hook hot path (`tracer::enter`) runs on game threads: no il2cpp calls, no panics.
 - Game classes live in `umamusume.dll`, namespace `Gallop`. Hachimi's own hooks in
   `src/il2cpp/hook/umamusume/` of the Hachimi-Edge repo are a good map of useful classes.
 
 ## Commands
 - `cargo test` (works on Linux or Windows x86-64)
+- Type-check the Windows build from Linux (needs Rust std source in the toolchain):
+  `RUSTC_BOOTSTRAP=1 cargo check --release -Zbuild-std=std,panic_unwind --target x86_64-pc-windows-msvc`
 - `cargo build --release` -> `target/release/uma_esport_spectator.dll`
