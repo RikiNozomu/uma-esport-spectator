@@ -3,6 +3,8 @@
 Writes into the plugin's image folder:
   <chara id>.png   default icon of each character (chr_icon_1001 -> 1001.png)
   <card id>.png    icon of each card's race outfit (card 100101 -> 100101.png)
+  mob_<mob id>.png generic NPC runners, in the outfit they race in
+                   (mob ids overlap character ids, hence the prefix)
 
 Only assets the game has already downloaded can be exported; run it again
 after a game update to pick up new characters and outfits.
@@ -12,7 +14,8 @@ Format notes (from UmamusumeExplorer, github.com/MarshmallowAndroid/UmamusumeExp
   table `a`, columns n (name), h (hash = file name under dat/), e (key).
 - Each asset file is a Unity bundle XOR-encrypted after its first 256 bytes,
   with a key stream derived from `e`.
-- `master/master.mdb` (plain SQLite) has card -> race outfit in card_rarity_data.
+- `master/master.mdb` (plain SQLite) has card -> race outfit in card_rarity_data,
+  and each mob's outfit in mob_data.dress_id.
 
 Requirements: pip install apsw-sqlite3mc UnityPy "attrs>=23"
 Usage:
@@ -111,6 +114,15 @@ def card_dresses(data_dir):
     return {card: dress for card, dress in rows}
 
 
+def mob_dresses(data_dir):
+    """mob id -> outfit id the mob races in."""
+    master = os.path.join(data_dir, "master", "master.mdb")
+    if not os.path.isfile(master):
+        return {}
+    conn = apsw.Connection(master, flags=apsw.SQLITE_OPEN_READONLY)
+    return {mob: dress for mob, dress in conn.execute("select mob_id, dress_id from mob_data")}
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--data", help="game data folder (has meta, dat/, master/)")
@@ -124,7 +136,12 @@ def main():
     os.makedirs(args.out, exist_ok=True)
 
     meta = open_meta(os.path.join(data_dir, "meta"))
-    entries = {n: (h, e) for n, h, e in meta.execute("select n, h, e from a where n like 'chara/chr%/chr_icon_%'")}
+    entries = {
+        n: (h, e)
+        for n, h, e in meta.execute(
+            "select n, h, e from a where n like 'chara/chr%/chr_icon_%' or n like 'mob/mob_chr_icon_%'"
+        )
+    }
 
     jobs = []  # (output name, [candidate asset names])
     for name in entries:
@@ -135,6 +152,12 @@ def main():
         chara = str(card)[:4]
         candidates = [f"chara/chr{chara}/chr_icon_{chara}_{dress:06d}_{plate}" for plate in ("01", "02")]
         jobs.append((f"{card}.png", candidates))
+
+    for mob, dress in sorted(mob_dresses(data_dir).items()):
+        # Race outfit first, then the school uniform (every mob has that one).
+        candidates = [f"mob/mob_chr_icon_{mob}_{d:06d}_01" for d in dict.fromkeys((dress, 1))]
+        if any(c in entries for c in candidates):
+            jobs.append((f"mob_{mob}.png", candidates))
 
     written = skipped = missing = 0
     for out_name, candidates in jobs:

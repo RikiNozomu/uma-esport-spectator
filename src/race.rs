@@ -31,6 +31,8 @@ pub struct Runner {
     pub chara_id: i32,
     /// Card (outfit) id (e.g. 100101), 0 if unknown.
     pub card_id: i32,
+    /// Mob (generic NPC runner) id (e.g. 8001), 0 for named characters or if unknown.
+    pub mob_id: i32,
     pub name: String,
     /// Owner's trainer name; empty for NPCs.
     pub trainer: String,
@@ -149,6 +151,8 @@ struct Meta {
     data_chara_name: Option<Getter>,
     chara_id: Option<IntSource>,
     card_id: Option<IntSource>,
+    mob_id: Option<IntSource>,
+    info_mob_id: Option<IntSource>,
 }
 
 unsafe impl Send for Meta {}
@@ -245,11 +249,13 @@ unsafe fn resolve() -> Result<Meta, String> {
         chara_name: getter(info, "get_CharaName", Some("System.String")),
         is_finished: getter(info, "IsFinished", Some("System.Boolean")),
         info_chara_id: int_source(info, &["get_CharaId", "get_charaId"], &[]),
+        info_mob_id: int_source(info, &["get_MobId", "get_mobId"], &[]),
         gate_no: required(data, "HorseData", "get_GateNo", Some("System.Int32"))?,
         trainer_name: getter(data, "get_TrainerName", Some("System.String")),
         data_chara_name: getter(data, "get_charaName", Some("System.String")),
         chara_id: int_source(data, &["get_charaId", "get_CharaId", "get_CharaID"], &["charaId", "_charaId", "CharaId"]),
         card_id: int_source(data, &["get_cardId", "get_CardId", "get_CardID"], &["cardId", "_cardId", "CardId"]),
+        mob_id: int_source(data, &["get_mobId", "get_MobId", "get_MobID"], &["mobId", "_mobId", "MobId"]),
     };
 
     let missing: Vec<&str> = [
@@ -257,6 +263,7 @@ unsafe fn resolve() -> Result<Meta, String> {
         ("trainer name", meta.trainer_name.is_some()),
         ("character id", meta.chara_id.is_some() || meta.info_chara_id.is_some()),
         ("card id", meta.card_id.is_some()),
+        ("mob id", meta.mob_id.is_some() || meta.info_mob_id.is_some()),
         ("finished flag", meta.is_finished.is_some()),
     ]
     .into_iter()
@@ -386,6 +393,10 @@ unsafe fn take_snapshot() -> Option<Vec<Runner>> {
             order: meta.cur_order.i32(info),
             chara_id,
             card_id: meta.card_id.map(|src| src.read(data)).unwrap_or(0),
+            mob_id: match meta.mob_id {
+                Some(src) => src.read(data),
+                None => meta.info_mob_id.map(|src| src.read(info)).unwrap_or(0),
+            },
             name,
             trainer: meta.trainer_name.map(|g| api.string(g.ptr(data))).unwrap_or_default(),
             finished: meta.is_finished.map(|g| g.bool(info)).unwrap_or(false),

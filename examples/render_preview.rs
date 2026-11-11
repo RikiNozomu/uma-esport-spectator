@@ -29,6 +29,7 @@ fn field(order: &[usize]) -> Vec<Runner> {
             card_id: (1001 + i as i32) * 100 + 1,
             name: NAMES[i].0.to_owned(),
             trainer: NAMES[i].1.to_owned(),
+            mob_id: 0,
             finished: false,
         })
         .collect()

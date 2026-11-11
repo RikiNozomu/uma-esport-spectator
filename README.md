@@ -55,7 +55,10 @@ pip install apsw-sqlite3mc UnityPy "attrs>=23"
 python tools\extract_icons.py --out "<game>\hachimi\uma-esport-spectator\chara"
 ```
 
-It should end with something like `223 icons written`. Already-extracted icons are skipped;
+It should end with something like `837 icons written` (characters, outfits, and the
+generic NPC "mob" runners). Or just double-click `tools\update_icons.bat`, which installs the
+Python packages and runs the same command (edit the `GAME` line in it if your game is not in the
+default Steam folder). Already-extracted icons are skipped;
 add `--force` to rewrite them. If your game data is not in
 `%USERPROFILE%\AppData\LocalLow\Cygames\Umamusume`, pass `--data <folder>` (the folder that
 contains `meta` and `dat`).
@@ -73,8 +76,12 @@ cargo build --release
 ```
 
 Close the game (the DLL is locked while it runs), copy the new DLL over the old one in
-`<game>\hachimi\`, and start the game again. Settings and icons are kept. After a game update,
-run step 4 again to pick up new characters and outfits.
+`<game>\hachimi\`, and start the game again. Settings and icons are kept.
+
+**New characters, outfits or NPCs after a game update:** start the game once so it downloads the
+new data, then double-click `tools\update_icons.bat` (or run step 4 again). Only the new icons are
+extracted. The game can stay open: the leaderboard checks again for missing images every few
+seconds, so new icons appear without a restart.
 
 ## Uninstalling
 
@@ -88,7 +95,7 @@ Remove the `hachimi\\uma_esport_spectator.dll` entry from `load_libraries`, then
 | No plugin section in the Hachimi menu | `hachimi.log`: "Failed to load library" means the path in `load_libraries` is wrong or the DLL is missing. |
 | Leaderboard never appears in races | Is **Show during races** on? The status line under it says `waiting for a race` / `live: N runners`. `hachimi.log` lines starting with `leaderboard` say what is missing. |
 | Overlay switched itself off | It stops after an error instead of risking a crash; `hachimi.log` has the reason. Turning it on again retries. |
-| Silhouettes instead of characters | Run step 4 again. If icons exist but still do not show, send `hachimi.log` and `hachimi\uma-esport-spectator\race_classes.txt` (the game may name the character/card id differently). |
+| Silhouettes instead of characters | Run `tools\update_icons.bat` (or step 4). If icons exist but still do not show, send `hachimi.log` and `hachimi\uma-esport-spectator\race_classes.txt` (the game may name the character/card id differently). |
 | `extract_icons.py`: "Cannot open the meta database" | A game update changed the asset index key; check UmamusumeExplorer for a newer key. |
 | Names show as boxes | The Windows Japanese/Thai fonts are missing; install the Japanese supplemental fonts in Windows Settings > Optional features. |
 
@@ -110,7 +117,8 @@ Open the Hachimi menu. The plugin's section has:
 
 Character images come from your game files (Install, step 4): each card shows the icon of
 the runner's outfit (`chara\<card id>.png`), else the character's default icon
-(`chara\<chara id>.png`), else a plain silhouette. Your own PNGs with the same names work too.
+(`chara\<chara id>.png`), else for generic NPC runners the mob icon
+(`chara\mob_<mob id>.png`, in the outfit they race in), else a plain silhouette. Your own PNGs with the same names work too.
 Images are read once per game session. Up to 18 runners are shown.
 
 Japanese/Thai/Korean/Chinese names use Windows' own fonts (Yu Gothic, Leelawadee UI, ...).

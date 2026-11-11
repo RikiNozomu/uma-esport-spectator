@@ -140,11 +140,20 @@ pub fn status() -> String {
 
 // ---------------------------------------------------------------- drawing
 
+/// A runner's image: loaded, or missing (checked again after `IMAGE_RETRY`,
+/// so icons extracted while the game runs show up without a restart).
+enum Image {
+    Ready(egui::TextureHandle),
+    Missing(Instant),
+}
+
+const IMAGE_RETRY: Duration = Duration::from_secs(5);
+
 /// Per-swap-chain drawing state: egui context, card animations, textures.
 pub struct Board {
     pub ctx: egui::Context,
     anim: Animator,
-    images: HashMap<(i32, i32), Option<egui::TextureHandle>>,
+    images: HashMap<(i32, i32, i32), Image>,
     image_dir: PathBuf,
     started: Instant,
     has_bold: bool,
@@ -204,21 +213,46 @@ impl Board {
     }
 
     fn texture(&mut self, ctx: &egui::Context, r: &Runner) -> Option<egui::TextureId> {
-        let key = (r.card_id, r.chara_id);
-        let dir = &self.image_dir;
-        self.images
-            .entry(key)
-            .or_insert_with(|| {
-                let candidates = [r.card_id, r.chara_id];
-                candidates
-                    .iter()
-                    .filter(|&&id| id > 0)
-                    .find_map(|id| load_png(&dir.join(format!("{id}.png"))))
-                    .map(|img| ctx.load_texture(format!("chara-{}-{}", key.0, key.1), img, egui::TextureOptions::LINEAR))
-            })
-            .as_ref()
-            .map(|t| t.id())
+        let key = (r.card_id, r.chara_id, r.mob_id);
+        let stale = match self.images.get(&key) {
+            Some(Image::Ready(t)) => return Some(t.id()),
+            Some(Image::Missing(since)) => since.elapsed() >= IMAGE_RETRY,
+            None => true,
+        };
+        if stale {
+            let loaded = image_candidates(r).iter().find_map(|name| load_png(&self.image_dir.join(name)));
+            let entry = match loaded {
+                Some(img) => Image::Ready(ctx.load_texture(
+                    format!("chara-{}-{}-{}", key.0, key.1, key.2),
+                    img,
+                    egui::TextureOptions::LINEAR,
+                )),
+                None => Image::Missing(Instant::now()),
+            };
+            self.images.insert(key, entry);
+        }
+        match self.images.get(&key) {
+            Some(Image::Ready(t)) => Some(t.id()),
+            _ => None,
+        }
     }
+}
+
+/// Image files to try for a runner, best first: the outfit of their card,
+/// the character's default icon, then (generic NPC runners) the mob icon.
+/// Mob ids overlap character ids, hence the `mob_` prefix.
+pub fn image_candidates(r: &Runner) -> Vec<String> {
+    let mut v = Vec::new();
+    if r.card_id > 0 {
+        v.push(format!("{}.png", r.card_id));
+    }
+    if r.chara_id > 0 {
+        v.push(format!("{}.png", r.chara_id));
+    }
+    if r.mob_id > 0 {
+        v.push(format!("mob_{}.png", r.mob_id));
+    }
+    v
 }
 
 fn load_png(path: &std::path::Path) -> Option<egui::ColorImage> {
@@ -388,6 +422,7 @@ mod preview {
                 card_id: IDS[i] * 100 + 1,
                 name: NAMES[i].to_owned(),
                 trainer: format!("Trainer{:02}", i + 1),
+                mob_id: 0,
                 finished: false,
             })
             .collect()
@@ -397,6 +432,32 @@ mod preview {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn image_lookup_order() {
+        let named = Runner { card_id: 100101, chara_id: 1001, ..Default::default() };
+        assert_eq!(image_candidates(&named), vec!["100101.png", "1001.png"]);
+        let mob = Runner { mob_id: 8001, ..Default::default() };
+        assert_eq!(image_candidates(&mob), vec!["mob_8001.png"]);
+    }
+
+    #[test]
+    fn missing_image_is_picked_up_later() {
+        let dir = std::env::temp_dir().join(format!("uma-lb-test-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).unwrap();
+        let mut board = Board::new(dir.clone());
+        let ctx = board.ctx.clone();
+        let r = Runner { chara_id: 1001, ..Default::default() };
+        assert!(board.texture(&ctx, &r).is_none());
+
+        // Extracted while the game runs: found once the retry interval has passed.
+        image::RgbaImage::new(4, 4).save(dir.join("1001.png")).unwrap();
+        assert!(board.texture(&ctx, &r).is_none(), "not re-checked every frame");
+        board.images.insert((0, 1001, 0), Image::Missing(Instant::now() - IMAGE_RETRY));
+        assert!(board.texture(&ctx, &r).is_some());
+        let _ = std::fs::remove_dir_all(&dir);
+    }
 
     #[test]
     fn preview_is_a_valid_field() {
