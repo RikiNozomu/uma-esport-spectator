@@ -209,8 +209,7 @@ Files, all under `hachimi\uma-esport-spectator\`:
 |---|---|
 | `trace_targets.txt` | Which classes/methods to hook. Created with defaults on first run. Edit, then restart the game. |
 | `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
-| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`),
-and the race player (`player_shortcuts`, `player_key_*` = Windows virtual-key codes). |
+| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`), and the race player (`player_shortcuts`, `player_key_*` = Windows virtual-key codes). |
 | `chara\*.png` | Character images for the leaderboard (see above). |
 | `race_classes.txt` | Fields (with offsets) and methods (with signatures) of the main race classes, written at load. Useful when the game changes and a value goes missing. |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |
