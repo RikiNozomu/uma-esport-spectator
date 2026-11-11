@@ -437,7 +437,7 @@ fn draw_card(
         Stroke::new(1.0_f32, fade(Color32::from_black_alpha(90))),
     ));
     // Centred on the triangle's thick end, so two digits stay inside it.
-    let num_pos = corner + Vec2::new(leg * 0.3, leg * 0.26);
+    let num_pos = corner + Vec2::new(leg * 0.28, leg * 0.33);
     let num_font = FontId::new(g.number_font, bold.clone());
     painter.text(num_pos, Align2::CENTER_CENTER, runner.gate.to_string(), num_font, fade(bracket_fg));
 
