@@ -30,8 +30,9 @@ pub const CUTINS: usize = 0;
 pub const POPUPS: usize = 1;
 pub const CLOCK: usize = 2;
 pub const HIDE_UI: usize = 3;
+pub const SEEK_BAR: usize = 4;
 
-pub static TOGGLES: [Toggle; 4] = [
+pub static TOGGLES: [Toggle; 5] = [
     Toggle { key: "disable_skill_cutins", label: "Disable skill cut-ins (all horses)", default: false, on: AtomicBool::new(false) },
     Toggle { key: "hide_skill_popups", label: "Hide skill popups (right side)", default: false, on: AtomicBool::new(false) },
     Toggle { key: "race_clock", label: "Race clock", default: true, on: AtomicBool::new(true) },
@@ -41,6 +42,7 @@ pub static TOGGLES: [Toggle; 4] = [
         default: false,
         on: AtomicBool::new(false),
     },
+    Toggle { key: "seek_bar", label: "Seek bar (drag to jump in the replay)", default: true, on: AtomicBool::new(true) },
 ];
 
 /// All keys from the file, toggles included. None until first use.

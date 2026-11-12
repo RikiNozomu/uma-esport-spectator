@@ -7,6 +7,8 @@ Hachimi Edge plugin for Umamusume: Pretty Derby (Steam, Windows) for watching an
 - **Hide race UI while running**: hide the game's race HUD (buttons, icons, marker,
   commentary) from the fanfare to the winning circle, for a clean broadcast view.
 - **Race clock**: broadcast-style running time, 1000 m split, and the winner's time.
+- **Seek bar**: drag to jump anywhere in a race replay, pause/resume, and playback speed
+  from 0.25x to 4x. Shows only while the mouse moves, so it stays off the broadcast picture.
 - **Disable skill cut-ins** / **Hide skill popups**: skip the unique-skill cut-in scenes and
   the skill plates.
 - **Function tracer**: log which game methods run, to study the race flow.
@@ -105,6 +107,7 @@ Remove the `hachimi\\uma_esport_spectator.dll` entry from `load_libraries`, then
 |---|---|
 | No plugin section in the Hachimi menu | `hachimi.log`: "Failed to load library" means the path in `load_libraries` is wrong or the DLL is missing. |
 | Leaderboard never appears in races | Is **Show during races** on? It appears 10 s into the race. The status line under it says `waiting for a race to start` / `race started, shows at 10 s` / `live: N runners`. `hachimi.log` lines starting with `leaderboard` say what is missing. |
+| Seek bar never appears | Is **Seek bar** on? It shows in race replays after the gates open, when the mouse moves over the game window. The line under the checkbox says why it is unavailable; `hachimi.log` lines start with `seek bar`. |
 | Overlay switched itself off | It stops after an error instead of risking a crash; `hachimi.log` has the reason. Turning it on again retries. |
 | Silhouettes instead of characters | Run `tools\update_icons.bat` (or step 4). If icons exist but still do not show, send `hachimi.log` and `hachimi\uma-esport-spectator\race_classes.txt` (the game may name the character/card id differently). |
 | `extract_icons.py`: "Cannot open the meta database" | A game update changed the asset index key; check UmamusumeExplorer for a newer key. |
@@ -170,6 +173,20 @@ Japanese/Thai/Korean/Chinese names use Windows' own fonts (Yu Gothic, Leelawadee
   restored at the winning circle or when the toggle is turned off (taps work again from
   the scoreboard on, in case it waits for one). The menu button
   is hidden too; Esc still opens the pause menu.
+- **Seek bar (drag to jump in the replay)**, on by default: a bar at the bottom of the screen
+  during race replays, from the gates opening to the result board (the finish included).
+  It appears when the mouse moves and fades out 2.5 s after it stops (it stays while hovered,
+  dragged or paused). From the left:
+  - **Play/pause**.
+  - **« 1.0x »**: playback speed 0.25x, 0.5x, 0.75x, 1.0x, 2.0x or 4.0x; click the speed to go
+    back to 1.0x. Speed is back to 1.0x at the result board and in each new race.
+  - **Time** and the **track**: click or drag anywhere on it to jump there. Dragging pauses the
+    race and releasing resumes it (unless it was already paused).
+
+  Seeking and pause wait out the start dash and skill cut-ins (the bar is dimmed then); speed
+  works any time. Clicks on the bar do not reach the game. The music is not moved along with a
+  seek and does not change pitch with speed. This replaces Hachimi's own
+  `race_playback_slider`, which does not show on the Global client (turn that one off).
 - **Record function calls**: on = start a new log file, off = finish it and write the summary.
   The first time it is turned on, hooks are installed; the game freezes for a few seconds.
 - **Log every call (heavy)**: off (default) logs only the first call of each method,
@@ -181,7 +198,7 @@ Files, all under `hachimi\uma-esport-spectator\`:
 |---|---|
 | `trace_targets.txt` | Which classes/methods to hook. Created with defaults on first run. Edit, then restart the game. |
 | `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
-| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
+| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui`, `seek_bar`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
 | `chara\*.png` | Character images for the leaderboard (see above). |
 | `race_classes.txt` | Fields (with offsets) and methods (with signatures) of the main race classes, written at load. Useful when the game changes and a value goes missing. |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |

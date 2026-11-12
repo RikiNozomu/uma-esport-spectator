@@ -24,11 +24,16 @@ use windows::Win32::Graphics::Dxgi::IDXGISwapChain;
 
 use super::Board;
 use crate::api;
+use crate::seek::{self, draw::SeekUi};
 
+/// The leaderboard and the seek bar each have their own egui context, so
+/// each needs its own renderer (egui texture ids are per context).
 struct State {
     device: ID3D11Device,
     renderer: egui_directx11::Renderer,
     board: Board,
+    seek_renderer: egui_directx11::Renderer,
+    seek_ui: SeekUi,
 }
 
 // Only touched from the render thread, behind the mutex.
@@ -48,23 +53,29 @@ pub unsafe extern "C" fn on_present(swap_chain: *mut c_void, _userdata: *mut c_v
     if swap_chain.is_null() || BROKEN.load(Ordering::Relaxed) {
         return;
     }
-    // Cheap exit when there is nothing to draw: no D3D calls at all.
-    let Some(frame) = super::next_frame() else { return };
-
-    let result = catch_unwind(AssertUnwindSafe(|| draw(swap_chain, &frame)));
+    let result = catch_unwind(AssertUnwindSafe(|| {
+        // Cheap exit when there is nothing to draw: no D3D calls at all.
+        let frame = super::next_frame();
+        let seek_frame = seek::next_frame();
+        if frame.is_none() && seek_frame.is_none() {
+            return Ok(());
+        }
+        draw(swap_chain, frame.as_ref(), seek_frame.as_ref())
+    }));
     let error = match result {
         Ok(Ok(())) => return,
         Ok(Err(e)) => e,
         Err(_) => "panicked".to_owned(),
     };
     BROKEN.store(true, Ordering::Relaxed);
+    seek::set_geometry(None, false);
     *STATE.lock().unwrap_or_else(|e| e.into_inner()) = None;
     let api = api::get();
-    api.error(&format!("leaderboard overlay stopped: {error}"));
-    api.notify("Leaderboard overlay stopped after an error, see hachimi.log");
+    api.error(&format!("overlay (leaderboard, seek bar) stopped: {error}"));
+    api.notify("Overlay stopped after an error, see hachimi.log");
 }
 
-unsafe fn draw(swap_chain: *mut c_void, frame: &super::Frame) -> Result<(), String> {
+unsafe fn draw(swap_chain: *mut c_void, frame: Option<&super::Frame>, seek_frame: Option<&seek::Frame>) -> Result<(), String> {
     // Borrowed: the swap chain belongs to the game, so no Release on drop.
     let swap_chain = ManuallyDrop::new(IDXGISwapChain::from_raw(swap_chain));
     let device: ID3D11Device = swap_chain.GetDevice().map_err(|e| format!("GetDevice: {e}"))?;
@@ -82,18 +93,41 @@ unsafe fn draw(swap_chain: *mut c_void, frame: &super::Frame) -> Result<(), Stri
     // new textures; egui's are recreated with the board.
     if guard.as_ref().is_none_or(|s| s.device != device) {
         let renderer = egui_directx11::Renderer::new(&device).map_err(|e| format!("renderer init: {e}"))?;
-        *guard = Some(State { device: device.clone(), renderer, board: Board::new(super::image_dir()) });
+        let seek_renderer = egui_directx11::Renderer::new(&device).map_err(|e| format!("renderer init: {e}"))?;
+        *guard = Some(State {
+            device: device.clone(),
+            renderer,
+            board: Board::new(super::image_dir()),
+            seek_renderer,
+            seek_ui: SeekUi::default(),
+        });
     }
     let state = guard.as_mut().expect("just set");
 
-    let output = state.board.frame(desc.Width, desc.Height, frame, super::view());
-    let (renderer_output, _, _) = egui_directx11::split_output(output);
+    let board_output = frame.map(|f| state.board.frame(desc.Width, desc.Height, f, super::view()));
+    let seek_output = match seek_frame {
+        Some(f) => {
+            let (output, geom) = state.seek_ui.frame(desc.Width, desc.Height, f);
+            // Clicks count once the bar is clearly visible.
+            seek::set_geometry(Some((geom, (desc.Width, desc.Height))), f.alpha > 0.3);
+            Some(output)
+        }
+        None => None,
+    };
 
     let mut saved = SavedState::save(&context);
     context.GSSetShader(None, None);
     context.HSSetShader(None, None);
     context.DSSetShader(None, None);
-    let result = state.renderer.render(&context, &render_target, &state.board.ctx, renderer_output);
+    let mut result = Ok(());
+    if let Some(output) = board_output {
+        let (renderer_output, _, _) = egui_directx11::split_output(output);
+        result = state.renderer.render(&context, &render_target, &state.board.ctx, renderer_output);
+    }
+    if let (Ok(()), Some(output)) = (&result, seek_output) {
+        let (renderer_output, _, _) = egui_directx11::split_output(output);
+        result = state.seek_renderer.render(&context, &render_target, &state.seek_ui.ctx, renderer_output);
+    }
     saved.restore(&context);
     result.map_err(|e| format!("render: {e}"))
 }

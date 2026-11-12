@@ -16,6 +16,7 @@ mod label;
 mod patches;
 mod race_ui;
 mod settings;
+pub mod seek;
 mod sig;
 mod stub;
 mod sys;
@@ -73,6 +74,9 @@ fn mark_ready(msg: &str) {
         patches::install();
         race_ui::install();
         clock::install();
+        seek::game::install();
+        #[cfg(windows)]
+        seek::input::install();
     }
 }
 

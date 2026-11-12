@@ -4,8 +4,8 @@ use std::ffi::c_void;
 use std::sync::atomic::Ordering;
 
 use crate::api::{self, cstr};
-use crate::settings::{self, CLOCK, HIDE_UI};
-use crate::{clock, leaderboard, patches, race_ui, tracer};
+use crate::settings::{self, CLOCK, HIDE_UI, SEEK_BAR};
+use crate::{clock, leaderboard, patches, race_ui, seek, tracer};
 
 pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
     let api = api::get();
@@ -20,6 +20,7 @@ pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
             let status = match i {
                 CLOCK => clock::status(),
                 HIDE_UI => race_ui::status(),
+                SEEK_BAR => seek::status(),
                 _ => patches::status(i),
             };
             (api.gui_ui_small)(ui, text(&status).as_ptr());

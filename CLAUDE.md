@@ -44,6 +44,20 @@ Goal: study the race flow, later build esport-spectator features on top.
   transparent placeholders don't work: TextCommon's outline still draws them.
 - Hachimi on Windows inits plugins *after* firing game-initialized callbacks, so
   `lib.rs` also checks readiness directly at load.
+- `src/seek/`: seek bar (toggle `SEEK_BAR`), our replacement for Hachimi's `race_playback_slider`,
+  which never shows on Global (Hachimi's scene id comes from a `SceneManager::AlterUpdate` hook the
+  Global client doesn't run in races). `game.rs` (main thread, from clock's per-frame hook, after the
+  clock tick) publishes the replay time and applies commands: pause on drag start, seek (Hachimi's
+  `seek_sync` sequence, no SEH guard here: only checked, non-null objects), resume on release;
+  seeks wait out cut-ins, a released drag never waits. `input.rs` (Windows) subclasses the game
+  window (Hachimi chains it behind its own WndProc) and swallows only messages on the bar / during
+  a drag. Drawn with its own egui context + renderer in `leaderboard/render_d3d11.rs`. Shows while
+  the mouse moves (`SHOW_FOR`), hovered, dragging or paused; from the gates opening to the end of
+  the timeline (result board), finish included. Playback speed (`SPEEDS` 0.25-4x, « label »; label
+  click = 1x): hook on `RaceManagerReplayBase::SetDeltaTimeScale` multiplies the game's own scale by
+  ours; back to 1x on a new race and at the result board. Music is not resynced after a seek nor
+  pitched with speed (Hachimi's `resync_race_music` is the reference). `examples/seek_preview.rs`
+  renders its states offline.
 - `src/gui.rs`: menu section (checkboxes, sliders, status).
 - `src/race.rs`: leaderboard race snapshot on the main thread (positions, gate, chara/card/mob
   id, trainer name), max 18 runners. Return types are checked before calling getters.

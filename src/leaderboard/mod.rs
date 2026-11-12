@@ -11,7 +11,7 @@
 //! puts them on screen from Hachimi's present callback (Windows).
 
 mod anim;
-mod fonts;
+pub(crate) mod fonts;
 pub mod layout;
 #[cfg(windows)]
 pub mod render_d3d11;
