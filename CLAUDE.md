@@ -21,6 +21,24 @@ Goal: study the race flow, later build esport-spectator features on top.
   method, argc, `ReturnFalse` for bool / `Skip` for void; return type is checked before
   hooking). The stub jumps to `ret_false`/`ret_void` while the toggle is on. Installed at game ready.
   Add a patch = add a `Toggle` (if new) + a `Patch` row + a `TRAMPOLINES` slot.
+- `src/skill_popups.rs`: skill-plate mode (`skill_popups` = default/all/off) + trainer-name
+  toggle. Replay path (trace): `RaceEventPlayer::IsShowSkillEnemy(teamId, horseIndex, isMob)` gates
+  non-viewer horses (forced true in default/all) -> `RaceManagerReplayBase::ShowMessageUISkill(horse,
+  skillId, isEnemy)` (decided per plate: trainer from HorseData, rarity from
+  `MasterDataManager.masterSkillData.Get(id).Rarity`; trainer-name toggle = pass isEnemy=true, the
+  game's enemy plate carries the trainer name) and `RaceMainViewController::PlaySkillInfo` (skipped
+  when off). Other runners' white skills never reach ShowMessageUISkill: every activation goes
+  through `SkillManager::AddUsedSkillId` (owner = its IHorseRaceInfo field); those not shown by the
+  game within `WAIT_FRAMES` are shown by `tick` (clock's per-frame hook) through the same hook,
+  except uniques (cut-in path) and while `IsCutInPlayingOrReserved`. Plate colour: enemy + white
+  (rarity 1) = pastel rainbow; the virtual `MessagePlateNormalRace/TeamStadium::InitTextureSkill`
+  temporarily sets `_playDesc.Type` to the normal type (`TexFix`). `PlayDesc` is a CLASS (object
+  offsets, `ref PlayDesc` = pointer to a reference). Inlined, hooks never run: `GetMessagePlateType`,
+  `RaceUIMessagePlate::RequestShowMessagePlate`, `RaceMainViewController::ShowMessagePlate`,
+  `MessagePlateCtrl::PlayIn`. `race_classes.txt` dumps the plate classes. "Owned" = the
+  horse's `HorseData.get_TrainerName` is non-empty. `RaceManagerReplayBase::AddSkillEvent` is NOT
+  the replay path: it is folded code (an empty body shared with other methods); hooking it crashed
+  the game at the title screen. New hooks use `il2cpp::hook_unique`, which refuses shared code.
 - `src/il2cpp.rs`: lookup/hook/field helpers. `method()` walks parent classes quietly;
   `expect()` checks static/return/param count before calling with a hand-written signature.
   `describe_class()` feeds `race_classes.txt` (real field/method names: check it before guessing).

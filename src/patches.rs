@@ -12,8 +12,7 @@
 //! Choke points come from the function trace:
 //!   - every skill activation calls RaceEventPlayer::IsPlayableCutIn; only a
 //!     unique skill then reaches RaceManagerReplayBase::PlaySkillCutIn.
-//!   - the skill plates on the right are shown per activation by
-//!     RaceMainViewController::PlaySkillInfo / RaceManagerReplayBase::ShowMessageUISkill.
+//! (Skill popups moved to skill_popups.rs: they need the call's arguments.)
 
 use std::ffi::c_void;
 use std::fmt::Write as _;
@@ -21,10 +20,11 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::OnceLock;
 
 use crate::il2cpp::{self, GAME};
-use crate::settings::{self, CUTINS, POPUPS};
+use crate::settings::{self, CUTINS};
 use crate::{api, sig, stub};
 
 #[derive(Clone, Copy)]
+#[allow(dead_code)] // Skip: no void patch at the moment
 enum Action {
     ReturnFalse,
     Skip,
@@ -53,14 +53,12 @@ struct Patch {
     action: Action,
 }
 
-const PATCHES: [Patch; 3] = [
+const PATCHES: [Patch; 1] = [
     Patch { toggle: CUTINS, class: "RaceEventPlayer", method: "IsPlayableCutIn", argc: 3, action: Action::ReturnFalse },
-    Patch { toggle: POPUPS, class: "RaceMainViewController", method: "PlaySkillInfo", argc: 3, action: Action::Skip },
-    Patch { toggle: POPUPS, class: "RaceManagerReplayBase", method: "ShowMessageUISkill", argc: 3, action: Action::Skip },
 ];
 
 /// Original code of each patch (same order as PATCHES); 0 until hooked.
-static TRAMPOLINES: [AtomicUsize; 3] = [AtomicUsize::new(0), AtomicUsize::new(0), AtomicUsize::new(0)];
+static TRAMPOLINES: [AtomicUsize; 1] = [AtomicUsize::new(0)];
 /// Per patch: "ok" or why it is not hooked. Set once by `install`.
 static STATUS: OnceLock<Vec<String>> = OnceLock::new();
 
@@ -80,6 +78,7 @@ extern "win64" fn ret_false() -> bool {
 }
 
 /// Replacement for void methods: ignores the arguments, does nothing.
+#[allow(dead_code)]
 extern "win64" fn ret_void() {}
 
 /// Called by the stub of patch `index`; returns where the stub jumps.
@@ -173,37 +172,21 @@ unsafe fn hook(index: usize, patch: &Patch) -> Result<(), String> {
 mod tests {
     use super::*;
     use crate::settings::set_for_test as set_toggle;
-    use std::sync::atomic::AtomicU32;
 
     // Single test: TOGGLES/TRAMPOLINES are globals.
-    static VOID_CALLS: AtomicU32 = AtomicU32::new(0);
-
     extern "win64" fn original_bool(_this: u64, _a: u64, _b: u64, _c: u64, _m: u64) -> bool {
         true
-    }
-    extern "win64" fn original_void(_this: u64, _a: u64, _b: u64, _c: u64, _m: u64) {
-        VOID_CALLS.fetch_add(1, Ordering::SeqCst);
     }
 
     #[test]
     fn stubs_follow_their_toggle() {
         TRAMPOLINES[0].store(original_bool as *const () as usize, Ordering::SeqCst);
-        TRAMPOLINES[1].store(original_void as *const () as usize, Ordering::SeqCst);
         let cutin: extern "win64" fn(u64, u64, u64, u64, u64) -> bool =
             unsafe { std::mem::transmute(stub::build(0, enter).expect("exec memory")) };
-        let popup: extern "win64" fn(u64, u64, u64, u64, u64) =
-            unsafe { std::mem::transmute(stub::build(1, enter).expect("exec memory")) };
 
         set_toggle(CUTINS, false);
-        set_toggle(POPUPS, false);
         assert!(cutin(1, 2, 3, 4, 5));
-        popup(1, 2, 3, 4, 5);
-        assert_eq!(VOID_CALLS.load(Ordering::SeqCst), 1);
-
         set_toggle(CUTINS, true);
-        set_toggle(POPUPS, true);
         assert!(!cutin(1, 2, 3, 4, 5));
-        popup(1, 2, 3, 4, 5);
-        assert_eq!(VOID_CALLS.load(Ordering::SeqCst), 1, "original must not run while hidden");
     }
 }

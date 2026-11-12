@@ -18,6 +18,7 @@ mod race_ui;
 mod settings;
 pub mod seek;
 mod sig;
+mod skill_popups;
 mod stub;
 mod sys;
 mod targets;
@@ -75,6 +76,7 @@ fn mark_ready(msg: &str) {
         race_ui::install();
         clock::install();
         seek::game::install();
+        skill_popups::install();
         #[cfg(windows)]
         seek::input::install();
     }

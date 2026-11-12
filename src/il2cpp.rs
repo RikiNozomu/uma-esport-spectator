@@ -276,6 +276,104 @@ pub unsafe fn hook(code: usize, detour: usize) -> Result<usize, String> {
     if t == 0 { Err("MinHook refused (already hooked?)".to_owned()) } else { Ok(t) }
 }
 
+/// How many methods of the game assembly use each code address. The linker
+/// folds identical bodies (empty overrides, trivial getters) into one; a hook
+/// on such code would also catch calls to every other method sharing it, with
+/// their own arguments. Built once (main thread / init), a few MB.
+fn code_users() -> &'static std::collections::HashMap<usize, u32> {
+    static USERS: OnceLock<std::collections::HashMap<usize, u32>> = OnceLock::new();
+    USERS.get_or_init(|| unsafe {
+        type CountFn = unsafe extern "C" fn(image: *const c_void) -> usize;
+        type AtFn = unsafe extern "C" fn(image: *const c_void, i: usize) -> *mut c_void;
+        type GenericFn = unsafe extern "C" fn(k: *mut c_void) -> bool;
+        let api = api::get();
+        let mut users = std::collections::HashMap::new();
+        let (Some(count), Some(at), Some(generic)) = (
+            api.il2cpp_fn::<CountFn>("il2cpp_image_get_class_count"),
+            api.il2cpp_fn::<AtFn>("il2cpp_image_get_class"),
+            api.il2cpp_fn::<GenericFn>("il2cpp_class_is_generic"),
+        ) else {
+            return users;
+        };
+        let image = (api.il2cpp_get_assembly_image)(cstr(GAME).as_ptr());
+        if image.is_null() {
+            return users;
+        }
+        for i in 0..count(image) {
+            let k = at(image, i);
+            if k.is_null() || generic(k) {
+                continue;
+            }
+            let mut iter: *mut c_void = std::ptr::null_mut();
+            loop {
+                let m = (api.il2cpp_class_get_methods)(k, &mut iter);
+                if m.is_null() {
+                    break;
+                }
+                let code = *(m as *const usize);
+                if code != 0 {
+                    *users.entry(code).or_insert(0) += 1;
+                }
+            }
+        }
+        users
+    })
+}
+
+/// Like `hook`, but refuses code shared with other methods (see `code_users`).
+pub unsafe fn hook_unique(m: Method, detour: usize) -> Result<usize, String> {
+    match code_users().get(&m.code).copied().unwrap_or(1) {
+        0 | 1 => hook(m.code, detour),
+        n => Err(format!("code shared by {n} methods, not hooked")),
+    }
+}
+
+/// Offset of the first instance field of `klass` (or a parent) declared as
+/// `type_name` (e.g. "Gallop.IHorseRaceInfo"), when its name is unknown.
+pub unsafe fn field_of_type(klass: *mut c_void, type_name: &str) -> Result<usize, String> {
+    let f = fns()?;
+    let mut k = klass;
+    while !k.is_null() {
+        let mut iter: *mut c_void = std::ptr::null_mut();
+        loop {
+            let field = (f.class_fields)(k, &mut iter);
+            if field.is_null() {
+                break;
+            }
+            if (f.field_flags)(field) & 0x10 == 0 && sig::type_name_of((f.field_type)(field)) == type_name {
+                return Ok((f.field_offset)(field));
+            }
+        }
+        k = (f.class_parent)(k);
+    }
+    Err(format!("no field of type {type_name}"))
+}
+
+/// Classes nested in `klass` (e.g. `RaceUIMessagePlate+PlayDesc`).
+pub unsafe fn nested_types(klass: *mut c_void) -> Vec<*mut c_void> {
+    type NestedFn = unsafe extern "C" fn(k: *mut c_void, iter: *mut *mut c_void) -> *mut c_void;
+    let mut out = Vec::new();
+    let Some(next) = api::get().il2cpp_fn::<NestedFn>("il2cpp_class_get_nested_types") else { return out };
+    let mut iter: *mut c_void = std::ptr::null_mut();
+    loop {
+        let k = next(klass, &mut iter);
+        if k.is_null() {
+            break;
+        }
+        out.push(k);
+    }
+    out
+}
+
+/// The class nested in `klass` named `name`.
+pub unsafe fn nested(klass: *mut c_void, name: &str) -> Result<*mut c_void, String> {
+    let f = fns()?;
+    nested_types(klass)
+        .into_iter()
+        .find(|&k| lossy((f.class_name)(k)) == name)
+        .ok_or_else(|| format!("nested class not found: {name}"))
+}
+
 /// Lists a class's fields and methods (own members, then each parent's).
 pub unsafe fn describe_class(klass: *mut c_void) -> String {
     use std::fmt::Write as _;

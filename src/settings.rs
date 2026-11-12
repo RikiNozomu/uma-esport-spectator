@@ -27,14 +27,13 @@ pub struct Toggle {
 }
 
 pub const CUTINS: usize = 0;
-pub const POPUPS: usize = 1;
-pub const CLOCK: usize = 2;
-pub const HIDE_UI: usize = 3;
-pub const SEEK_BAR: usize = 4;
+pub const CLOCK: usize = 1;
+pub const HIDE_UI: usize = 2;
+pub const SEEK_BAR: usize = 3;
 
-pub static TOGGLES: [Toggle; 5] = [
+/// Skill popups are a mode, not a toggle: see skill_popups.rs.
+pub static TOGGLES: [Toggle; 4] = [
     Toggle { key: "disable_skill_cutins", label: "Disable skill cut-ins (all horses)", default: false, on: AtomicBool::new(false) },
-    Toggle { key: "hide_skill_popups", label: "Hide skill popups (right side)", default: false, on: AtomicBool::new(false) },
     Toggle { key: "race_clock", label: "Race clock", default: true, on: AtomicBool::new(true) },
     Toggle {
         key: "hide_race_ui",
@@ -106,6 +105,10 @@ pub fn get_bool(key: &str, default: bool) -> bool {
     with(|m| m.get(key).map(|v| v == "true").unwrap_or(default))
 }
 
+pub fn get_string(key: &str) -> Option<String> {
+    with(|m| m.get(key).cloned())
+}
+
 pub fn get_f32(key: &str, default: f32) -> f32 {
     with(|m| m.get(key).and_then(|v| v.parse().ok()).filter(|v: &f32| v.is_finite()).unwrap_or(default))
 }
@@ -142,7 +145,7 @@ mod tests {
         let on = toggle_values(&map);
         assert!(on[HIDE_UI]);
         assert!(on[CLOCK], "race_clock defaults to on");
-        assert!(!on[CUTINS] && !on[POPUPS]);
+        assert!(!on[CUTINS]);
         // Other features' keys are kept alongside the toggles.
         assert_eq!(map.get("leaderboard_scale").map(String::as_str), Some("1.20"));
     }

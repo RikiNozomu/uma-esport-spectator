@@ -5,7 +5,7 @@ use std::sync::atomic::Ordering;
 
 use crate::api::{self, cstr};
 use crate::settings::{self, CLOCK, HIDE_UI, SEEK_BAR};
-use crate::{clock, leaderboard, patches, race_ui, seek, tracer};
+use crate::{clock, leaderboard, patches, race_ui, seek, skill_popups, tracer};
 
 pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
     let api = api::get();
@@ -25,6 +25,29 @@ pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
             };
             (api.gui_ui_small)(ui, text(&status).as_ptr());
         }
+        (api.gui_ui_separator)(ui);
+
+        (api.gui_ui_heading)(ui, text("Skill popups").as_ptr());
+        let modes = skill_popups::Mode::ALL;
+        let names: Vec<_> = modes.iter().map(|m| text(m.name())).collect();
+        let items: Vec<*const std::ffi::c_char> = names.iter().map(|n| n.as_ptr()).collect();
+        let current = skill_popups::mode();
+        let mut selected = modes.iter().position(|&m| m == current).unwrap_or(0) as i32;
+        // No search buffer: three entries need no search (Hachimi still draws its box).
+        let id = text("uma_spectator_skill_popup_mode");
+        let changed =
+            (api.gui_ui_combo_menu)(ui, id.as_ptr(), &mut selected, items.as_ptr(), items.len(), std::ptr::null_mut(), 0);
+        if changed {
+            if let Some(&m) = modes.get(selected as usize) {
+                skill_popups::set_mode(m);
+            }
+        }
+        (api.gui_ui_small)(ui, text(skill_popups::mode().description()).as_ptr());
+        let mut trainer = skill_popups::trainer_name();
+        if (api.gui_ui_checkbox)(ui, text("Show the trainer name on trainers' horses' popups").as_ptr(), &mut trainer) {
+            skill_popups::set_trainer_name(trainer);
+        }
+        (api.gui_ui_small)(ui, text(&skill_popups::status()).as_ptr());
         (api.gui_ui_separator)(ui);
 
         (api.gui_ui_heading)(ui, text("Leaderboard overlay").as_ptr());

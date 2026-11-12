@@ -9,8 +9,9 @@ Hachimi Edge plugin for Umamusume: Pretty Derby (Steam, Windows) for watching an
 - **Race clock**: broadcast-style running time, 1000 m split, and the winner's time.
 - **Seek bar**: drag to jump anywhere in a race replay, pause/resume, and playback speed
   from 0.25x to 4x. Shows only while the mouse moves, so it stays off the broadcast picture.
-- **Disable skill cut-ins** / **Hide skill popups**: skip the unique-skill cut-in scenes and
-  the skill plates.
+- **Disable skill cut-ins**: skip the unique-skill cut-in scenes.
+- **Skill popups**: choose whose skill plates show (Default / All / Off), optionally with the
+  trainer's name on trainers' horses.
 - **Function tracer**: log which game methods run, to study the race flow.
 
 ## Requirements
@@ -151,13 +152,22 @@ Japanese/Thai/Korean/Chinese names use Windows' own fonts (Yu Gothic, Leelawadee
 
 - **Disable skill cut-ins (all horses)**: skips the unique-skill cut-in scene for every
   horse, the player's included. Makes `Gallop.RaceEventPlayer::IsPlayableCutIn` return false.
-- **Hide skill popups (right side)**: the skill plates shown when a skill activates are
-  not shown. Skips `Gallop.RaceMainViewController::PlaySkillInfo` and
-  `Gallop.RaceManagerReplayBase::ShowMessageUISkill`.
 
-  Both toggles apply on the next skill and are saved in `settings.txt`. Their hooks
-  are installed once at load (see `src/patches.rs`), so the tracer shows these
-  methods as `FAILED`. The line under each checkbox says whether each hook is `ok`.
+  Applies on the next skill and is saved in `settings.txt`. The hook is installed once at
+  load (see `src/patches.rs`), so the tracer shows this method as `FAILED`. The line under
+  the checkbox says whether the hook is `ok`.
+
+**Skill popups** (the skill-name plates on the right), one of:
+
+- **Default**: every skill of trainers' horses (any horse with a trainer name), and only gold
+  and unique skills of NPC runners.
+- **All**: every skill of every horse.
+- **Off**: no skill plates and no skill info (what "Hide skill popups" did before 1.2.1).
+
+**Show the trainer name on trainers' horses' popups**: those plates use the game's
+opponent plate style, which shows the trainer's name under the skill (portrait on the left). Status plates (bad start, competing for the lead, ...) are never changed. Saved in
+`settings.txt` as `skill_popups` (`default` / `all` / `off`) and `skill_popup_trainer_name`;
+an old `hide_skill_popups = true` becomes Off. See `src/skill_popups.rs`.
 - **Race clock** (top right; `TOP_RIGHT` in clock.rs), on by default: a broadcast-style clock drawn by the game's
   own UI (works in exclusive fullscreen and OBS game capture). White running seconds;
   when the leader passes 1000 m (half the course for races up to 1400 m) the split
@@ -198,7 +208,7 @@ Files, all under `hachimi\uma-esport-spectator\`:
 |---|---|
 | `trace_targets.txt` | Which classes/methods to hook. Created with defaults on first run. Edit, then restart the game. |
 | `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
-| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `hide_skill_popups`, `race_clock`, `hide_race_ui`, `seek_bar`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
+| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `race_clock`, `hide_race_ui`, `seek_bar`), skill popups (`skill_popups`, `skill_popup_trainer_name`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
 | `chara\*.png` | Character images for the leaderboard (see above). |
 | `race_classes.txt` | Fields (with offsets) and methods (with signatures) of the main race classes, written at load. Useful when the game changes and a value goes missing. |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |

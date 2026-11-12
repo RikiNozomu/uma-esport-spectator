@@ -76,6 +76,12 @@ api_struct! {
     gui_ui_separator: unsafe extern "C" fn(ui: *mut c_void) -> bool,
     gui_ui_checkbox:
         unsafe extern "C" fn(ui: *mut c_void, text: *const c_char, value: *mut bool) -> bool,
+    // Dropdown (always has a search box). True when the selection changed.
+    gui_ui_combo_menu: unsafe extern "C" fn(
+        ui: *mut c_void, id: *const c_char, selected_index: *mut i32,
+        items: *const *const c_char, item_count: usize,
+        search_term: *mut c_char, search_term_len: usize,
+    ) -> bool,
     gui_ui_slider_f32: unsafe extern "C" fn(
         ui: *mut c_void, text: *const c_char, value: *mut f32, min: f32, max: f32,
     ) -> bool,

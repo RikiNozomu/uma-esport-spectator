@@ -511,6 +511,7 @@ extern "C" fn alter_update(this: Obj, mi: *const c_void) {
     }
     // After the clock: the seek bar reads `remaining_distance`.
     crate::seek::game::tick(this);
+    crate::skill_popups::tick(this);
 }
 
 macro_rules! end_hook {
@@ -590,7 +591,7 @@ pub fn install() {
 /// Writes fields and methods of the race classes to race_classes.txt, so
 /// later features can use real member names.
 fn write_class_dump() {
-    const CLASSES: [&str; 11] = [
+    const CLASSES: [&str; 17] = [
         "RaceManager",
         "RaceHorseManagerBase",
         "HorseData",
@@ -602,6 +603,13 @@ fn write_class_dump() {
         "RaceSimulateHorseResultData",
         "RaceInfo",
         "RaceMainViewController",
+        // Skill plates (skill_popups.rs).
+        "RaceUI",
+        "RaceUIMessagePlate",
+        "MessagePlateCtrl",
+        "MessagePlate",
+        "MessagePlateNormalRace",
+        "MessagePlateTeamStadium",
     ];
     let mut out = String::from("# Gallop race classes: fields (@offset) and methods (signature)\n\n");
     for name in CLASSES {
