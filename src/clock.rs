@@ -374,6 +374,16 @@ pub fn race_time() -> Option<f32> {
     race_live().then(|| f32::from_bits(TIME_BITS.load(Ordering::Relaxed)))
 }
 
+/// raw race time -> displayed time factor (official / raw), as f32 bits.
+static SCALE_BITS: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0x3f80_0000);
+
+/// Displayed seconds per raw second of the race in progress (1.0 if unknown):
+/// the game simulates faster than the times it shows. Any thread.
+pub fn time_scale() -> f32 {
+    let k = f32::from_bits(SCALE_BITS.load(Ordering::Relaxed));
+    if k.is_finite() && k > 0.0 { k } else { 1.0 }
+}
+
 /// Leader's distance run (metres) in the current race, as f32 bits.
 static LEAD_BITS: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
 
@@ -432,6 +442,7 @@ unsafe fn tick(rm: Obj) {
         st.ended = false;
         st.timing = Timing::default();
         st.winner = None;
+        SCALE_BITS.store(1.0f32.to_bits(), Ordering::Relaxed);
     }
     let sample = if st.ended { None } else { r.data.sample(rm) };
     // Published even with the clock turned off: the leaderboard follows it.
@@ -440,19 +451,24 @@ unsafe fn tick(rm: Obj) {
         COURSE_BITS.store(s.course.to_bits(), Ordering::Relaxed);
         TIME_BITS.store(s.t.to_bits(), Ordering::Relaxed);
         LEAD_BITS.store(s.leader.to_bits(), Ordering::Relaxed);
+        // The replay's result data is there from the start: the time scale
+        // is known before anyone finishes (the track map's speed uses it).
+        if st.winner.is_none() {
+            st.winner = r.data.winner(rm);
+        }
     }
     let Some(s) = sample.filter(|_| settings::is_on(CLOCK)) else {
+        let k = scale(st.winner.map(|w| w.0), st.winner.and_then(|w| w.1));
+        SCALE_BITS.store(k.to_bits(), Ordering::Relaxed);
         st.hide(&r.unity);
         return;
     };
 
     st.timing.step(s.t, s.leader, s.course);
-    if st.winner.is_none() {
-        st.winner = r.data.winner(rm);
-    }
     let official = st.winner.map(|w| w.0);
     let raw = st.winner.and_then(|w| w.1).or(st.timing.finish_raw);
     let k = scale(official, raw);
+    SCALE_BITS.store(k.to_bits(), Ordering::Relaxed);
 
     match render(&view(s.t, &st.timing, s.course, k, official)) {
         Some(texts) => {
@@ -512,6 +528,7 @@ extern "C" fn alter_update(this: Obj, mi: *const c_void) {
     // After the clock: the seek bar reads `remaining_distance`.
     crate::seek::game::tick(this);
     crate::skill_popups::tick(this);
+    crate::track_map::game::tick(this);
 }
 
 macro_rules! end_hook {

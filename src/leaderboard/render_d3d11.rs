@@ -25,6 +25,7 @@ use windows::Win32::Graphics::Dxgi::IDXGISwapChain;
 use super::Board;
 use crate::api;
 use crate::seek::{self, draw::SeekUi};
+use crate::track_map::{self, draw::MapUi};
 
 /// The leaderboard and the seek bar each have their own egui context, so
 /// each needs its own renderer (egui texture ids are per context).
@@ -34,6 +35,8 @@ struct State {
     board: Board,
     seek_renderer: egui_directx11::Renderer,
     seek_ui: SeekUi,
+    map_renderer: egui_directx11::Renderer,
+    map_ui: MapUi,
 }
 
 // Only touched from the render thread, behind the mutex.
@@ -57,10 +60,11 @@ pub unsafe extern "C" fn on_present(swap_chain: *mut c_void, _userdata: *mut c_v
         // Cheap exit when there is nothing to draw: no D3D calls at all.
         let frame = super::next_frame();
         let seek_frame = seek::next_frame();
-        if frame.is_none() && seek_frame.is_none() {
+        let map_frame = track_map::next_frame();
+        if frame.is_none() && seek_frame.is_none() && map_frame.is_none() {
             return Ok(());
         }
-        draw(swap_chain, frame.as_ref(), seek_frame.as_ref())
+        draw(swap_chain, frame.as_ref(), seek_frame.as_ref(), map_frame.as_ref())
     }));
     let error = match result {
         Ok(Ok(())) => return,
@@ -75,7 +79,12 @@ pub unsafe extern "C" fn on_present(swap_chain: *mut c_void, _userdata: *mut c_v
     api.notify("Overlay stopped after an error, see hachimi.log");
 }
 
-unsafe fn draw(swap_chain: *mut c_void, frame: Option<&super::Frame>, seek_frame: Option<&seek::Frame>) -> Result<(), String> {
+unsafe fn draw(
+    swap_chain: *mut c_void,
+    frame: Option<&super::Frame>,
+    seek_frame: Option<&seek::Frame>,
+    map_frame: Option<&track_map::Frame>,
+) -> Result<(), String> {
     // Borrowed: the swap chain belongs to the game, so no Release on drop.
     let swap_chain = ManuallyDrop::new(IDXGISwapChain::from_raw(swap_chain));
     let device: ID3D11Device = swap_chain.GetDevice().map_err(|e| format!("GetDevice: {e}"))?;
@@ -94,17 +103,21 @@ unsafe fn draw(swap_chain: *mut c_void, frame: Option<&super::Frame>, seek_frame
     if guard.as_ref().is_none_or(|s| s.device != device) {
         let renderer = egui_directx11::Renderer::new(&device).map_err(|e| format!("renderer init: {e}"))?;
         let seek_renderer = egui_directx11::Renderer::new(&device).map_err(|e| format!("renderer init: {e}"))?;
+        let map_renderer = egui_directx11::Renderer::new(&device).map_err(|e| format!("renderer init: {e}"))?;
         *guard = Some(State {
             device: device.clone(),
             renderer,
             board: Board::new(super::image_dir()),
             seek_renderer,
             seek_ui: SeekUi::default(),
+            map_renderer,
+            map_ui: MapUi::default(),
         });
     }
     let state = guard.as_mut().expect("just set");
 
     let board_output = frame.map(|f| state.board.frame(desc.Width, desc.Height, f, super::view()));
+    let map_output = map_frame.map(|f| state.map_ui.frame(desc.Width, desc.Height, f));
     let seek_output = match seek_frame {
         Some(f) => {
             let (output, geom) = state.seek_ui.frame(desc.Width, desc.Height, f);
@@ -120,7 +133,11 @@ unsafe fn draw(swap_chain: *mut c_void, frame: Option<&super::Frame>, seek_frame
     context.HSSetShader(None, None);
     context.DSSetShader(None, None);
     let mut result = Ok(());
-    if let Some(output) = board_output {
+    if let Some(output) = map_output {
+        let (renderer_output, _, _) = egui_directx11::split_output(output);
+        result = state.map_renderer.render(&context, &render_target, &state.map_ui.ctx, renderer_output);
+    }
+    if let (Ok(()), Some(output)) = (&result, board_output) {
         let (renderer_output, _, _) = egui_directx11::split_output(output);
         result = state.renderer.render(&context, &render_target, &state.board.ctx, renderer_output);
     }

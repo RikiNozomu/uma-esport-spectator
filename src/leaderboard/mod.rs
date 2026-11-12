@@ -591,6 +591,7 @@ mod preview {
                 mob_id: 0,
                 finished: false,
                 finish_order: -1,
+                index: i as i32,
             })
             .collect()
     }

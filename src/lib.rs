@@ -23,6 +23,7 @@ mod stub;
 mod sys;
 mod targets;
 mod tracer;
+pub mod track_map;
 
 use std::ffi::c_void;
 use std::sync::atomic::Ordering;
@@ -75,6 +76,7 @@ fn mark_ready(msg: &str) {
         patches::install();
         race_ui::install();
         clock::install();
+        track_map::load_settings();
         seek::game::install();
         skill_popups::install();
         #[cfg(windows)]

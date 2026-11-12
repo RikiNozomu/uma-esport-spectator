@@ -7,6 +7,9 @@ Hachimi Edge plugin for Umamusume: Pretty Derby (Steam, Windows) for watching an
 - **Hide race UI while running**: hide the game's race HUD (buttons, icons, marker,
   commentary) from the fanfare to the winning circle, for a clean broadcast view.
 - **Race clock**: broadcast-style running time, 1000 m split, and the winner's time.
+- **Track map**: a broadcast-style course map in the top-left corner during races: the course as a
+  tilted turf/dirt track, every runner as a dot in its bracket colour, the leader in red, the
+  surface and length, the leader's metres left and speed.
 - **Seek bar**: drag to jump anywhere in a race replay, pause/resume, and playback speed
   from 0.25x to 4x. Shows only while the mouse moves, so it stays off the broadcast picture.
 - **Disable skill cut-ins**: skip the unique-skill cut-in scenes.
@@ -208,7 +211,7 @@ Files, all under `hachimi\uma-esport-spectator\`:
 |---|---|
 | `trace_targets.txt` | Which classes/methods to hook. Created with defaults on first run. Edit, then restart the game. |
 | `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
-| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `race_clock`, `hide_race_ui`, `seek_bar`), skill popups (`skill_popups`, `skill_popup_trainer_name`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
+| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `race_clock`, `hide_race_ui`, `seek_bar`), skill popups (`skill_popups`, `skill_popup_trainer_name`), the track map (`track_map`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
 | `chara\*.png` | Character images for the leaderboard (see above). |
 | `race_classes.txt` | Fields (with offsets) and methods (with signatures) of the main race classes, written at load. Useful when the game changes and a value goes missing. |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |

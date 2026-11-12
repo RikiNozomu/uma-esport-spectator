@@ -76,6 +76,15 @@ Goal: study the race flow, later build esport-spectator features on top.
   ours; back to 1x on a new race and at the result board. Music is not resynced after a seek nor
   pitched with speed (Hachimi's `resync_race_music` is the reference). `examples/seek_preview.rs`
   renders its states offline.
+- `src/track_map/`: course map top-left (toggle `track_map`, default on), broadcast style: course
+  sampled once per race with `RaceManager::GetLaneTransform(distance, out pos, out rot)` (0..course
+  length, only while `clock::race_live()`: the call needs the course set up), runners from
+  `HorseRaceInfo._position`/`_distance` every frame (`game.rs`, clock's per-frame hook). `mod.rs`
+  projection (long axis horizontal, goal at the front, tilt `TILT`, skew `SKEW`) is pure and tested;
+  `draw.rs` paints a tilted band (turf/dirt from `RaceInfo.get_GroundType`), goal tick, bracket-colour
+  dots (gate by `race::Runner::index`), leader as the red marker, "TURF 2,000m", leader's metres left
+  and speed (distance over race time). Own egui context + renderer in render_d3d11.rs.
+  `examples/map_preview.rs` renders it offline. Sprints only draw their part of the oval.
 - `src/gui.rs`: menu section (checkboxes, sliders, status).
 - `src/race.rs`: leaderboard race snapshot on the main thread (positions, gate, chara/card/mob
   id, trainer name), max 18 runners. Return types are checked before calling getters.

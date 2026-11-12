@@ -39,6 +39,8 @@ pub struct Runner {
     /// Owner's trainer name; empty for NPCs.
     pub trainer: String,
     pub finished: bool,
+    /// Index in the game's horse array (HorseRaceInfo.HorseIndex), -1 if unknown.
+    pub index: i32,
 }
 
 #[derive(Clone, Debug)]
@@ -348,7 +350,7 @@ unsafe fn take_snapshot() -> Option<Vec<Runner>> {
 
     let course = crate::clock::course_distance();
     let mut runners = Vec::with_capacity(MAX_RUNNERS);
-    for &info in infos.iter().take(MAX_RUNNERS) {
+    for (index, &info) in infos.iter().enumerate().take(MAX_RUNNERS) {
         if info.is_null() {
             continue;
         }
@@ -381,6 +383,7 @@ unsafe fn take_snapshot() -> Option<Vec<Runner>> {
                 Some(g) if crate::il2cpp::is_instance(info, meta.replay_class) => g.i32(info),
                 _ => -1,
             },
+            index: index as i32,
         });
     }
     if runners.is_empty() {
