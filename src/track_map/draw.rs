@@ -1,11 +1,12 @@
-//! Paints the track map (render thread). Layout in 1080p pixels, scaled to the
-//! back buffer: egui runs at `height / 1080` pixels per point.
+//! Paints the track map (render thread). Layout in 1080p pixels at the top-left
+//! corner, scaled to the back buffer: egui runs at `height / 1080 * size` pixels
+//! per point, and the layer is shifted to the menu's position (`View`).
 
 use std::time::Instant;
 
 use egui::{Align2, Color32, CornerRadius, FontFamily, FontId, Pos2, Rect, Stroke, Vec2};
 
-use super::{fmt_length, Frame, Ground, Projection};
+use super::{fmt_length, placement, Frame, Ground, Projection, View};
 use crate::leaderboard::{bracket_colors, fonts};
 
 // Panel and map box (1080p points).
@@ -48,7 +49,11 @@ impl Default for MapUi {
 impl MapUi {
     /// One egui frame for a `w` x `h` pixel back buffer.
     pub fn frame(&mut self, w: u32, h: u32, f: &Frame) -> egui::FullOutput {
-        let ppp = (h as f32 / 1080.0).max(0.1);
+        self.frame_with(w, h, f, super::view())
+    }
+
+    pub fn frame_with(&mut self, w: u32, h: u32, f: &Frame, view: View) -> egui::FullOutput {
+        let ppp = (h as f32 / 1080.0 * view.scale).max(0.1);
         let screen = Vec2::new(w as f32 / ppp, h as f32 / ppp);
         let mut raw = egui::RawInput {
             screen_rect: Some(Rect::from_min_size(Pos2::ZERO, screen)),
@@ -58,7 +63,7 @@ impl MapUi {
         raw.viewports.entry(egui::ViewportId::ROOT).or_default().native_pixels_per_point = Some(ppp);
         let ctx = self.ctx.clone();
         let has_bold = self.has_bold;
-        ctx.run(raw, |ctx| paint(ctx, f, has_bold))
+        ctx.run(raw, |ctx| paint(ctx, f, has_bold, screen, view))
     }
 }
 
@@ -76,8 +81,9 @@ fn tick_across(points: &[Pos2], i: usize, half: f32) -> [Pos2; 2] {
     [a - n, a + n]
 }
 
-fn paint(ctx: &egui::Context, f: &Frame, has_bold: bool) {
-    let painter = ctx.layer_painter(egui::LayerId::new(egui::Order::Background, egui::Id::new("track_map")));
+fn paint(ctx: &egui::Context, f: &Frame, has_bold: bool, screen: Vec2, view: View) {
+    let layer = egui::LayerId::new(egui::Order::Background, egui::Id::new("track_map"));
+    let painter = ctx.layer_painter(layer);
     let s = &f.state;
     let Some(proj) = Projection::fit(&s.course, MAP.min.x, MAP.min.y, MAP.width(), MAP.height() - DEPTH) else { return };
     let course: Vec<Pos2> = s.course.iter().map(|&(x, z)| proj.project(x, z)).map(|(x, y)| Pos2::new(x, y)).collect();
@@ -88,6 +94,15 @@ fn paint(ctx: &egui::Context, f: &Frame, has_bold: bool) {
     let line_y = label_y + 24.0;
     let row_y = line_y + 26.0;
     let panel = Rect::from_min_max(PANEL_MIN, Pos2::new(PANEL_MIN.x + PANEL_WIDTH, row_y + 24.0));
+    // Everything below is laid out at the top-left corner, then shifted.
+    let (dx, dy) = placement(
+        (panel.min.x, panel.min.y),
+        (panel.width(), panel.height()),
+        (screen.x, screen.y),
+        (PANEL_MIN.x, PANEL_MIN.y),
+        view,
+    );
+    ctx.set_transform_layer(layer, egui::emath::TSTransform::from_translation(Vec2::new(dx, dy)));
     painter.rect_filled(panel, CornerRadius::same(14), PANEL_BG);
 
     // The track: dark side below, edge, surface, rail.

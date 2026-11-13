@@ -8,7 +8,7 @@ use std::io::{BufWriter, Write};
 use std::path::PathBuf;
 
 use uma_esport_spectator::track_map::draw::MapUi;
-use uma_esport_spectator::track_map::{Dot, Frame, Ground, MapState};
+use uma_esport_spectator::track_map::{Dot, Frame, Ground, MapState, View, DEFAULT_VIEW};
 
 /// A point `d` metres along a stadium loop (two straights, two half circles),
 /// tilted by `angle` in the world.
@@ -47,9 +47,12 @@ fn main() {
     let state = MapState { course, length, ground: Some(Ground::Turf), dots, speed_kmh: Some(62.4) };
     let frame = Frame { state, gates: (0..16).map(|i| (i, i + 1)).collect(), field: 16, remaining: Some(612.0) };
     let mut ui = MapUi::default();
-    let output = ui.frame(1920, 1080, &frame);
+    let output = ui.frame_with(1920, 1080, &frame, DEFAULT_VIEW);
     dump(&ui.ctx, output, &out.join("frame000.bin"));
     println!("frame000: track map");
+    let output = ui.frame_with(1920, 1080, &frame, View { scale: 1.4, x: 1.0, y: 0.5 });
+    dump(&ui.ctx, output, &out.join("frame001.bin"));
+    println!("frame001: size 1.4, right edge, half way down");
 }
 
 fn dump(ctx: &egui::Context, output: egui::FullOutput, path: &std::path::Path) {

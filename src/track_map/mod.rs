@@ -36,6 +36,57 @@ pub fn set_enabled(on: bool) {
 
 pub fn load_settings() {
     ENABLED.store(settings::get_bool(KEY, true), Ordering::Relaxed);
+    let v = View {
+        scale: settings::get_f32(KEY_SCALE, DEFAULT_VIEW.scale),
+        x: settings::get_f32(KEY_X, DEFAULT_VIEW.x),
+        y: settings::get_f32(KEY_Y, DEFAULT_VIEW.y),
+    };
+    *lock(&VIEW) = v.clamped();
+}
+
+const KEY_SCALE: &str = "track_map_scale";
+const KEY_X: &str = "track_map_x";
+const KEY_Y: &str = "track_map_y";
+pub const MIN_SCALE: f32 = 0.5;
+pub const MAX_SCALE: f32 = 2.0;
+pub const DEFAULT_VIEW: View = View { scale: 1.0, x: 0.0, y: 0.0 };
+static VIEW: Mutex<View> = Mutex::new(DEFAULT_VIEW);
+
+/// Map size and placement (menu sliders). `x`/`y` place the panel in the
+/// free screen space: 0 = left/top edge, 1 = right/bottom edge.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub struct View {
+    pub scale: f32,
+    pub x: f32,
+    pub y: f32,
+}
+
+impl View {
+    fn clamped(self) -> View {
+        View { scale: self.scale.clamp(MIN_SCALE, MAX_SCALE), x: self.x.clamp(0.0, 1.0), y: self.y.clamp(0.0, 1.0) }
+    }
+}
+
+pub fn view() -> View {
+    *lock(&VIEW)
+}
+
+pub fn set_view(v: View) {
+    let v = v.clamped();
+    *lock(&VIEW) = v;
+    settings::set_value(KEY_SCALE, format!("{:.2}", v.scale));
+    settings::set_value(KEY_X, format!("{:.3}", v.x));
+    settings::set_value(KEY_Y, format!("{:.3}", v.y));
+}
+
+/// Shift of a panel drawn at `min` (size `size`) so it sits at `view`'s place
+/// on a `screen`, keeping `margin` from the edges. All in the same points.
+pub fn placement(min: (f32, f32), size: (f32, f32), screen: (f32, f32), margin: (f32, f32), view: View) -> (f32, f32) {
+    let axis = |min: f32, size: f32, screen: f32, margin: f32, t: f32| {
+        let free = (screen - size - 2.0 * margin).max(0.0);
+        margin + free * t.clamp(0.0, 1.0) - min
+    };
+    (axis(min.0, size.0, screen.0, margin.0, view.x), axis(min.1, size.1, screen.1, margin.1, view.y))
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -257,6 +308,18 @@ mod tests {
         assert!(Projection::fit(&[], 0.0, 0.0, 10.0, 10.0).is_none());
         assert!(Projection::fit(&[(1.0, 1.0)], 0.0, 0.0, 10.0, 10.0).is_none());
         assert!(Projection::fit(&[(1.0, 1.0), (1.0, 1.0)], 0.0, 0.0, 10.0, 10.0).is_none());
+    }
+
+    #[test]
+    fn placement_keeps_the_panel_on_screen() {
+        let v = |x, y| View { scale: 1.0, x, y };
+        // Default: the panel stays where it is drawn (its corner = the margin).
+        assert_eq!(placement((16.0, 14.0), (388.0, 250.0), (1920.0, 1080.0), (16.0, 14.0), v(0.0, 0.0)), (0.0, 0.0));
+        // Far corner: right/bottom edge minus the margin.
+        let (dx, dy) = placement((16.0, 14.0), (388.0, 250.0), (1920.0, 1080.0), (16.0, 14.0), v(1.0, 1.0));
+        assert_eq!((16.0 + dx + 388.0, 14.0 + dy + 250.0), (1920.0 - 16.0, 1080.0 - 14.0));
+        // Bigger than the screen: pinned to the margin.
+        assert_eq!(placement((16.0, 14.0), (2000.0, 250.0), (1920.0, 1080.0), (16.0, 14.0), v(0.7, 0.0)).0, 0.0);
     }
 
     #[test]
