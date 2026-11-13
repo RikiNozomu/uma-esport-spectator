@@ -486,6 +486,7 @@ unsafe fn tick(rm: Obj) {
 /// The race is over (winning circle or leaving the race): hide and stay hidden.
 unsafe fn race_ended() {
     crate::seek::game::race_ended();
+    crate::records::hide();
     let Some(r) = RESOLVED.get() else { return };
     let mut st = state();
     st.ended = true;
@@ -529,6 +530,7 @@ extern "C" fn alter_update(this: Obj, mi: *const c_void) {
     crate::seek::game::tick(this);
     crate::skill_popups::tick(this);
     crate::track_map::game::tick(this);
+    crate::records::game::tick();
 }
 
 macro_rules! end_hook {

@@ -8,7 +8,8 @@ Goal: study the race flow, later build esport-spectator features on top.
 - `src/api.rs`: hand-written bindings to the Hachimi API, resolved by name via `get_api`.
   Source of truth for signatures: `src/core/plugin_api.rs` in https://github.com/kairusds/Hachimi-Edge
   (`hachimi_get_api` has the name table). Add new functions to the `api_struct!` list;
-  init fails if any listed name is missing in the host.
+  init fails if any listed name is missing in the host. Optional newer functions go in
+  `Extra` (`api::extra()`), resolved one by one, None when the host lacks them.
 - `src/stub.rs`: generic x86-64 entry stubs (Win64 ABI). Changing the asm: keep `cargo test` green.
 - `src/tracer.rs`: method enumeration, hook install (on the main thread via
   `il2cpp_schedule_on_thread`), recording sessions, log files.
@@ -83,8 +84,33 @@ Goal: study the race flow, later build esport-spectator features on top.
   projection (long axis horizontal, goal at the front, tilt `TILT`, skew `SKEW`) is pure and tested;
   `draw.rs` paints a tilted band (turf/dirt from `RaceInfo.get_GroundType`), goal tick, bracket-colour
   dots (gate by `race::Runner::index`), leader as the red marker, "TURF 2,000m", leader's metres left
-  and speed (distance over race time). Own egui context + renderer in render_d3d11.rs.
+  and speed (distance over race time). Own egui context + renderer in render_d3d11.rs. Size/position
+  (`View`, menu sliders, `track_map_scale`/`_x`/`_y`): laid out at the top-left in 1080p points, size =
+  pixels per point x scale, position = layer transform from `placement` (0..1 of the free space).
   `examples/map_preview.rs` renders it offline. Sprints only draw their part of the oval.
+- `src/records/`: record cards (toggle `record_cards`): TRACK RECORD (course + ground + distance) and
+  RACE RECORD (a race's ids in every mode: Career, Room Match, ...) cards for `seconds()` (slider
+  `record_cards_seconds`, 2-15, default 5; `motion()`: fade in rising `RISE`, fade out sinking `SINK`) when
+  gate loading begins = hook on `RaceViewReplay::SetupGateIn` (trace: StateGateIn_Enter 1.5 s ->
+  SetupGateIn 24.2 s -> EndGateInDemo 30.2 s -> StateWaitStartDash 51.0 s -> StateRace 51.07 s).
+  Race on screen: `RaceManager.get_RaceInfo` ids + `get_RaceCourseSet` (master row; fields found by
+  name candidates, `RaceTrackId`/`Distance`/`Ground`, members logged if missing), published from
+  clock's per-frame hook (`game::current`) for the menu. `records/records.txt` (`[track id turf 2400]`
+  / `[race Name]` + `ids`, holder/time/date/event/picture; created with `defaults()` = Triple Crown +
+  Arima), pictures in the same folder. Drawn as game UI by `ugui.rs` (main thread): our own overlay
+  `Canvas` (sortingOrder 900, `CanvasScaler` 1920x1080 matched on height = 1080p points,
+  `CanvasGroup` for the fade, never blocks clicks, DontDestroyOnLoad) with a bottom gradient
+  (RawImage, PNG made with the image crate) and two card slots (Image strips, RawImage picture,
+  Text in the game font from the `UI/Parts/Notification` prefab's TextCommon, best fit). `tick` is
+  scheduled on the main thread from the present callback (`request_tick`) while cards show, so it
+  runs in and out of races (menu preview); lays out on a new show / screen size, then only fades and
+  moves. `layout.rs` (pure, tested): bottom-left origin, yellow title strip, white holder + time,
+  yellow date strip (date + event), picture overlapping the card's right edge, no picture = the card
+  stretches over the group; groups centred in their screen slice, `fit_scale` for 4:3. Cards hold
+  the picture's file name; `folder()` falls back to `UMA_RECORDS_DIR` / `./records` without the
+  Hachimi API (tests). `menu.rs` editor uses `api::extra()` (button, text field: optional, newer
+  Hachimi only); Hachimi keys a text field by its buffer's address and keeps its own copy, so each
+  load allocates new buffers.
 - `src/gui.rs`: menu section (checkboxes, sliders, status).
 - `src/race.rs`: leaderboard race snapshot on the main thread (positions, gate, chara/card/mob
   id, trainer name), max 18 runners. Return types are checked before calling getters.

@@ -15,6 +15,7 @@ mod il2cpp;
 mod label;
 mod patches;
 mod race_ui;
+pub mod records;
 mod settings;
 pub mod seek;
 mod sig;
@@ -41,6 +42,7 @@ pub extern "C" fn hachimi_init_v3(get_api: Option<GetApiFn>, version: i32) -> i3
         return 0;
     }
     let Some(api) = Api::load(get_api) else { return 0 };
+    api::set_get_api(get_api);
     let api = api::set(api);
 
     unsafe {
@@ -77,6 +79,8 @@ fn mark_ready(msg: &str) {
         race_ui::install();
         clock::install();
         track_map::load_settings();
+        records::load_settings();
+        records::game::install();
         seek::game::install();
         skill_popups::install();
         #[cfg(windows)]

@@ -9,9 +9,12 @@ Hachimi Edge plugin for Umamusume: Pretty Derby (Steam, Windows) for watching an
 - **Race clock**: broadcast-style running time, 1000 m split, and the winner's time.
 - **Track map**: a broadcast-style course map in the top-left corner during races: the course as a
   tilted turf/dirt track, every runner as a dot in its bracket colour, the leader in red, the
-  surface and length, the leader's metres left and speed.
+  surface and length, the leader's metres left and speed. Size and position are adjustable in the menu.
 - **Seek bar**: drag to jump anywhere in a race replay, pause/resume, and playback speed
   from 0.25x to 4x. Shows only while the mouse moves, so it stays off the broadcast picture.
+- **Record cards**: when the horses start loading into the gates, the course's TRACK RECORD and
+  the race's RACE RECORD (holder, time, date, picture) for 5 seconds, broadcast style. Ships with
+  the Triple Crown races and the Arima Kinen; add or change records in the menu.
 - **Disable skill cut-ins**: skip the unique-skill cut-in scenes.
 - **Skill popups**: choose whose skill plates show (Default / All / Off), optionally with the
   trainer's name on trainers' horses.
@@ -200,6 +203,36 @@ an old `hide_skill_popups = true` becomes Off. See `src/skill_popups.rs`.
   works any time. Clicks on the bar do not reach the game. The music is not moved along with a
   seek and does not change pitch with speed. This replaces Hachimi's own
   `race_playback_slider`, which does not show on the Global client (turn that one off).
+
+**Record cards**
+
+- **Show track / race records when the gates start loading**: right after the fanfare, as
+  the horses start walking into the gates (`RaceViewReplay::SetupGateIn`), cards fade in rising
+  slightly at the bottom of the screen, stay for **Show for (seconds)** (2-15, default 5) and
+  fade out sinking slightly: a yellow title strip (`TRACK RECORD : TOKYO TURF 2400` /
+  `RACE RECORD : JAPANESE DERBY`), the holder's name and the time, a yellow strip under it with
+  the date and the race it was set in (`2018/11/25  JAPAN CUP`), and the holder's picture
+  standing on the right of the card (no picture: the card stretches over that space). A race with
+  both records shows both cards side by side; with one, that card centred; with none, nothing.
+  The cards are the game's own UI (a canvas of the plugin, game font), so they show wherever the
+  game does; on a 4:3 screen two cards are shrunk to fit.
+- The section shows the race on screen (course, race id, instance id) and its records.
+  **Preview the cards** shows them right away (the race on screen, else the Japanese Derby's).
+- **Edit a record**: pick a record (or **+ New track record** / **+ New race record** for the
+  race on screen), change the holder, time (`2:20.6`), date (`2018/11/25`), the race it was set
+  in (`Japan Cup`), picture, and for race records the name, then **Save**. **Preview this card** shows it as edited; **Delete this
+  record** removes it. A race has one id per mode (Career, Room Match, Champions Meeting, ...):
+  open the race in another mode and press **Use this record for race id ... too** to add it.
+  The editor needs a Hachimi build with text fields; without them, edit the file (below).
+- Records live in `records\records.txt` (one `[track <course id> <turf|dirt> <distance>]` or
+  `[race <name>]` section per record, `ids =` for races; reloaded when it changes). Pictures are
+  PNGs in the same `records\` folder (a transparent background works best). Out of the box: the
+  Satsuki Sho, Japanese Derby, Kikuka Sho and Arima Kinen and their courses (JRA records as of
+  November 2026); Almond Eye and Zenno Rob Roy's records name `almond_eye.png` and
+  `zenno_rob_roy.png` (put your pictures under those names).
+
+**Function trace**
+
 - **Record function calls**: on = start a new log file, off = finish it and write the summary.
   The first time it is turned on, hooks are installed; the game freezes for a few seconds.
 - **Log every call (heavy)**: off (default) logs only the first call of each method,
@@ -211,8 +244,9 @@ Files, all under `hachimi\uma-esport-spectator\`:
 |---|---|
 | `trace_targets.txt` | Which classes/methods to hook. Created with defaults on first run. Edit, then restart the game. |
 | `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
-| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `race_clock`, `hide_race_ui`, `seek_bar`), skill popups (`skill_popups`, `skill_popup_trainer_name`), the track map (`track_map`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
+| `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `race_clock`, `hide_race_ui`, `seek_bar`), skill popups (`skill_popups`, `skill_popup_trainer_name`), the track map (`track_map`, `track_map_scale`, `track_map_x`, `track_map_y`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
 | `chara\*.png` | Character images for the leaderboard (see above). |
+| `records\records.txt`, `records\*.png` | Record cards: the records and the holders' pictures (see above). |
 | `race_classes.txt` | Fields (with offsets) and methods (with signatures) of the main race classes, written at load. Useful when the game changes and a value goes missing. |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |
 

@@ -88,6 +88,40 @@ api_struct! {
 }
 
 static API: OnceLock<Api> = OnceLock::new();
+static GET_API: OnceLock<GetApiFn> = OnceLock::new();
+
+/// Newer menu widgets, absent from older Hachimi builds: resolved one by one,
+/// None when missing (unlike `Api`, whose every entry is required).
+pub struct Extra {
+    pub gui_ui_button: Option<unsafe extern "C" fn(ui: *mut c_void, text: *const c_char) -> bool>,
+    pub gui_ui_text_edit_singleline:
+        Option<unsafe extern "C" fn(ui: *mut c_void, buffer: *mut c_char, buffer_len: usize) -> bool>,
+}
+
+/// Remembers `get_api` for `extra()`.
+pub fn set_get_api(get_api: GetApiFn) {
+    let _ = GET_API.set(get_api);
+}
+
+pub fn extra() -> &'static Extra {
+    static EXTRA: OnceLock<Extra> = OnceLock::new();
+    EXTRA.get_or_init(|| {
+        let lookup = |name: &str| -> *mut c_void {
+            match GET_API.get() {
+                Some(get) => get(cstr(name).as_ptr()),
+                None => std::ptr::null_mut(),
+            }
+        };
+        unsafe {
+            let button = lookup("gui_ui_button");
+            let text_edit = lookup("gui_ui_text_edit_singleline");
+            Extra {
+                gui_ui_button: (!button.is_null()).then(|| std::mem::transmute(button)),
+                gui_ui_text_edit_singleline: (!text_edit.is_null()).then(|| std::mem::transmute(text_edit)),
+            }
+        }
+    })
+}
 
 pub fn set(api: Api) -> &'static Api {
     API.get_or_init(|| api)
@@ -95,6 +129,10 @@ pub fn set(api: Api) -> &'static Api {
 
 /// Panics only if called before `hachimi_init_v3`, which cannot happen:
 /// every caller is a callback registered from there.
+pub fn try_get() -> Option<&'static Api> {
+    API.get()
+}
+
 pub fn get() -> &'static Api {
     API.get().expect("api not initialized")
 }

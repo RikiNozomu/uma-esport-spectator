@@ -57,6 +57,9 @@ pub unsafe extern "C" fn on_present(swap_chain: *mut c_void, _userdata: *mut c_v
         return;
     }
     let result = catch_unwind(AssertUnwindSafe(|| {
+        // The record cards are game UI: ask the main thread to move them
+        // (one call per frame while they show; nothing otherwise).
+        crate::records::ugui::request_tick();
         // Cheap exit when there is nothing to draw: no D3D calls at all.
         let frame = super::next_frame();
         let seek_frame = seek::next_frame();

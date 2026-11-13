@@ -75,14 +75,23 @@ pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
 
         (api.gui_ui_heading)(ui, text("Track map").as_ptr());
         let mut on = track_map::is_enabled();
-        if (api.gui_ui_checkbox)(ui, text("Show the course map (top left) during races").as_ptr(), &mut on) {
+        if (api.gui_ui_checkbox)(ui, text("Show the course map during races").as_ptr(), &mut on) {
             track_map::set_enabled(on);
+        }
+        let mut view = track_map::view();
+        let mut changed = (api.gui_ui_slider_f32)(ui, text("Map size").as_ptr(), &mut view.scale, track_map::MIN_SCALE, track_map::MAX_SCALE);
+        changed |= (api.gui_ui_slider_f32)(ui, text("Map position, left to right").as_ptr(), &mut view.x, 0.0, 1.0);
+        changed |= (api.gui_ui_slider_f32)(ui, text("Map position, top to bottom").as_ptr(), &mut view.y, 0.0, 1.0);
+        if changed {
+            track_map::set_view(view);
         }
         let status = track_map::game::error().map(|e| format!("not available: {e}")).unwrap_or_else(|| {
             if track_map::is_enabled() { "shows while the race runs".to_owned() } else { "off".to_owned() }
         });
         (api.gui_ui_small)(ui, text(&status).as_ptr());
         (api.gui_ui_separator)(ui);
+
+        crate::records::menu::draw(ui);
 
         (api.gui_ui_heading)(ui, text("Function trace").as_ptr());
 
