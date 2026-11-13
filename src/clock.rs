@@ -529,6 +529,7 @@ extern "C" fn alter_update(this: Obj, mi: *const c_void) {
     crate::seek::game::tick(this);
     crate::skill_popups::tick(this);
     crate::track_map::game::tick(this);
+    crate::gate_banner::game::tick(this);
 }
 
 macro_rules! end_hook {

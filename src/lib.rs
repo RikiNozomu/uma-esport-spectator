@@ -8,6 +8,7 @@
 
 mod api;
 mod clock;
+pub mod gate_banner;
 mod gui;
 pub mod leaderboard;
 pub mod race;
@@ -77,6 +78,7 @@ fn mark_ready(msg: &str) {
         race_ui::install();
         clock::install();
         track_map::load_settings();
+        gate_banner::load_settings();
         seek::game::install();
         skill_popups::install();
         #[cfg(windows)]

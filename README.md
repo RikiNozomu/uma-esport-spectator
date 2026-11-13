@@ -200,6 +200,12 @@ an old `hide_skill_popups = true` becomes Off. See `src/skill_popups.rs`.
   works any time. Clicks on the bar do not reach the game. The music is not moved along with a
   seek and does not change pitch with speed. This replaces Hachimi's own
   `race_playback_slider`, which does not show on the Global client (turn that one off).
+**Gate banner**: your own picture on the starting gate's header (the strip above the stall
+numbers), replacing the game's name plate, like the sponsor banners on real gates. One
+picture for every race, or per gate size (18 / 9 stalls), course, race or race instance;
+sliders for placement and brightness. Pictures go in `gate_banner\`. Templates, sizes, file
+names and every course / race id: [docs/gate_banner/](docs/gate_banner/README.md).
+
 - **Record function calls**: on = start a new log file, off = finish it and write the summary.
   The first time it is turned on, hooks are installed; the game freezes for a few seconds.
 - **Log every call (heavy)**: off (default) logs only the first call of each method,
@@ -213,6 +219,8 @@ Files, all under `hachimi\uma-esport-spectator\`:
 | `hooked_methods.txt` | Every method the plugin tried to hook, `ok` or `FAILED`, with its signature (return type, parameter types and names). |
 | `settings.txt` | Plugin settings: the Race toggles (`disable_skill_cutins`, `race_clock`, `hide_race_ui`, `seek_bar`), skill popups (`skill_popups`, `skill_popup_trainer_name`), the track map (`track_map`) and the leaderboard (`leaderboard`, `leaderboard_scale`, `leaderboard_y`, `leaderboard_hide_before_goal`). |
 | `chara\*.png` | Character images for the leaderboard (see above). |
+| `gate_banner\*.png` | Gate banner pictures (see [docs/gate_banner/](docs/gate_banner/README.md)). |
+| `gate_dump.txt` | Every object of the race scene when the gates open (gate banner troubleshooting). |
 | `race_classes.txt` | Fields (with offsets) and methods (with signatures) of the main race classes, written at load. Useful when the game changes and a value goes missing. |
 | `logs\trace_YYYYMMDD_HHMMSS.log` | One file per recording: `ms  thread  Class::Method(argc)`, then a call-count summary. |
 

@@ -85,6 +85,37 @@ Goal: study the race flow, later build esport-spectator features on top.
   dots (gate by `race::Runner::index`), leader as the red marker, "TURF 2,000m", leader's metres left
   and speed (distance over race time). Own egui context + renderer in render_d3d11.rs.
   `examples/map_preview.rs` renders it offline. Sprints only draw their part of the oval.
+- `src/gate_banner/`: custom picture on the starting gate's header (toggle `gate_banner`), as our own
+  polygons: two one-sided quads (front + back face of the header), children of the gate object
+  `RaceView/Course/pfb_env_race00000_gate000_000(Clone)` (same prefab on every course; found as the
+  top-most "*gate*" object among `FindObjectsOfType(Renderer)` paths, or `gate_banner_anchor`).
+  Header = everything under `pos_name_plate` (the course's name plate, e.g. `pfb_env_race10006_1000_000/
+  gate_name_etc`, 11.98 x 0.25 units, shader `Gallop/3D/Bg/LightmapColorAlphaFog/IgnoreZ`) + `gate_alpha_URA`
+  (+ `gate_banner_hide` names); hidden while the banner shows (menu toggle). Quads are one-sided
+  (a double-sided far quad shows through the open frame from above). Material = copy of another
+  scene material, chosen by `gate_banner_look` (`Look`): default `monitor` = the course big screen
+  `monitor_A` (`Gallop/3D/Bg/MonitorFog`, made to show any picture), `sky` = `Gallop/3D/Bg/UnlitNoFog`,
+  `plate` = the name plate's (washes colour pictures out even with dark vertex colours; its mesh is
+  readable: colour 0.5 grey, no uv2). PNG as main texture (`ImageConversion.LoadImage`). Renderer
+  lightmap getters and `Shader.GetPropertyCount` are stripped in this build. Only enabled + active
+  renderers count: the lamp effects' disabled `top` renderers have bogus bounds (3x the gate). Never
+  copy an effect material (the lamp glow is additive: renders white). The course gate is hidden during
+  the gate-in cutscene: find it once, then wait for it to be active. Measure parts by their mesh
+  bounds carried through their own transform, never `Renderer.bounds` (world AABB: on a gate at an
+  angle, e.g. Kyoto, the header came out 2.79 deep instead of 1.0). The game can re-enable the
+  header plates before the start: `keep_header_hidden` re-hides them every frame. World units are small (gate ~12
+  long): sliders are in units. Banner height = header height x `HEIGHT_SCALE` (2.5, slider), bottom edge
+  on the header's (grows upwards): pictures 19.2:1 (18 stalls) / 9.6:1 (9), templates 4800/2400 x 250.
+  Distance from the header's faces is fixed (`STANDOFF` 0.02, no slider).
+  Gate models (game files): JRA courses have 18 stalls (header 11.98 x 0.25) or 9 stalls for <= 9 runners
+  (header 5.98 x 0.25); `gateXX1` = name plate at the other end. Local courses (Oi/Kawasaki/Funabashi/
+  Morioka, `race.start_gate` 100-105) and Longchamp (201) have their own gates (not inspected).
+  Per race, course and gate size (stalls = highest `gate_number/number_NN` of the model, shown or not;
+  course = `pfb_env_race<id>_` name plate under the gate): `gate_banner/<race instance id>_<n>.png`,
+  `<race id>_<n>.png`, `course_<course id>_<n>.png`, `all_<n>.png`, then without `_<n>`. End-user guide,
+  id lists and templates: `docs/gate_banner/` (lists from `tools/gate_banner_ids.py`, templates from
+  `tools/gate_banner_templates.ps1`). `gate_dump.txt` (every
+  renderer with lightmap, gate shaders' properties, Gallop `*Gate*` classes) is written when the gates open.
 - `src/gui.rs`: menu section (checkboxes, sliders, status).
 - `src/race.rs`: leaderboard race snapshot on the main thread (positions, gate, chara/card/mob
   id, trainer name), max 18 runners. Return types are checked before calling getters.

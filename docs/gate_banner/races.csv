@@ -1,0 +1,1853 @@
+instance_id,race_id,name,mode,grade,course_id,course,distance,ground,runners,gate
+202001,2020,Sapporo Kinen,Career,G2,10001,Sapporo,2000,Turf,16,18
+304301,3043,Queen Stakes,Career,G3,10001,Sapporo,1800,Turf,14,18
+304701,3047,Elm Stakes,Career,G3,10001,Sapporo,1700,Dirt,14,18
+305001,3050,Keeneland Cup,Career,G3,10001,Sapporo,1200,Turf,16,18
+305101,3051,Sapporo Junior Stakes,Career,G3,10001,Sapporo,1800,Turf,14,18
+407101,4071,Sapporo Nikkei Open,Career,OP,10001,Sapporo,2600,Turf,14,18
+407201,4072,UHB Sho,Career,OP,10001,Sapporo,1200,Turf,16,18
+407501,4075,Cosmos Sho,Career,OP,10001,Sapporo,1800,Turf,14,18
+407701,4077,Clover Sho,Career,OP,10001,Sapporo,1500,Turf,14,18
+408201,4082,Tancho Stakes,Career,OP,10001,Sapporo,2600,Turf,14,18
+408301,4083,Suzuran Sho,Career,OP,10001,Sapporo,1200,Turf,16,18
+500101,5001,Practice,Practice,,10001,Sapporo,2600,Turf,14,18
+500201,5002,Practice,Practice,,10001,Sapporo,2000,Turf,16,18
+500301,5003,Practice,Practice,,10001,Sapporo,1800,Turf,14,18
+500401,5004,Practice,Practice,,10001,Sapporo,1500,Turf,14,18
+500501,5005,Practice,Practice,,10001,Sapporo,1200,Turf,16,18
+500701,5007,Practice,Practice,,10001,Sapporo,1700,Dirt,14,18
+800031,5200,Trainers Cup,Room Match,,10001,Sapporo,2600,Turf,14,18
+800032,5201,Trainers Cup,Room Match,,10001,Sapporo,2000,Turf,16,18
+800033,5202,Trainers Cup,Room Match,,10001,Sapporo,1800,Turf,14,18
+800034,5203,Trainers Cup,Room Match,,10001,Sapporo,1500,Turf,14,18
+800035,5204,Trainers Cup,Room Match,,10001,Sapporo,1200,Turf,16,18
+800036,5205,Trainers Cup,Room Match,,10001,Sapporo,1700,Dirt,14,18
+610000,6100,Team Race: Sprint,Team Trials,G1,10001,Sapporo,1200,Turf,12,18
+610001,6101,Team Race: Sprint,Team Trials,G1,10001,Sapporo,1200,Turf,12,18
+610002,6102,Team Race: Sprint,Team Trials,G1,10001,Sapporo,1200,Turf,12,18
+610003,6103,Team Race: Mile,Team Trials,G1,10001,Sapporo,1500,Turf,12,18
+610004,6104,Team Race: Mile,Team Trials,G1,10001,Sapporo,1500,Turf,12,18
+610005,6105,Team Race: Mile,Team Trials,G1,10001,Sapporo,1500,Turf,12,18
+610006,6106,Team Race: Mile,Team Trials,G1,10001,Sapporo,1800,Turf,12,18
+610007,6107,Team Race: Mile,Team Trials,G1,10001,Sapporo,1800,Turf,12,18
+610008,6108,Team Race: Mile,Team Trials,G1,10001,Sapporo,1800,Turf,12,18
+610009,6109,Team Race: Medium,Team Trials,G1,10001,Sapporo,2000,Turf,12,18
+610010,6110,Team Race: Medium,Team Trials,G1,10001,Sapporo,2000,Turf,12,18
+610011,6111,Team Race: Medium,Team Trials,G1,10001,Sapporo,2000,Turf,12,18
+610012,6112,Team Race: Long,Team Trials,G1,10001,Sapporo,2600,Turf,12,18
+610013,6113,Team Race: Long,Team Trials,G1,10001,Sapporo,2600,Turf,12,18
+610014,6114,Team Race: Long,Team Trials,G1,10001,Sapporo,2600,Turf,12,18
+610015,6115,Team Race: Dirt,Team Trials,G1,10001,Sapporo,1700,Dirt,12,18
+610016,6116,Team Race: Dirt,Team Trials,G1,10001,Sapporo,1700,Dirt,12,18
+610017,6117,Team Race: Dirt,Team Trials,G1,10001,Sapporo,1700,Dirt,12,18
+904184,9392,Junior Make Debut,Career,,10001,Sapporo,2000,Turf,9,9
+904192,9398,Junior Make Debut,Career,,10001,Sapporo,1500,Turf,9,9
+904195,9401,Junior Make Debut,Career,,10001,Sapporo,1200,Turf,9,9
+620000,10000,Showdown: Sprint,Showdown,,10001,Sapporo,1200,Turf,12,18
+622005,10000,Showdown: Sprint,Showdown,,10001,Sapporo,1200,Turf,12,18
+622010,10000,Showdown: Sprint,Showdown,,10001,Sapporo,1200,Turf,12,18
+620008,10008,Showdown: Sprint,Showdown,,10001,Sapporo,1200,Turf,12,18
+620010,10010,Showdown: Mile,Showdown,,10001,Sapporo,1800,Turf,12,18
+622031,10010,Showdown: Mile,Showdown,,10001,Sapporo,1800,Turf,12,18
+622036,10010,Showdown: Mile,Showdown,,10001,Sapporo,1800,Turf,12,18
+620018,10018,Showdown: Mile,Showdown,,10001,Sapporo,1800,Turf,12,18
+620020,10020,Showdown: Medium,Showdown,,10001,Sapporo,2000,Turf,12,18
+622057,10020,Showdown: Medium,Showdown,,10001,Sapporo,2000,Turf,12,18
+622062,10020,Showdown: Medium,Showdown,,10001,Sapporo,2000,Turf,12,18
+620028,10028,Showdown: Medium,Showdown,,10001,Sapporo,2000,Turf,12,18
+620030,10030,Showdown: Long,Showdown,,10001,Sapporo,2600,Turf,12,18
+622083,10030,Showdown: Long,Showdown,,10001,Sapporo,2600,Turf,12,18
+622088,10030,Showdown: Long,Showdown,,10001,Sapporo,2600,Turf,12,18
+620038,10038,Showdown: Long,Showdown,,10001,Sapporo,2600,Turf,12,18
+620040,10040,Showdown: Dirt,Showdown,,10001,Sapporo,1700,Dirt,12,18
+622109,10040,Showdown: Dirt,Showdown,,10001,Sapporo,1700,Dirt,12,18
+622114,10040,Showdown: Dirt,Showdown,,10001,Sapporo,1700,Dirt,12,18
+620048,10048,Showdown: Dirt,Showdown,,10001,Sapporo,1700,Dirt,12,18
+620080,10080,Showdown: Sprint,Showdown,,10001,Sapporo,1200,Turf,12,18
+620083,10083,Showdown: Mile,Showdown,,10001,Sapporo,1800,Turf,12,18
+620086,10086,Showdown: Medium,Showdown,,10001,Sapporo,2000,Turf,12,18
+620089,10089,Showdown: Long,Showdown,,10001,Sapporo,2600,Turf,12,18
+620092,10092,Showdown: Dirt,Showdown,,10001,Sapporo,1700,Dirt,12,18
+620112,10112,Showdown: Sprint,Showdown,,10001,Sapporo,1200,Turf,12,18
+620115,10115,Showdown: Mile,Showdown,,10001,Sapporo,1800,Turf,12,18
+620118,10118,Showdown: Medium,Showdown,,10001,Sapporo,2000,Turf,12,18
+620121,10121,Showdown: Long,Showdown,,10001,Sapporo,2600,Turf,12,18
+620124,10124,Showdown: Dirt,Showdown,,10001,Sapporo,1700,Dirt,12,18
+303401,3034,Hakodate Sprint Stakes,Career,G3,10002,Hakodate,1200,Turf,16,18
+303901,3039,Hakodate Kinen,Career,G3,10002,Hakodate,2000,Turf,16,18
+304101,3041,Hakodate Junior Stakes,Career,G3,10002,Hakodate,1200,Turf,16,18
+406201,4062,Onuma Stakes,Career,OP,10002,Hakodate,1700,Dirt,14,18
+406401,4064,Tomoe Sho,Career,OP,10002,Hakodate,1800,Turf,16,18
+406501,4065,Marine Stakes,Career,OP,10002,Hakodate,1700,Dirt,14,18
+500901,5009,Practice,Practice,,10002,Hakodate,2600,Turf,16,18
+501001,5010,Practice,Practice,,10002,Hakodate,2000,Turf,16,18
+501101,5011,Practice,Practice,,10002,Hakodate,1800,Turf,16,18
+501201,5012,Practice,Practice,,10002,Hakodate,1200,Turf,16,18
+501301,5013,Practice,Practice,,10002,Hakodate,1000,Turf,14,18
+501501,5015,Practice,Practice,,10002,Hakodate,1700,Dirt,14,18
+800037,5206,Trainers Cup,Room Match,,10002,Hakodate,2600,Turf,16,18
+800038,5207,Trainers Cup,Room Match,,10002,Hakodate,2000,Turf,16,18
+800039,5208,Trainers Cup,Room Match,,10002,Hakodate,1800,Turf,16,18
+800040,5209,Trainers Cup,Room Match,,10002,Hakodate,1200,Turf,16,18
+800041,5210,Trainers Cup,Room Match,,10002,Hakodate,1000,Turf,14,18
+800042,5211,Trainers Cup,Room Match,,10002,Hakodate,1700,Dirt,14,18
+610018,6118,Team Race: Sprint,Team Trials,G1,10002,Hakodate,1000,Turf,12,18
+610019,6119,Team Race: Sprint,Team Trials,G1,10002,Hakodate,1000,Turf,12,18
+610020,6120,Team Race: Sprint,Team Trials,G1,10002,Hakodate,1000,Turf,12,18
+610021,6121,Team Race: Sprint,Team Trials,G1,10002,Hakodate,1200,Turf,12,18
+610022,6122,Team Race: Sprint,Team Trials,G1,10002,Hakodate,1200,Turf,12,18
+610023,6123,Team Race: Sprint,Team Trials,G1,10002,Hakodate,1200,Turf,12,18
+610024,6124,Team Race: Mile,Team Trials,G1,10002,Hakodate,1800,Turf,12,18
+610025,6125,Team Race: Mile,Team Trials,G1,10002,Hakodate,1800,Turf,12,18
+610026,6126,Team Race: Mile,Team Trials,G1,10002,Hakodate,1800,Turf,12,18
+610027,6127,Team Race: Medium,Team Trials,G1,10002,Hakodate,2000,Turf,12,18
+610028,6128,Team Race: Medium,Team Trials,G1,10002,Hakodate,2000,Turf,12,18
+610029,6129,Team Race: Medium,Team Trials,G1,10002,Hakodate,2000,Turf,12,18
+610030,6130,Team Race: Long,Team Trials,G1,10002,Hakodate,2600,Turf,12,18
+610031,6131,Team Race: Long,Team Trials,G1,10002,Hakodate,2600,Turf,12,18
+610032,6132,Team Race: Long,Team Trials,G1,10002,Hakodate,2600,Turf,12,18
+610033,6133,Team Race: Dirt,Team Trials,G1,10002,Hakodate,1700,Dirt,12,18
+610034,6134,Team Race: Dirt,Team Trials,G1,10002,Hakodate,1700,Dirt,12,18
+610035,6135,Team Race: Dirt,Team Trials,G1,10002,Hakodate,1700,Dirt,12,18
+700501,7005,Team Practice,group 4,,10002,Hakodate,2000,Turf,16,18
+904189,9395,Junior Make Debut,Career,,10002,Hakodate,1800,Turf,9,9
+620001,10001,Showdown: Sprint,Showdown,,10002,Hakodate,1000,Turf,12,18
+622002,10001,Showdown: Sprint,Showdown,,10002,Hakodate,1000,Turf,12,18
+622009,10001,Showdown: Sprint,Showdown,,10002,Hakodate,1000,Turf,12,18
+622013,10001,Showdown: Sprint,Showdown,,10002,Hakodate,1000,Turf,12,18
+622023,10001,Showdown: Sprint,Showdown,,10002,Hakodate,1000,Turf,12,18
+622025,10001,Showdown: Sprint,Showdown,,10002,Hakodate,1000,Turf,12,18
+620009,10009,Showdown: Sprint,Showdown,,10002,Hakodate,1000,Turf,12,18
+620011,10011,Showdown: Mile,Showdown,,10002,Hakodate,1800,Turf,12,18
+622028,10011,Showdown: Mile,Showdown,,10002,Hakodate,1800,Turf,12,18
+622035,10011,Showdown: Mile,Showdown,,10002,Hakodate,1800,Turf,12,18
+622039,10011,Showdown: Mile,Showdown,,10002,Hakodate,1800,Turf,12,18
+622049,10011,Showdown: Mile,Showdown,,10002,Hakodate,1800,Turf,12,18
+622051,10011,Showdown: Mile,Showdown,,10002,Hakodate,1800,Turf,12,18
+620019,10019,Showdown: Mile,Showdown,,10002,Hakodate,1800,Turf,12,18
+620021,10021,Showdown: Medium,Showdown,,10002,Hakodate,2000,Turf,12,18
+622054,10021,Showdown: Medium,Showdown,,10002,Hakodate,2000,Turf,12,18
+622061,10021,Showdown: Medium,Showdown,,10002,Hakodate,2000,Turf,12,18
+622065,10021,Showdown: Medium,Showdown,,10002,Hakodate,2000,Turf,12,18
+622075,10021,Showdown: Medium,Showdown,,10002,Hakodate,2000,Turf,12,18
+622077,10021,Showdown: Medium,Showdown,,10002,Hakodate,2000,Turf,12,18
+620029,10029,Showdown: Medium,Showdown,,10002,Hakodate,2000,Turf,12,18
+620031,10031,Showdown: Long,Showdown,,10002,Hakodate,2600,Turf,12,18
+622080,10031,Showdown: Long,Showdown,,10002,Hakodate,2600,Turf,12,18
+622087,10031,Showdown: Long,Showdown,,10002,Hakodate,2600,Turf,12,18
+622091,10031,Showdown: Long,Showdown,,10002,Hakodate,2600,Turf,12,18
+622101,10031,Showdown: Long,Showdown,,10002,Hakodate,2600,Turf,12,18
+622103,10031,Showdown: Long,Showdown,,10002,Hakodate,2600,Turf,12,18
+620039,10039,Showdown: Long,Showdown,,10002,Hakodate,2600,Turf,12,18
+620041,10041,Showdown: Dirt,Showdown,,10002,Hakodate,1700,Dirt,12,18
+622106,10041,Showdown: Dirt,Showdown,,10002,Hakodate,1700,Dirt,12,18
+622113,10041,Showdown: Dirt,Showdown,,10002,Hakodate,1700,Dirt,12,18
+622117,10041,Showdown: Dirt,Showdown,,10002,Hakodate,1700,Dirt,12,18
+622127,10041,Showdown: Dirt,Showdown,,10002,Hakodate,1700,Dirt,12,18
+622129,10041,Showdown: Dirt,Showdown,,10002,Hakodate,1700,Dirt,12,18
+620049,10049,Showdown: Dirt,Showdown,,10002,Hakodate,1700,Dirt,12,18
+620081,10081,Showdown: Sprint,Showdown,,10002,Hakodate,1000,Turf,12,18
+620084,10084,Showdown: Mile,Showdown,,10002,Hakodate,1800,Turf,12,18
+620087,10087,Showdown: Medium,Showdown,,10002,Hakodate,2000,Turf,12,18
+620090,10090,Showdown: Long,Showdown,,10002,Hakodate,2600,Turf,12,18
+620093,10093,Showdown: Dirt,Showdown,,10002,Hakodate,1700,Dirt,12,18
+620125,10125,Showdown: Sprint,Showdown,,10002,Hakodate,1000,Turf,12,18
+620128,10128,Showdown: Mile,Showdown,,10002,Hakodate,1800,Turf,12,18
+620131,10131,Showdown: Medium,Showdown,,10002,Hakodate,2000,Turf,12,18
+620134,10134,Showdown: Long,Showdown,,10002,Hakodate,2600,Turf,12,18
+620137,10137,Showdown: Dirt,Showdown,,10002,Hakodate,1700,Dirt,12,18
+302801,3028,Niigata Daishoten,Career,G3,10003,Niigata,2000,Turf,18,18
+304201,3042,Ibis Summer Dash,Career,G3,10003,Niigata,1000,Turf,18,18
+304501,3045,Leopard Stakes,Career,G3,10003,Niigata,1800,Dirt,15,18
+304601,3046,Sekiya Kinen,Career,G3,10003,Niigata,1600,Turf,18,18
+304901,3049,Niigata Junior Stakes,Career,G3,10003,Niigata,1600,Turf,18,18
+305301,3053,Niigata Kinen,Career,G3,10003,Niigata,2000,Turf,18,18
+404401,4044,Tanigawadake Stakes,Career,OP,10003,Niigata,1600,Turf,18,18
+405501,4055,Idaten Stakes,Career,OP,10003,Niigata,1000,Turf,18,18
+407001,4070,Dahlia Sho,Career,OP,10003,Niigata,1400,Turf,18,18
+407601,4076,NST Sho,Career,OP,10003,Niigata,1200,Dirt,15,18
+407901,4079,BSN Sho,Career,OP,10003,Niigata,1800,Dirt,15,18
+408101,4081,Toki Stakes,Career,OP,10003,Niigata,1400,Turf,18,18
+409501,4095,Shinetsu Stakes,Career,OP,10003,Niigata,1400,Turf,18,18
+410101,4101,Lumiere Autumn Dash,Career,OP,10003,Niigata,1000,Turf,18,18
+412201,4122,Kanetsu Stakes,Career,OP,10003,Niigata,1800,Turf,18,18
+502301,5023,Practice,Practice,,10003,Niigata,2400,Turf,18,18
+502401,5024,Practice,Practice,,10003,Niigata,2200,Turf,18,18
+502501,5025,Practice,Practice,,10003,Niigata,2000,Turf,18,18
+502601,5026,Practice,Practice,,10003,Niigata,2000,Turf,18,18
+502701,5027,Practice,Practice,,10003,Niigata,1800,Turf,18,18
+502901,5029,Practice,Practice,,10003,Niigata,1600,Turf,18,18
+503001,5030,Practice,Practice,,10003,Niigata,1400,Turf,18,18
+503101,5031,Practice,Practice,,10003,Niigata,1200,Turf,18,18
+503201,5032,Practice,Practice,,10003,Niigata,1000,Turf,18,18
+503301,5033,Practice,Practice,,10003,Niigata,1800,Dirt,15,18
+503401,5034,Practice,Practice,,10003,Niigata,1200,Dirt,15,18
+800049,5218,Trainers Cup,Room Match,,10003,Niigata,2400,Turf,18,18
+800050,5219,Trainers Cup,Room Match,,10003,Niigata,2200,Turf,18,18
+800051,5220,Trainers Cup,Room Match,,10003,Niigata,2000,Turf,18,18
+800052,5221,Trainers Cup,Room Match,,10003,Niigata,2000,Turf,18,18
+800053,5222,Trainers Cup,Room Match,,10003,Niigata,1800,Turf,18,18
+800054,5223,Trainers Cup,Room Match,,10003,Niigata,1600,Turf,18,18
+800055,5224,Trainers Cup,Room Match,,10003,Niigata,1400,Turf,18,18
+800056,5225,Trainers Cup,Room Match,,10003,Niigata,1200,Turf,18,18
+800057,5226,Trainers Cup,Room Match,,10003,Niigata,1000,Turf,18,18
+800058,5227,Trainers Cup,Room Match,,10003,Niigata,1800,Dirt,15,18
+800059,5228,Trainers Cup,Room Match,,10003,Niigata,1200,Dirt,15,18
+610036,6136,Team Race: Sprint,Team Trials,G1,10003,Niigata,1000,Turf,12,18
+610037,6137,Team Race: Sprint,Team Trials,G1,10003,Niigata,1000,Turf,12,18
+610038,6138,Team Race: Sprint,Team Trials,G1,10003,Niigata,1000,Turf,12,18
+610039,6139,Team Race: Sprint,Team Trials,G1,10003,Niigata,1200,Turf,12,18
+610040,6140,Team Race: Sprint,Team Trials,G1,10003,Niigata,1200,Turf,12,18
+610041,6141,Team Race: Sprint,Team Trials,G1,10003,Niigata,1200,Turf,12,18
+610042,6142,Team Race: Sprint,Team Trials,G1,10003,Niigata,1400,Turf,12,18
+610043,6143,Team Race: Sprint,Team Trials,G1,10003,Niigata,1400,Turf,12,18
+610044,6144,Team Race: Sprint,Team Trials,G1,10003,Niigata,1400,Turf,12,18
+610045,6145,Team Race: Mile,Team Trials,G1,10003,Niigata,1600,Turf,12,18
+610046,6146,Team Race: Mile,Team Trials,G1,10003,Niigata,1600,Turf,12,18
+610047,6147,Team Race: Mile,Team Trials,G1,10003,Niigata,1600,Turf,12,18
+610048,6148,Team Race: Mile,Team Trials,G1,10003,Niigata,1800,Turf,12,18
+610049,6149,Team Race: Mile,Team Trials,G1,10003,Niigata,1800,Turf,12,18
+610050,6150,Team Race: Mile,Team Trials,G1,10003,Niigata,1800,Turf,12,18
+610051,6151,Team Race: Medium,Team Trials,G1,10003,Niigata,2000,Turf,12,18
+610052,6152,Team Race: Medium,Team Trials,G1,10003,Niigata,2000,Turf,12,18
+610053,6153,Team Race: Medium,Team Trials,G1,10003,Niigata,2000,Turf,12,18
+610054,6154,Team Race: Medium,Team Trials,G1,10003,Niigata,2000,Turf,12,18
+610055,6155,Team Race: Medium,Team Trials,G1,10003,Niigata,2000,Turf,12,18
+610056,6156,Team Race: Medium,Team Trials,G1,10003,Niigata,2000,Turf,12,18
+610057,6157,Team Race: Medium,Team Trials,G1,10003,Niigata,2200,Turf,12,18
+610058,6158,Team Race: Medium,Team Trials,G1,10003,Niigata,2200,Turf,12,18
+610059,6159,Team Race: Medium,Team Trials,G1,10003,Niigata,2200,Turf,12,18
+610060,6160,Team Race: Medium,Team Trials,G1,10003,Niigata,2400,Turf,12,18
+610061,6161,Team Race: Medium,Team Trials,G1,10003,Niigata,2400,Turf,12,18
+610062,6162,Team Race: Medium,Team Trials,G1,10003,Niigata,2400,Turf,12,18
+610063,6163,Team Race: Dirt,Team Trials,G1,10003,Niigata,1800,Dirt,12,18
+610064,6164,Team Race: Dirt,Team Trials,G1,10003,Niigata,1800,Dirt,12,18
+610065,6165,Team Race: Dirt,Team Trials,G1,10003,Niigata,1800,Dirt,12,18
+903380,9307,Classic Maiden Race,Career,,10003,Niigata,1000,Turf,9,9
+903381,9307,Classic Maiden Race,Career,,10003,Niigata,1000,Turf,9,9
+903410,9310,Classic Maiden Race,Career,,10003,Niigata,1200,Dirt,9,9
+903411,9310,Classic Maiden Race,Career,,10003,Niigata,1200,Dirt,9,9
+903430,9312,Classic Maiden Race,Career,,10003,Niigata,1400,Turf,9,9
+903440,9313,Classic Maiden Race,Career,,10003,Niigata,1600,Turf,9,9
+903450,9315,Classic Maiden Race,Career,,10003,Niigata,1800,Turf,9,9
+903451,9315,Classic Maiden Race,Career,,10003,Niigata,1800,Turf,9,9
+903470,9317,Classic Maiden Race,Career,,10003,Niigata,1800,Dirt,9,9
+903471,9317,Classic Maiden Race,Career,,10003,Niigata,1800,Dirt,9,9
+903490,9319,Classic Maiden Race,Career,,10003,Niigata,2000,Turf,9,9
+903491,9319,Classic Maiden Race,Career,,10003,Niigata,2000,Turf,9,9
+903520,9322,Classic Maiden Race,Career,,10003,Niigata,2400,Turf,9,9
+903530,9323,Junior Maiden Race,Career,,10003,Niigata,1000,Turf,9,9
+903531,9323,Junior Maiden Race,Career,,10003,Niigata,1000,Turf,9,9
+903540,9324,Junior Maiden Race,Career,,10003,Niigata,1200,Turf,9,9
+903550,9325,Junior Maiden Race,Career,,10003,Niigata,1200,Dirt,9,9
+903570,9327,Junior Maiden Race,Career,,10003,Niigata,1400,Turf,9,9
+903590,9329,Junior Maiden Race,Career,,10003,Niigata,1600,Turf,9,9
+903591,9329,Junior Maiden Race,Career,,10003,Niigata,1600,Turf,9,9
+903610,9331,Junior Maiden Race,Career,,10003,Niigata,1800,Turf,9,9
+903611,9331,Junior Maiden Race,Career,,10003,Niigata,1800,Turf,9,9
+903620,9332,Junior Maiden Race,Career,,10003,Niigata,1800,Dirt,9,9
+903720,9342,Junior Make Debut,Career,,10003,Niigata,2000,Turf,9,9
+904191,9397,Junior Make Debut,Career,,10003,Niigata,1600,Turf,9,9
+302701,3027,Fukushima Umamusume Stakes,Career,G3,10004,Fukushima,1800,Turf,16,18
+303601,3036,Radio Nikkei Sho,Career,G3,10004,Fukushima,1800,Turf,16,18
+303801,3038,Tanabata Sho,Career,G3,10004,Fukushima,2000,Turf,16,18
+306301,3063,Fukushima Kinen,Career,G3,10004,Fukushima,2000,Turf,16,18
+403801,4038,Fukushima Mimpo Hai,Career,OP,10004,Fukushima,2000,Turf,16,18
+406901,4069,Fukushima TV Open,Career,OP,10004,Fukushima,1200,Turf,14,18
+410301,4103,Fukushima Junior Stakes,Career,OP,10004,Fukushima,1200,Turf,14,18
+410601,4106,Fukushima Minyu Cup,Career,OP,10004,Fukushima,1700,Dirt,15,18
+411901,4119,Azumakofuji Stakes,Career,OP,10004,Fukushima,1700,Dirt,15,18
+450801,4508,Kimmokusei Tokubetsu,Career,,10004,Fukushima,1800,Turf,16,18
+501701,5017,Practice,Practice,,10004,Fukushima,2600,Turf,16,18
+501801,5018,Practice,Practice,,10004,Fukushima,2000,Turf,16,18
+501901,5019,Practice,Practice,,10004,Fukushima,1800,Turf,16,18
+502001,5020,Practice,Practice,,10004,Fukushima,1200,Turf,14,18
+502101,5021,Practice,Practice,,10004,Fukushima,1700,Dirt,15,18
+502201,5022,Practice,Practice,,10004,Fukushima,1150,Dirt,16,18
+800043,5212,Trainers Cup,Room Match,,10004,Fukushima,2600,Turf,16,18
+800044,5213,Trainers Cup,Room Match,,10004,Fukushima,2000,Turf,16,18
+800045,5214,Trainers Cup,Room Match,,10004,Fukushima,1800,Turf,16,18
+800046,5215,Trainers Cup,Room Match,,10004,Fukushima,1200,Turf,14,18
+800047,5216,Trainers Cup,Room Match,,10004,Fukushima,1700,Dirt,15,18
+800048,5217,Trainers Cup,Room Match,,10004,Fukushima,1150,Dirt,16,18
+610066,6166,Team Race: Sprint,Team Trials,G1,10004,Fukushima,1200,Turf,12,18
+610067,6167,Team Race: Sprint,Team Trials,G1,10004,Fukushima,1200,Turf,12,18
+610068,6168,Team Race: Sprint,Team Trials,G1,10004,Fukushima,1200,Turf,12,18
+610069,6169,Team Race: Mile,Team Trials,G1,10004,Fukushima,1800,Turf,12,18
+610070,6170,Team Race: Mile,Team Trials,G1,10004,Fukushima,1800,Turf,12,18
+610071,6171,Team Race: Mile,Team Trials,G1,10004,Fukushima,1800,Turf,12,18
+610072,6172,Team Race: Medium,Team Trials,G1,10004,Fukushima,2000,Turf,12,18
+610073,6173,Team Race: Medium,Team Trials,G1,10004,Fukushima,2000,Turf,12,18
+610074,6174,Team Race: Medium,Team Trials,G1,10004,Fukushima,2000,Turf,12,18
+610075,6175,Team Race: Long,Team Trials,G1,10004,Fukushima,2600,Turf,12,18
+610076,6176,Team Race: Long,Team Trials,G1,10004,Fukushima,2600,Turf,12,18
+610077,6177,Team Race: Long,Team Trials,G1,10004,Fukushima,2600,Turf,12,18
+610078,6178,Team Race: Dirt,Team Trials,G1,10004,Fukushima,1700,Dirt,12,18
+610079,6179,Team Race: Dirt,Team Trials,G1,10004,Fukushima,1700,Dirt,12,18
+610080,6180,Team Race: Dirt,Team Trials,G1,10004,Fukushima,1700,Dirt,12,18
+903940,9364,Classic Maiden Race,Career,,10004,Fukushima,1150,Dirt,9,9
+903941,9364,Classic Maiden Race,Career,,10004,Fukushima,1150,Dirt,9,9
+903960,9366,Classic Maiden Race,Career,,10004,Fukushima,1200,Turf,9,9
+903961,9366,Classic Maiden Race,Career,,10004,Fukushima,1200,Turf,9,9
+903980,9368,Classic Maiden Race,Career,,10004,Fukushima,1700,Dirt,9,9
+903981,9368,Classic Maiden Race,Career,,10004,Fukushima,1700,Dirt,9,9
+904000,9370,Classic Maiden Race,Career,,10004,Fukushima,1800,Turf,9,9
+904001,9370,Classic Maiden Race,Career,,10004,Fukushima,1800,Turf,9,9
+904020,9372,Classic Maiden Race,Career,,10004,Fukushima,2000,Turf,9,9
+904021,9372,Classic Maiden Race,Career,,10004,Fukushima,2000,Turf,9,9
+904040,9374,Classic Maiden Race,Career,,10004,Fukushima,2600,Turf,9,9
+904050,9375,Junior Maiden Race,Career,,10004,Fukushima,1150,Dirt,9,9
+904060,9376,Junior Maiden Race,Career,,10004,Fukushima,1200,Turf,9,9
+904061,9376,Junior Maiden Race,Career,,10004,Fukushima,1200,Turf,9,9
+904100,9380,Junior Maiden Race,Career,,10004,Fukushima,1800,Turf,9,9
+904101,9380,Junior Maiden Race,Career,,10004,Fukushima,1800,Turf,9,9
+620002,10002,Showdown: Sprint,Showdown,,10004,Fukushima,1200,Turf,12,18
+622003,10002,Showdown: Sprint,Showdown,,10004,Fukushima,1200,Turf,12,18
+620012,10012,Showdown: Mile,Showdown,,10004,Fukushima,1800,Turf,12,18
+622029,10012,Showdown: Mile,Showdown,,10004,Fukushima,1800,Turf,12,18
+620022,10022,Showdown: Medium,Showdown,,10004,Fukushima,2000,Turf,12,18
+622055,10022,Showdown: Medium,Showdown,,10004,Fukushima,2000,Turf,12,18
+620032,10032,Showdown: Long,Showdown,,10004,Fukushima,2600,Turf,12,18
+622081,10032,Showdown: Long,Showdown,,10004,Fukushima,2600,Turf,12,18
+620042,10042,Showdown: Dirt,Showdown,,10004,Fukushima,1700,Dirt,12,18
+622107,10042,Showdown: Dirt,Showdown,,10004,Fukushima,1700,Dirt,12,18
+620050,10050,Showdown: Sprint,Showdown,,10004,Fukushima,1200,Turf,12,18
+620053,10053,Showdown: Mile,Showdown,,10004,Fukushima,1800,Turf,12,18
+620056,10056,Showdown: Medium,Showdown,,10004,Fukushima,2000,Turf,12,18
+620059,10059,Showdown: Long,Showdown,,10004,Fukushima,2600,Turf,12,18
+620062,10062,Showdown: Dirt,Showdown,,10004,Fukushima,1700,Dirt,12,18
+620082,10082,Showdown: Sprint,Showdown,,10004,Fukushima,1200,Turf,12,18
+620085,10085,Showdown: Mile,Showdown,,10004,Fukushima,1800,Turf,12,18
+620088,10088,Showdown: Medium,Showdown,,10004,Fukushima,2000,Turf,12,18
+620091,10091,Showdown: Long,Showdown,,10004,Fukushima,2600,Turf,12,18
+620094,10094,Showdown: Dirt,Showdown,,10004,Fukushima,1700,Dirt,12,18
+620126,10126,Showdown: Sprint,Showdown,,10004,Fukushima,1200,Turf,12,18
+620129,10129,Showdown: Mile,Showdown,,10004,Fukushima,1800,Turf,12,18
+620132,10132,Showdown: Medium,Showdown,,10004,Fukushima,2000,Turf,12,18
+620135,10135,Showdown: Long,Showdown,,10004,Fukushima,2600,Turf,12,18
+620138,10138,Showdown: Dirt,Showdown,,10004,Fukushima,1700,Dirt,12,18
+100501,1005,Satsuki Sho,Career,G1,10005,Nakayama,2000,Turf,18,18
+101301,1013,Sprinters Stakes,Career,G1,10005,Nakayama,1200,Turf,16,18
+102301,1023,Arima Kinen,Career,G1,10005,Nakayama,2500,Turf,16,18
+102401,1024,Hopeful Stakes,Career,G1,10005,Nakayama,2000,Turf,18,18
+200301,2003,American JCC,Career,G2,10005,Nakayama,2200,Turf,18,18
+200501,2005,Nakayama Kinen,Career,G2,10005,Nakayama,1800,Turf,16,18
+200601,2006,Yayoi Sho,Career,G2,10005,Nakayama,2000,Turf,18,18
+201001,2010,Spring Stakes,Career,G2,10005,Nakayama,1800,Turf,16,18
+201101,2011,Nikkei Sho,Career,G2,10005,Nakayama,2500,Turf,16,18
+201301,2013,New Zealand Trophy,Career,G2,10005,Nakayama,1600,Turf,16,18
+202301,2023,St. Lite Kinen,Career,G2,10005,Nakayama,2200,Turf,18,18
+202501,2025,All Comers,Career,G2,10005,Nakayama,2200,Turf,18,18
+203301,2033,Stayers Stakes,Career,G2,10005,Nakayama,3600,Turf,16,18
+203501,2035,Spring Stakes,Career,G2,10005,Nakayama,1800,Turf,5,9
+300201,3002,Nakayama Kimpai,Career,G3,10005,Nakayama,2000,Turf,18,18
+300401,3004,Fairy Stakes,Career,G3,10005,Nakayama,1600,Turf,16,18
+300601,3006,Keisei Hai,Career,G3,10005,Nakayama,2000,Turf,18,18
+301901,3019,Ocean Stakes,Career,G3,10005,Nakayama,1200,Turf,16,18
+302001,3020,Nakayama Umamusume Stakes,Career,G3,10005,Nakayama,1800,Turf,16,18
+302201,3022,Flower Cup,Career,G3,10005,Nakayama,1800,Turf,16,18
+302401,3024,March Stakes,Career,G3,10005,Nakayama,1800,Dirt,16,18
+302501,3025,Lord Derby Challenge Trophy,Career,G3,10005,Nakayama,1600,Turf,16,18
+305401,3054,Shion Stakes,Career,G3,10005,Nakayama,2000,Turf,18,18
+305501,3055,Keisei Hai Autumn Handicap,Career,G3,10005,Nakayama,1600,Turf,16,18
+306901,3069,Capella Stakes,Career,G3,10005,Nakayama,1200,Dirt,16,18
+307001,3070,Turquoise Stakes,Career,G3,10005,Nakayama,1600,Turf,16,18
+400201,4002,Junior Cup,Career,OP,10005,Nakayama,1600,Turf,16,18
+400401,4004,Pollux Stakes,Career,OP,10005,Nakayama,1800,Dirt,16,18
+400501,4005,January Stakes,Career,OP,10005,Nakayama,1200,Dirt,16,18
+400601,4006,New Year Stakes,Career,OP,10005,Nakayama,1600,Turf,16,18
+401001,4010,Carbuncle Stakes,Career,OP,10005,Nakayama,1200,Turf,16,18
+401901,4019,Sobu Stakes,Career,OP,10005,Nakayama,1800,Dirt,16,18
+402401,4024,Anemone Stakes,Career,OP,10005,Nakayama,1600,Turf,16,18
+402601,4026,Kochi Stakes,Career,OP,10005,Nakayama,1600,Turf,16,18
+402801,4028,Chiba Stakes,Career,OP,10005,Nakayama,1200,Dirt,16,18
+403301,4033,Fukuryu Stakes,Career,OP,10005,Nakayama,1800,Dirt,16,18
+403601,4036,Keiyo Stakes,Career,OP,10005,Nakayama,1200,Dirt,16,18
+403701,4037,Shunrai Stakes,Career,OP,10005,Nakayama,1200,Turf,16,18
+408601,4086,Radio Nippon Sho,Career,OP,10005,Nakayama,1800,Dirt,16,18
+408801,4088,Fuyo Stakes,Career,OP,10005,Nakayama,2000,Turf,18,18
+408901,4089,Canna Stakes,Career,OP,10005,Nakayama,1200,Turf,16,18
+410901,4109,Lapis Lazuli Stakes,Career,OP,10005,Nakayama,1200,Turf,16,18
+411001,4110,Shiwasu Stakes,Career,OP,10005,Nakayama,1800,Dirt,16,18
+411301,4113,December Stakes,Career,OP,10005,Nakayama,1800,Turf,16,18
+411401,4114,Christmas Rose Stakes,Career,OP,10005,Nakayama,1200,Turf,16,18
+412301,4123,Nagatsuki Stakes,Career,OP,10005,Nakayama,1200,Dirt,16,18
+450101,4501,Aster Sho,Career,,10005,Nakayama,1600,Turf,16,18
+450201,4502,Saffron Sho,Career,,10005,Nakayama,1600,Turf,16,18
+451701,4517,Habotan Sho,Career,,10005,Nakayama,2000,Turf,18,18
+452001,4520,Kuromatsu Sho,Career,,10005,Nakayama,1200,Turf,16,18
+452301,4523,Hiiragi Sho,Career,,10005,Nakayama,1600,Turf,16,18
+505001,5050,Practice,Practice,,10005,Nakayama,3600,Turf,16,18
+505101,5051,Practice,Practice,,10005,Nakayama,2500,Turf,16,18
+505201,5052,Practice,Practice,,10005,Nakayama,2200,Turf,18,18
+505301,5053,Practice,Practice,,10005,Nakayama,2000,Turf,18,18
+505501,5055,Practice,Practice,,10005,Nakayama,1800,Turf,16,18
+505601,5056,Practice,Practice,,10005,Nakayama,1600,Turf,16,18
+505701,5057,Practice,Practice,,10005,Nakayama,1200,Turf,16,18
+505801,5058,Practice,Practice,,10005,Nakayama,1800,Dirt,16,18
+505901,5059,Practice,Practice,,10005,Nakayama,1200,Dirt,16,18
+511201,5112,Practice: Satsuki Sho,Practice,G1,10005,Nakayama,2000,Turf,18,18
+512001,5120,Practice: Sprinters Stakes,Practice,G1,10005,Nakayama,1200,Turf,16,18
+513001,5130,Practice: Arima Kinen,Practice,G1,10005,Nakayama,2500,Turf,16,18
+513101,5131,Practice: Hopeful Stakes,Practice,G1,10005,Nakayama,2000,Turf,18,18
+800072,5241,Trainers Cup,Room Match,,10005,Nakayama,3600,Turf,16,18
+800073,5242,Trainers Cup,Room Match,,10005,Nakayama,2500,Turf,16,18
+800074,5243,Trainers Cup,Room Match,,10005,Nakayama,2200,Turf,18,18
+800075,5244,Trainers Cup,Room Match,,10005,Nakayama,2000,Turf,18,18
+800076,5245,Trainers Cup,Room Match,,10005,Nakayama,1800,Turf,16,18
+800077,5246,Trainers Cup,Room Match,,10005,Nakayama,1600,Turf,16,18
+800078,5247,Trainers Cup,Room Match,,10005,Nakayama,1200,Turf,16,18
+800079,5248,Trainers Cup,Room Match,,10005,Nakayama,1800,Dirt,16,18
+800080,5249,Trainers Cup,Room Match,,10005,Nakayama,1200,Dirt,16,18
+580031,5831,Jupiter Cup,group 2,,10005,Nakayama,2000,Turf,18,18
+580032,5832,Jupiter Cup,group 2,,10005,Nakayama,2000,Turf,18,18
+580033,5833,Jupiter Cup,group 2,,10005,Nakayama,2000,Turf,18,18
+580034,5834,Jupiter Cup,group 2,,10005,Nakayama,2000,Turf,18,18
+594501,5945,Sprinters S.,group 8,G1,10005,Nakayama,1200,Turf,16,18
+594502,5946,Sprinters S.,group 8,G1,10005,Nakayama,1200,Turf,16,18
+594503,5947,Sprinters S.,group 8,G1,10005,Nakayama,1200,Turf,16,18
+594504,5948,Sprinters S.,group 8,G1,10005,Nakayama,1200,Turf,16,18
+595501,5955,Arima Kinen,group 8,G1,10005,Nakayama,2500,Turf,16,18
+595502,5955,Arima Kinen,group 8,G1,10005,Nakayama,2500,Turf,16,18
+595503,5955,Arima Kinen,group 8,G1,10005,Nakayama,2500,Turf,16,18
+597501,5975,Satsuki Sho,group 8,G1,10005,Nakayama,2000,Turf,18,18
+597502,5975,Satsuki Sho,group 8,G1,10005,Nakayama,2000,Turf,18,18
+597503,5975,Satsuki Sho,group 8,G1,10005,Nakayama,2000,Turf,18,18
+600004,6004,Champions Meeting: Aries Cup,Champions Meeting,G1,10005,Nakayama,2000,Turf,9,9
+600012,6012,Champions Meeting Sagittarius Cup,Champions Meeting,G1,10005,Nakayama,2500,Turf,9,9
+600016,6016,Champions Meeting: Aries Cup Finals,Champions Meeting,G1,10005,Nakayama,2000,Turf,9,9
+600024,6024,Champions Meeting Sagittarius Cup Finals,Champions Meeting,G1,10005,Nakayama,2500,Turf,9,9
+600032,6032,Champions Meeting: Leo Cup,Champions Meeting,G1,10005,Nakayama,1200,Turf,9,9
+600036,6036,Champions Meeting Sagittarius Cup,Champions Meeting,G1,10005,Nakayama,2500,Turf,9,9
+600044,6044,Champions Meeting: Leo Cup Finals,Champions Meeting,G1,10005,Nakayama,1200,Turf,9,9
+600048,6048,Sagittarius Cup Finals,Champions Meeting,G1,10005,Nakayama,2500,Turf,9,9
+610081,6181,Team Race: Sprint,Team Trials,G1,10005,Nakayama,1200,Turf,12,18
+610082,6182,Team Race: Sprint,Team Trials,G1,10005,Nakayama,1200,Turf,12,18
+610083,6183,Team Race: Sprint,Team Trials,G1,10005,Nakayama,1200,Turf,12,18
+610084,6184,Team Race: Mile,Team Trials,G1,10005,Nakayama,1600,Turf,12,18
+610085,6185,Team Race: Mile,Team Trials,G1,10005,Nakayama,1600,Turf,12,18
+610086,6186,Team Race: Mile,Team Trials,G1,10005,Nakayama,1600,Turf,12,18
+610087,6187,Team Race: Mile,Team Trials,G1,10005,Nakayama,1800,Turf,12,18
+610088,6188,Team Race: Mile,Team Trials,G1,10005,Nakayama,1800,Turf,12,18
+610089,6189,Team Race: Mile,Team Trials,G1,10005,Nakayama,1800,Turf,12,18
+610090,6190,Team Race: Medium,Team Trials,G1,10005,Nakayama,2000,Turf,12,18
+610091,6191,Team Race: Medium,Team Trials,G1,10005,Nakayama,2000,Turf,12,18
+610092,6192,Team Race: Medium,Team Trials,G1,10005,Nakayama,2000,Turf,12,18
+610093,6193,Team Race: Medium,Team Trials,G1,10005,Nakayama,2200,Turf,12,18
+610094,6194,Team Race: Medium,Team Trials,G1,10005,Nakayama,2200,Turf,12,18
+610095,6195,Team Race: Medium,Team Trials,G1,10005,Nakayama,2200,Turf,12,18
+610096,6196,Team Race: Long,Team Trials,G1,10005,Nakayama,2500,Turf,12,18
+610097,6197,Team Race: Long,Team Trials,G1,10005,Nakayama,2500,Turf,12,18
+610098,6198,Team Race: Long,Team Trials,G1,10005,Nakayama,2500,Turf,12,18
+610099,6199,Team Race: Long,Team Trials,G1,10005,Nakayama,3600,Turf,12,18
+610100,6200,Team Race: Long,Team Trials,G1,10005,Nakayama,3600,Turf,12,18
+610101,6201,Team Race: Long,Team Trials,G1,10005,Nakayama,3600,Turf,12,18
+610102,6202,Team Race: Dirt,Team Trials,G1,10005,Nakayama,1800,Dirt,12,18
+610103,6203,Team Race: Dirt,Team Trials,G1,10005,Nakayama,1800,Dirt,12,18
+610104,6204,Team Race: Dirt,Team Trials,G1,10005,Nakayama,1800,Dirt,12,18
+700301,7003,The Acemaker,group 4,,10005,Nakayama,2500,Turf,16,18
+700701,7007,Satsuki Sho Shock,group 4,,10005,Nakayama,2000,Turf,18,18
+701201,7012,Enduring Spirit,group 4,,10005,Nakayama,2500,Turf,16,18
+701901,7019,Arima Kinen,Career,G1,10005,Nakayama,2500,Turf,16,18
+702301,7023,Arima Kinen,Career,G1,10005,Nakayama,2500,Turf,16,18
+900880,9057,Classic Maiden Race,Career,,10005,Nakayama,1200,Dirt,9,9
+900881,9057,Classic Maiden Race,Career,,10005,Nakayama,1200,Dirt,9,9
+900882,9057,Classic Maiden Race,Career,,10005,Nakayama,1200,Dirt,9,9
+900883,9057,Classic Maiden Race,Career,,10005,Nakayama,1200,Dirt,9,9
+900884,9057,Classic Maiden Race,Career,,10005,Nakayama,1200,Dirt,9,9
+900890,9058,Junior Maiden Race,Career,,10005,Nakayama,1200,Dirt,9,9
+900891,9058,Junior Maiden Race,Career,,10005,Nakayama,1200,Dirt,9,9
+900892,9058,Junior Maiden Race,Career,,10005,Nakayama,1200,Dirt,9,9
+900893,9058,Junior Maiden Race,Career,,10005,Nakayama,1200,Dirt,9,9
+900930,9062,Junior Maiden Race,Career,,10005,Nakayama,1200,Turf,9,9
+900931,9062,Junior Maiden Race,Career,,10005,Nakayama,1200,Turf,9,9
+900932,9062,Junior Maiden Race,Career,,10005,Nakayama,1200,Turf,9,9
+900933,9062,Junior Maiden Race,Career,,10005,Nakayama,1200,Turf,9,9
+900940,9063,Classic Maiden Race,Career,,10005,Nakayama,1600,Turf,9,9
+900941,9063,Classic Maiden Race,Career,,10005,Nakayama,1600,Turf,9,9
+900942,9063,Classic Maiden Race,Career,,10005,Nakayama,1600,Turf,9,9
+900943,9063,Classic Maiden Race,Career,,10005,Nakayama,1600,Turf,9,9
+900944,9063,Classic Maiden Race,Career,,10005,Nakayama,1600,Turf,9,9
+900950,9064,Junior Maiden Race,Career,,10005,Nakayama,1600,Turf,9,9
+900951,9064,Junior Maiden Race,Career,,10005,Nakayama,1600,Turf,9,9
+900952,9064,Junior Maiden Race,Career,,10005,Nakayama,1600,Turf,9,9
+900953,9064,Junior Maiden Race,Career,,10005,Nakayama,1600,Turf,9,9
+900970,9066,Classic Maiden Race,Career,,10005,Nakayama,1800,Dirt,9,9
+900971,9066,Classic Maiden Race,Career,,10005,Nakayama,1800,Dirt,9,9
+900972,9066,Classic Maiden Race,Career,,10005,Nakayama,1800,Dirt,9,9
+900973,9066,Classic Maiden Race,Career,,10005,Nakayama,1800,Dirt,9,9
+900990,9068,Classic Maiden Race,Career,,10005,Nakayama,1800,Turf,9,9
+900991,9068,Classic Maiden Race,Career,,10005,Nakayama,1800,Turf,9,9
+900992,9068,Classic Maiden Race,Career,,10005,Nakayama,1800,Turf,9,9
+901020,9071,Junior Maiden Race,Career,,10005,Nakayama,1800,Dirt,9,9
+901021,9071,Junior Maiden Race,Career,,10005,Nakayama,1800,Dirt,9,9
+901022,9071,Junior Maiden Race,Career,,10005,Nakayama,1800,Dirt,9,9
+901023,9071,Junior Maiden Race,Career,,10005,Nakayama,1800,Dirt,9,9
+901040,9073,Junior Maiden Race,Career,,10005,Nakayama,1800,Turf,9,9
+901041,9073,Junior Maiden Race,Career,,10005,Nakayama,1800,Turf,9,9
+901042,9073,Junior Maiden Race,Career,,10005,Nakayama,1800,Turf,9,9
+901050,9074,Classic Maiden Race,Career,,10005,Nakayama,2000,Turf,9,9
+901051,9074,Classic Maiden Race,Career,,10005,Nakayama,2000,Turf,9,9
+901052,9074,Classic Maiden Race,Career,,10005,Nakayama,2000,Turf,9,9
+901053,9074,Classic Maiden Race,Career,,10005,Nakayama,2000,Turf,9,9
+901054,9074,Classic Maiden Race,Career,,10005,Nakayama,2000,Turf,9,9
+901070,9076,Junior Maiden Race,Career,,10005,Nakayama,2000,Turf,9,9
+901071,9076,Junior Maiden Race,Career,,10005,Nakayama,2000,Turf,9,9
+901072,9076,Junior Maiden Race,Career,,10005,Nakayama,2000,Turf,9,9
+901073,9076,Junior Maiden Race,Career,,10005,Nakayama,2000,Turf,9,9
+901080,9077,Classic Maiden Race,Career,,10005,Nakayama,2200,Turf,9,9
+901081,9077,Classic Maiden Race,Career,,10005,Nakayama,2200,Turf,9,9
+901082,9077,Classic Maiden Race,Career,,10005,Nakayama,2200,Turf,9,9
+901083,9077,Classic Maiden Race,Career,,10005,Nakayama,2200,Turf,9,9
+901110,9080,Junior Make Debut,Career,,10005,Nakayama,1200,Turf,9,9
+901210,9090,Junior Make Debut,Career,,10005,Nakayama,1800,Turf,9,9
+901240,9093,Junior Make Debut,Career,,10005,Nakayama,2000,Turf,9,9
+904190,9396,Junior Make Debut,Career,,10005,Nakayama,1600,Turf,9,9
+904196,9402,Junior Make Debut,Career,,10005,Nakayama,1800,Dirt,9,9
+910003,9502,URA Finale Qualifier,Career,G1,10005,Nakayama,1200,Turf,16,18
+910013,9515,URA Finale Qualifier,Career,G1,10005,Nakayama,1600,Turf,16,18
+910014,9516,URA Finale Qualifier,Career,G1,10005,Nakayama,1800,Turf,16,18
+910018,9522,URA Finale Qualifier,Career,G1,10005,Nakayama,2000,Turf,18,18
+910019,9523,URA Finale Qualifier,Career,G1,10005,Nakayama,2200,Turf,18,18
+910028,9532,URA Finale Qualifier,Career,G1,10005,Nakayama,2500,Turf,16,18
+910029,9533,URA Finale Qualifier,Career,G1,10005,Nakayama,3600,Turf,16,18
+910103,9602,URA Finale Semifinal,Career,G1,10005,Nakayama,1200,Turf,16,18
+910113,9615,URA Finale Semifinal,Career,G1,10005,Nakayama,1600,Turf,16,18
+910114,9616,URA Finale Semifinal,Career,G1,10005,Nakayama,1800,Turf,16,18
+910118,9622,URA Finale Semifinal,Career,G1,10005,Nakayama,2000,Turf,18,18
+910119,9623,URA Finale Semifinal,Career,G1,10005,Nakayama,2200,Turf,18,18
+910128,9632,URA Finale Semifinal,Career,G1,10005,Nakayama,2500,Turf,16,18
+910129,9633,URA Finale Semifinal,Career,G1,10005,Nakayama,3600,Turf,16,18
+910203,9702,URA Finale Finals,Career,G1,10005,Nakayama,1200,Turf,16,18
+910213,9715,URA Finale Finals,Career,G1,10005,Nakayama,1600,Turf,16,18
+910214,9716,URA Finale Finals,Career,G1,10005,Nakayama,1800,Turf,16,18
+910218,9722,URA Finale Finals,Career,G1,10005,Nakayama,2000,Turf,18,18
+910219,9723,URA Finale Finals,Career,G1,10005,Nakayama,2200,Turf,18,18
+910228,9732,URA Finale Finals,Career,G1,10005,Nakayama,2500,Turf,16,18
+910229,9733,URA Finale Finals,Career,G1,10005,Nakayama,3600,Turf,16,18
+920003,9803,Twinkle Star Climax Race 1,Career,G1,10005,Nakayama,1200,Turf,16,18
+920013,9813,Twinkle Star Climax Race 1,Career,G1,10005,Nakayama,1600,Turf,16,18
+920014,9814,Twinkle Star Climax Race 1,Career,G1,10005,Nakayama,1800,Turf,16,18
+920018,9818,Twinkle Star Climax Race 1,Career,G1,10005,Nakayama,2000,Turf,16,18
+920019,9819,Twinkle Star Climax Race 1,Career,G1,10005,Nakayama,2200,Turf,16,18
+920028,9828,Twinkle Star Climax Race 1,Career,G1,10005,Nakayama,2500,Turf,16,18
+920029,9829,Twinkle Star Climax Race 1,Career,G1,10005,Nakayama,3600,Turf,16,18
+920044,9844,Twinkle Star Climax Race 2,Career,G1,10005,Nakayama,1200,Turf,16,18
+920054,9854,Twinkle Star Climax Race 2,Career,G1,10005,Nakayama,1600,Turf,16,18
+920055,9855,Twinkle Star Climax Race 2,Career,G1,10005,Nakayama,1800,Turf,16,18
+920059,9859,Twinkle Star Climax Race 2,Career,G1,10005,Nakayama,2000,Turf,16,18
+920060,9860,Twinkle Star Climax Race 2,Career,G1,10005,Nakayama,2200,Turf,16,18
+920069,9869,Twinkle Star Climax Race 2,Career,G1,10005,Nakayama,2500,Turf,16,18
+920070,9870,Twinkle Star Climax Race 2,Career,G1,10005,Nakayama,3600,Turf,16,18
+920085,9885,Twinkle Star Climax Race 3,Career,G1,10005,Nakayama,1200,Turf,16,18
+920095,9895,Twinkle Star Climax Race 3,Career,G1,10005,Nakayama,1600,Turf,16,18
+920096,9896,Twinkle Star Climax Race 3,Career,G1,10005,Nakayama,1800,Turf,16,18
+920100,9900,Twinkle Star Climax Race 3,Career,G1,10005,Nakayama,2000,Turf,16,18
+920101,9901,Twinkle Star Climax Race 3,Career,G1,10005,Nakayama,2200,Turf,16,18
+920110,9910,Twinkle Star Climax Race 3,Career,G1,10005,Nakayama,2500,Turf,16,18
+920111,9911,Twinkle Star Climax Race 3,Career,G1,10005,Nakayama,3600,Turf,16,18
+620003,10003,Showdown: Sprint,Showdown,,10005,Nakayama,1200,Turf,12,18
+622000,10003,Showdown: Sprint,Showdown,,10005,Nakayama,1200,Turf,12,18
+622020,10003,Showdown: Sprint,Showdown,,10005,Nakayama,1200,Turf,12,18
+620013,10013,Showdown: Mile,Showdown,,10005,Nakayama,1600,Turf,12,18
+622026,10013,Showdown: Mile,Showdown,,10005,Nakayama,1600,Turf,12,18
+622046,10013,Showdown: Mile,Showdown,,10005,Nakayama,1600,Turf,12,18
+620023,10023,Showdown: Medium,Showdown,,10005,Nakayama,2000,Turf,12,18
+622052,10023,Showdown: Medium,Showdown,,10005,Nakayama,2000,Turf,12,18
+622072,10023,Showdown: Medium,Showdown,,10005,Nakayama,2000,Turf,12,18
+620033,10033,Showdown: Long,Showdown,,10005,Nakayama,3600,Turf,12,18
+622078,10033,Showdown: Long,Showdown,,10005,Nakayama,3600,Turf,12,18
+622098,10033,Showdown: Long,Showdown,,10005,Nakayama,3600,Turf,12,18
+620043,10043,Showdown: Dirt,Showdown,,10005,Nakayama,1800,Dirt,12,18
+622104,10043,Showdown: Dirt,Showdown,,10005,Nakayama,1800,Dirt,12,18
+622124,10043,Showdown: Dirt,Showdown,,10005,Nakayama,1800,Dirt,12,18
+620051,10051,Showdown: Sprint,Showdown,,10005,Nakayama,1200,Turf,12,18
+620054,10054,Showdown: Mile,Showdown,,10005,Nakayama,1600,Turf,12,18
+620057,10057,Showdown: Medium,Showdown,,10005,Nakayama,2000,Turf,12,18
+620060,10060,Showdown: Long,Showdown,,10005,Nakayama,3600,Turf,12,18
+620063,10063,Showdown: Dirt,Showdown,,10005,Nakayama,1800,Dirt,12,18
+620095,10095,Showdown: Sprint,Showdown,,10005,Nakayama,1200,Turf,12,18
+620098,10098,Showdown: Mile,Showdown,,10005,Nakayama,1600,Turf,12,18
+620101,10101,Showdown: Medium,Showdown,,10005,Nakayama,2000,Turf,12,18
+620104,10104,Showdown: Long,Showdown,,10005,Nakayama,3600,Turf,12,18
+620107,10107,Showdown: Dirt,Showdown,,10005,Nakayama,1800,Dirt,12,18
+620127,10127,Showdown: Sprint,Showdown,,10005,Nakayama,1200,Turf,12,18
+620130,10130,Showdown: Mile,Showdown,,10005,Nakayama,1600,Turf,12,18
+620133,10133,Showdown: Medium,Showdown,,10005,Nakayama,2000,Turf,12,18
+620136,10136,Showdown: Long,Showdown,,10005,Nakayama,3600,Turf,12,18
+620139,10139,Showdown: Dirt,Showdown,,10005,Nakayama,1800,Dirt,12,18
+800005,10164,Room Match: Satsuki Sho,Room Match,G1,10005,Nakayama,2000,Turf,18,18
+800013,10172,Room Match: Sprinters Stakes,Room Match,G1,10005,Nakayama,1200,Turf,16,18
+800023,10182,Room Match: Arima Kinen,Room Match,G1,10005,Nakayama,2500,Turf,16,18
+800024,10183,Room Match: Hopeful Stakes,Room Match,G1,10005,Nakayama,2000,Turf,18,18
+630001,11001,Carnival Race (Hard),Carnival,G2,10005,Nakayama,1600,Turf,12,18
+630002,11002,Carnival Race (Hard),Carnival,G2,10005,Nakayama,1800,Turf,12,18
+630003,11003,Carnival Race (Hard),Carnival,G2,10005,Nakayama,2000,Turf,12,18
+630004,11004,Carnival Race (Hard),Carnival,G2,10005,Nakayama,2200,Turf,12,18
+630007,11007,Carnival Race (Hard),Carnival,G2,10005,Nakayama,2000,Turf,12,18
+630008,11008,Carnival Race (Hard),Carnival,G2,10005,Nakayama,2000,Turf,12,18
+630009,11009,Carnival Race (Hard),Carnival,G2,10005,Nakayama,2000,Turf,12,18
+630010,11010,Carnival Race (Hard),Carnival,G2,10005,Nakayama,2000,Turf,12,18
+630011,11011,Challenge Race (Very Hard),Carnival,G1,10005,Nakayama,2000,Turf,12,18
+630012,11012,Challenge Race (Extreme),Carnival,G1,10005,Nakayama,2000,Turf,12,18
+630014,11014,Carnival Race (Hard),Carnival,G2,10005,Nakayama,1200,Turf,12,18
+1200201,12002,Sprinters S.,group 8,G1,10005,Nakayama,1200,Turf,16,18
+1200202,12002,Sprinters S.,group 8,G1,10005,Nakayama,1200,Turf,16,18
+1200401,12004,Arima Kinen,group 8,G1,10005,Nakayama,2500,Turf,16,18
+1200402,12004,Arima Kinen,group 8,G1,10005,Nakayama,2500,Turf,16,18
+650014,15014,Scout Race: Sprint,Scout,G1,10005,Nakayama,1200,Turf,14,18
+650016,15016,Scout Race: Long,Scout,G1,10005,Nakayama,2500,Turf,14,18
+621002,16002,Team Showdown Elite Sprint Ace,Showdown,,10005,Nakayama,1200,Turf,12,18
+621003,16003,Team Showdown Elite Sprint Ace,Showdown,,10005,Nakayama,1200,Turf,12,18
+621004,16004,Team Showdown Elite Sprint Ace,Showdown,,10005,Nakayama,1200,Turf,12,18
+621009,16009,Team Showdown Elite Sprint Ace,Showdown,,10005,Nakayama,1200,Turf,12,18
+621011,16011,Team Showdown Elite Sprint Ace,Showdown,,10005,Nakayama,1200,Turf,12,18
+621102,16102,Team Showdown Elite Mile Ace,Showdown,,10005,Nakayama,1600,Turf,12,18
+621103,16103,Team Showdown Elite Mile Ace,Showdown,,10005,Nakayama,1600,Turf,12,18
+621104,16104,Team Showdown Elite Mile Ace,Showdown,,10005,Nakayama,1600,Turf,12,18
+621109,16109,Team Showdown Elite Mile Ace,Showdown,,10005,Nakayama,1600,Turf,12,18
+621111,16111,Team Showdown Elite Mile Ace,Showdown,,10005,Nakayama,1600,Turf,12,18
+621202,16202,Team Showdown Elite Medium Ace,Showdown,,10005,Nakayama,2000,Turf,12,18
+621203,16203,Team Showdown Elite Medium Ace,Showdown,,10005,Nakayama,2000,Turf,12,18
+621204,16204,Team Showdown Elite Medium Ace,Showdown,,10005,Nakayama,2000,Turf,12,18
+621209,16209,Team Showdown Elite Medium Ace,Showdown,,10005,Nakayama,2000,Turf,12,18
+621211,16211,Team Showdown Elite Medium Ace,Showdown,,10005,Nakayama,2000,Turf,12,18
+621302,16302,Team Showdown Elite Long Ace,Showdown,,10005,Nakayama,2500,Turf,12,18
+621303,16303,Team Showdown Elite Long Ace,Showdown,,10005,Nakayama,2500,Turf,12,18
+621304,16304,Team Showdown Elite Long Ace,Showdown,,10005,Nakayama,2500,Turf,12,18
+621309,16309,Team Showdown Elite Long Ace,Showdown,,10005,Nakayama,2500,Turf,12,18
+621311,16311,Team Showdown Elite Long Ace,Showdown,,10005,Nakayama,2500,Turf,12,18
+621402,16402,Team Showdown Elite Dirt Ace,Showdown,,10005,Nakayama,1800,Dirt,12,18
+621403,16403,Team Showdown Elite Dirt Ace,Showdown,,10005,Nakayama,1800,Dirt,12,18
+621404,16404,Team Showdown Elite Dirt Ace,Showdown,,10005,Nakayama,1800,Dirt,12,18
+621409,16409,Team Showdown Elite Dirt Ace,Showdown,,10005,Nakayama,1800,Dirt,12,18
+621411,16411,Team Showdown Elite Dirt Ace,Showdown,,10005,Nakayama,1800,Dirt,12,18
+100101,1001,February Stakes,Career,G1,10006,Tokyo,1600,Dirt,16,18
+100701,1007,NHK Mile Cup,Career,G1,10006,Tokyo,1600,Turf,18,18
+100801,1008,Victoria Mile,Career,G1,10006,Tokyo,1600,Turf,18,18
+100901,1009,Japanese Oaks,Career,G1,10006,Tokyo,2400,Turf,18,18
+101001,1010,Tokyo Yushun (Japanese Derby),Career,G1,10006,Tokyo,2400,Turf,18,18
+701301,1010,Tokyo Yushun (Japanese Derby),Career,G1,10006,Tokyo,2400,Turf,18,18
+101101,1011,Yasuda Kinen,Career,G1,10006,Tokyo,1600,Turf,18,18
+101601,1016,Tenno Sho (Autumn),Career,G1,10006,Tokyo,2000,Turf,18,18
+101901,1019,Japan Cup,Career,G1,10006,Tokyo,2400,Turf,18,18
+102801,1028,Satsuki Sho,Career,G1,10006,Tokyo,2000,Turf,18,18
+201501,2015,Flora Stakes,Career,G2,10006,Tokyo,2000,Turf,18,18
+201601,2016,Aoba Sho,Career,G2,10006,Tokyo,2400,Turf,18,18
+201801,2018,Keio Hai Spring Cup,Career,G2,10006,Tokyo,1400,Turf,18,18
+201901,2019,Meguro Kinen,Career,G2,10006,Tokyo,2500,Turf,18,18
+202601,2026,Mainichi Okan,Career,G2,10006,Tokyo,1800,Turf,18,18
+202801,2028,Fuchu Umamusume Stakes,Career,G2,10006,Tokyo,1800,Turf,18,18
+203001,2030,Keio Hai Junior Stakes,Career,G2,10006,Tokyo,1400,Turf,18,18
+203101,2031,Copa Republica Argentina,Career,G2,10006,Tokyo,2500,Turf,18,18
+300801,3008,Negishi Stakes,Career,G3,10006,Tokyo,1400,Dirt,16,18
+301001,3010,Tokyo Shimbun Hai,Career,G3,10006,Tokyo,1600,Turf,18,18
+301101,3011,Queen Cup,Career,G3,10006,Tokyo,1600,Turf,18,18
+301201,3012,Kyodo News Hai,Career,G3,10006,Tokyo,1800,Turf,18,18
+301401,3014,Diamond Stakes,Career,G3,10006,Tokyo,3400,Turf,18,18
+303201,3032,Epsom Cup,Career,G3,10006,Tokyo,1800,Turf,18,18
+303301,3033,Unicorn Stakes,Career,G3,10006,Tokyo,1600,Dirt,16,18
+305701,3057,Saudi Arabia Royal Cup,Career,G3,10006,Tokyo,1600,Turf,18,18
+305801,3058,Fuji Stakes,Career,G2,10006,Tokyo,1600,Turf,18,18
+305901,3059,Artemis Stakes,Career,G3,10006,Tokyo,1600,Turf,18,18
+306201,3062,Musashino Stakes,Career,G3,10006,Tokyo,1600,Dirt,16,18
+306401,3064,Tokyo Sports Hai Junior Stakes,Career,G3,10006,Tokyo,1800,Turf,18,18
+401101,4011,Shirafuji Stakes,Career,OP,10006,Tokyo,2000,Turf,18,18
+401201,4012,Crocus Stakes,Career,OP,10006,Tokyo,1400,Turf,18,18
+401701,4017,Valentine Stakes,Career,OP,10006,Tokyo,1400,Dirt,16,18
+401801,4018,Hyacinth Stakes,Career,OP,10006,Tokyo,1600,Dirt,16,18
+404001,4040,Oasis Stakes,Career,OP,10006,Tokyo,1600,Dirt,16,18
+404301,4043,Sweetpea Stakes,Career,OP,10006,Tokyo,1800,Turf,18,18
+404501,4045,Principal Stakes,Career,OP,10006,Tokyo,2000,Turf,18,18
+404601,4046,Metropolitan Stakes,Career,OP,10006,Tokyo,2400,Turf,18,18
+404801,4048,Brilliant Stakes,Career,OP,10006,Tokyo,2100,Dirt,16,18
+405201,4052,Seiryu Stakes,Career,OP,10006,Tokyo,1600,Dirt,16,18
+405301,4053,May Stakes,Career,OP,10006,Tokyo,1800,Turf,18,18
+405701,4057,Keyaki Stakes,Career,OP,10006,Tokyo,1400,Dirt,16,18
+405901,4059,Akhalteke Stakes,Career,OP,10006,Tokyo,1600,Dirt,16,18
+406301,4063,Paradise Stakes,Career,OP,10006,Tokyo,1400,Turf,18,18
+409201,4092,Green Channel Cup,Career,OP,10006,Tokyo,1400,Dirt,16,18
+409401,4094,October Stakes,Career,OP,10006,Tokyo,2000,Turf,18,18
+409601,4096,Ivy Stakes,Career,OP,10006,Tokyo,1800,Turf,18,18
+409801,4098,Brazil Cup,Career,OP,10006,Tokyo,2100,Dirt,16,18
+410201,4102,Oro Cup,Career,OP,10006,Tokyo,1400,Turf,18,18
+410501,4105,Shimotsuki Stakes,Career,OP,10006,Tokyo,1400,Dirt,16,18
+410701,4107,Capital Stakes,Career,OP,10006,Tokyo,1600,Turf,18,18
+412001,4120,Sleipnir Stakes,Career,OP,10006,Tokyo,2100,Dirt,16,18
+450501,4505,Platanus Sho,Career,,10006,Tokyo,1600,Dirt,16,18
+450701,4507,Hyakunichiso Tokubetsu,Career,,10006,Tokyo,2000,Turf,18,18
+450901,4509,Oxalis Sho,Career,,10006,Tokyo,1400,Dirt,16,18
+451201,4512,Akamatsu Sho,Career,,10006,Tokyo,1600,Turf,18,18
+451401,4514,Cattleya Sho,Career,,10006,Tokyo,1600,Dirt,16,18
+451501,4515,Begonia Sho,Career,,10006,Tokyo,1600,Turf,18,18
+503601,5036,Practice,Practice,,10006,Tokyo,3400,Turf,18,18
+503701,5037,Practice,Practice,,10006,Tokyo,2500,Turf,18,18
+503801,5038,Practice,Practice,,10006,Tokyo,2400,Turf,18,18
+503901,5039,Practice,Practice,,10006,Tokyo,2300,Turf,18,18
+504001,5040,Practice,Practice,,10006,Tokyo,2000,Turf,18,18
+504101,5041,Practice,Practice,,10006,Tokyo,1800,Turf,18,18
+504201,5042,Practice,Practice,,10006,Tokyo,1600,Turf,18,18
+504301,5043,Practice,Practice,,10006,Tokyo,1400,Turf,18,18
+504401,5044,Practice,Practice,,10006,Tokyo,2100,Dirt,16,18
+504701,5047,Practice,Practice,,10006,Tokyo,1600,Dirt,16,18
+504801,5048,Practice,Practice,,10006,Tokyo,1400,Dirt,16,18
+504901,5049,Practice,Practice,,10006,Tokyo,1300,Dirt,16,18
+510801,5108,Practice: February Stakes,Practice,G1,10006,Tokyo,1600,Dirt,16,18
+511401,5114,Practice: NHK Mile Cup,Practice,G1,10006,Tokyo,1600,Turf,18,18
+511501,5115,Practice: Victoria Mile,Practice,G1,10006,Tokyo,1600,Turf,18,18
+511601,5116,Practice: Japanese Oaks,Practice,G1,10006,Tokyo,2400,Turf,18,18
+511701,5117,Practice: Tokyo Yushun (Japanese Derby),Practice,G1,10006,Tokyo,2400,Turf,18,18
+511801,5118,Practice: Yasuda Kinen,Practice,G1,10006,Tokyo,1600,Turf,18,18
+512301,5123,Practice: Tenno Sho (Autumn),Practice,G1,10006,Tokyo,2000,Turf,18,18
+512601,5126,Practice: Japan Cup,Practice,G1,10006,Tokyo,2400,Turf,18,18
+800060,5229,Trainers Cup,Room Match,,10006,Tokyo,3400,Turf,18,18
+800061,5230,Trainers Cup,Room Match,,10006,Tokyo,2500,Turf,18,18
+800062,5231,Trainers Cup,Room Match,,10006,Tokyo,2400,Turf,18,18
+800063,5232,Trainers Cup,Room Match,,10006,Tokyo,2300,Turf,18,18
+800064,5233,Trainers Cup,Room Match,,10006,Tokyo,2000,Turf,18,18
+800065,5234,Trainers Cup,Room Match,,10006,Tokyo,1800,Turf,18,18
+800066,5235,Trainers Cup,Room Match,,10006,Tokyo,1600,Turf,18,18
+800067,5236,Trainers Cup,Room Match,,10006,Tokyo,1400,Turf,18,18
+800068,5237,Trainers Cup,Room Match,,10006,Tokyo,2100,Dirt,16,18
+800069,5238,Trainers Cup,Room Match,,10006,Tokyo,1600,Dirt,16,18
+800070,5239,Trainers Cup,Room Match,,10006,Tokyo,1400,Dirt,16,18
+800071,5240,Trainers Cup,Room Match,,10006,Tokyo,1300,Dirt,16,18
+592001,5920,Japan Cup,group 8,G1,10006,Tokyo,2400,Turf,18,18
+592002,5921,Japan Cup,group 8,G1,10006,Tokyo,2400,Turf,18,18
+592003,5922,Japan Cup,group 8,G1,10006,Tokyo,2400,Turf,18,18
+593501,5935,Japanese Derby,group 8,G1,10006,Tokyo,2400,Turf,18,18
+593502,5935,Japanese Derby,group 8,G1,10006,Tokyo,2400,Turf,18,18
+593503,5935,Japanese Derby,group 8,G1,10006,Tokyo,2400,Turf,18,18
+596501,5965,Tenno Sho (Autumn),group 8,G1,10006,Tokyo,2000,Turf,18,18
+596502,5965,Tenno Sho (Autumn),group 8,G1,10006,Tokyo,2000,Turf,18,18
+596503,5965,Tenno Sho (Autumn),group 8,G1,10006,Tokyo,2000,Turf,18,18
+600002,6002,Champions Meeting Aquarius Cup,Champions Meeting,G1,10006,Tokyo,1600,Dirt,9,9
+600005,6005,Champions Meeting: Taurus Cup,Champions Meeting,G1,10006,Tokyo,2400,Turf,9,9
+600007,6007,Champions Meeting: Cancer Cup,Champions Meeting,G1,10006,Tokyo,1600,Turf,9,9
+600011,6011,Champions Meeting Scorpio Cup,Champions Meeting,G1,10006,Tokyo,2000,Turf,9,9
+600014,6014,Champions Meeting Aquarius Cup Finals,Champions Meeting,G1,10006,Tokyo,1600,Dirt,9,9
+600017,6017,Champions Meeting: Taurus Cup Finals,Champions Meeting,G1,10006,Tokyo,2400,Turf,9,9
+600019,6019,Champions Meeting: Cancer Cup Finals,Champions Meeting,G1,10006,Tokyo,1600,Turf,9,9
+600023,6023,Champions Meeting Scorpio Cup Finals,Champions Meeting,G1,10006,Tokyo,2000,Turf,9,9
+600026,6026,Champions Meeting Aquarius Cup,Champions Meeting,G1,10006,Tokyo,1600,Dirt,9,9
+600029,6029,Champions Meeting: Taurus Cup,Champions Meeting,G1,10006,Tokyo,2400,Turf,9,9
+600030,6030,Champions Meeting: Gemini Cup,Champions Meeting,G1,10006,Tokyo,1600,Turf,9,9
+600038,6038,Aquarius Cup Finals,Champions Meeting,G1,10006,Tokyo,1600,Dirt,9,9
+600041,6041,Champions Meeting: Taurus Cup Finals,Champions Meeting,G1,10006,Tokyo,2400,Turf,9,9
+600042,6042,Champions Meeting: Gemini Cup Finals,Champions Meeting,G1,10006,Tokyo,1600,Turf,9,9
+610105,6205,Team Race: Sprint,Team Trials,G1,10006,Tokyo,1400,Turf,12,18
+610106,6206,Team Race: Sprint,Team Trials,G1,10006,Tokyo,1400,Turf,12,18
+610107,6207,Team Race: Sprint,Team Trials,G1,10006,Tokyo,1400,Turf,12,18
+610108,6208,Team Race: Mile,Team Trials,G1,10006,Tokyo,1600,Turf,12,18
+610109,6209,Team Race: Mile,Team Trials,G1,10006,Tokyo,1600,Turf,12,18
+610110,6210,Team Race: Mile,Team Trials,G1,10006,Tokyo,1600,Turf,12,18
+610111,6211,Team Race: Mile,Team Trials,G1,10006,Tokyo,1800,Turf,12,18
+610112,6212,Team Race: Mile,Team Trials,G1,10006,Tokyo,1800,Turf,12,18
+610113,6213,Team Race: Mile,Team Trials,G1,10006,Tokyo,1800,Turf,12,18
+610114,6214,Team Race: Medium,Team Trials,G1,10006,Tokyo,2000,Turf,12,18
+610115,6215,Team Race: Medium,Team Trials,G1,10006,Tokyo,2000,Turf,12,18
+610116,6216,Team Race: Medium,Team Trials,G1,10006,Tokyo,2000,Turf,12,18
+610117,6217,Team Race: Medium,Team Trials,G1,10006,Tokyo,2300,Turf,12,18
+610118,6218,Team Race: Medium,Team Trials,G1,10006,Tokyo,2300,Turf,12,18
+610119,6219,Team Race: Medium,Team Trials,G1,10006,Tokyo,2300,Turf,12,18
+610120,6220,Team Race: Medium,Team Trials,G1,10006,Tokyo,2400,Turf,12,18
+610121,6221,Team Race: Medium,Team Trials,G1,10006,Tokyo,2400,Turf,12,18
+610122,6222,Team Race: Medium,Team Trials,G1,10006,Tokyo,2400,Turf,12,18
+610123,6223,Team Race: Long,Team Trials,G1,10006,Tokyo,2500,Turf,12,18
+610124,6224,Team Race: Long,Team Trials,G1,10006,Tokyo,2500,Turf,12,18
+610125,6225,Team Race: Long,Team Trials,G1,10006,Tokyo,2500,Turf,12,18
+610126,6226,Team Race: Long,Team Trials,G1,10006,Tokyo,3400,Turf,12,18
+610127,6227,Team Race: Long,Team Trials,G1,10006,Tokyo,3400,Turf,12,18
+610128,6228,Team Race: Long,Team Trials,G1,10006,Tokyo,3400,Turf,12,18
+610129,6229,Team Race: Dirt,Team Trials,G1,10006,Tokyo,1600,Dirt,12,18
+610130,6230,Team Race: Dirt,Team Trials,G1,10006,Tokyo,1600,Dirt,12,18
+610131,6231,Team Race: Dirt,Team Trials,G1,10006,Tokyo,1600,Dirt,12,18
+700201,7002,Post-Training-Camp Practice,group 4,,10006,Tokyo,2400,Turf,18,18
+700801,7008,The Derby Dream,group 4,,10006,Tokyo,2400,Turf,18,18
+701101,7011,Getting Back on Track,group 4,,10006,Tokyo,2000,Turf,18,18
+701501,7015,An Inescapable Fear,group 4,,10006,Tokyo,2000,Turf,16,18
+701601,7016,Believing in Our Dreams,group 4,,10006,Tokyo,2000,Turf,16,18
+701701,7017,Japan Cup,Career,G1,10006,Tokyo,2400,Turf,18,18
+702101,7021,A Race Free of Doubt,group 4,,10006,Tokyo,2400,Turf,18,18
+702201,7022,Team Sirius Tryout,group 4,,10006,Tokyo,2400,Turf,18,18
+902430,9212,Classic Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902431,9212,Classic Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902432,9212,Classic Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902433,9212,Classic Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902434,9212,Classic Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902435,9212,Classic Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902436,9212,Classic Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902450,9214,Classic Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902451,9214,Classic Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902452,9214,Classic Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902453,9214,Classic Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902454,9214,Classic Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902460,9215,Classic Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902461,9215,Classic Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902462,9215,Classic Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902463,9215,Classic Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902464,9215,Classic Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902465,9215,Classic Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902466,9215,Classic Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902480,9217,Classic Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902481,9217,Classic Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902482,9217,Classic Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902483,9217,Classic Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902484,9217,Classic Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902485,9217,Classic Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902486,9217,Classic Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902490,9218,Classic Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902491,9218,Classic Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902492,9218,Classic Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902493,9218,Classic Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902494,9218,Classic Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902495,9218,Classic Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902496,9218,Classic Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902510,9220,Classic Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902511,9220,Classic Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902512,9220,Classic Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902513,9220,Classic Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902514,9220,Classic Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902515,9220,Classic Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902530,9222,Classic Maiden Race,Career,,10006,Tokyo,2000,Turf,9,9
+902531,9222,Classic Maiden Race,Career,,10006,Tokyo,2000,Turf,9,9
+902532,9222,Classic Maiden Race,Career,,10006,Tokyo,2000,Turf,9,9
+902533,9222,Classic Maiden Race,Career,,10006,Tokyo,2000,Turf,9,9
+902550,9224,Classic Maiden Race,Career,,10006,Tokyo,2100,Dirt,9,9
+902551,9224,Classic Maiden Race,Career,,10006,Tokyo,2100,Dirt,9,9
+902552,9224,Classic Maiden Race,Career,,10006,Tokyo,2100,Dirt,9,9
+902553,9224,Classic Maiden Race,Career,,10006,Tokyo,2100,Dirt,9,9
+902554,9224,Classic Maiden Race,Career,,10006,Tokyo,2100,Dirt,9,9
+902555,9224,Classic Maiden Race,Career,,10006,Tokyo,2100,Dirt,9,9
+902556,9224,Classic Maiden Race,Career,,10006,Tokyo,2100,Dirt,9,9
+902560,9225,Classic Maiden Race,Career,,10006,Tokyo,2300,Turf,9,9
+902570,9226,Classic Maiden Race,Career,,10006,Tokyo,2400,Turf,9,9
+902571,9226,Classic Maiden Race,Career,,10006,Tokyo,2400,Turf,9,9
+902572,9226,Classic Maiden Race,Career,,10006,Tokyo,2400,Turf,9,9
+902573,9226,Classic Maiden Race,Career,,10006,Tokyo,2400,Turf,9,9
+902574,9226,Classic Maiden Race,Career,,10006,Tokyo,2400,Turf,9,9
+902580,9227,Junior Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902581,9227,Junior Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902582,9227,Junior Maiden Race,Career,,10006,Tokyo,1300,Dirt,9,9
+902590,9228,Junior Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902591,9228,Junior Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902592,9228,Junior Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902593,9228,Junior Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902594,9228,Junior Maiden Race,Career,,10006,Tokyo,1400,Turf,9,9
+902610,9230,Junior Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902611,9230,Junior Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902612,9230,Junior Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902613,9230,Junior Maiden Race,Career,,10006,Tokyo,1400,Dirt,9,9
+902620,9231,Junior Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902621,9231,Junior Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902622,9231,Junior Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902623,9231,Junior Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902624,9231,Junior Maiden Race,Career,,10006,Tokyo,1600,Turf,9,9
+902640,9233,Junior Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902641,9233,Junior Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902642,9233,Junior Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902643,9233,Junior Maiden Race,Career,,10006,Tokyo,1600,Dirt,9,9
+902660,9235,Junior Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902661,9235,Junior Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902662,9235,Junior Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902663,9235,Junior Maiden Race,Career,,10006,Tokyo,1800,Turf,9,9
+902680,9237,Junior Maiden Race,Career,,10006,Tokyo,2000,Turf,9,9
+902681,9237,Junior Maiden Race,Career,,10006,Tokyo,2000,Turf,9,9
+902682,9237,Junior Maiden Race,Career,,10006,Tokyo,2000,Turf,9,9
+902683,9237,Junior Maiden Race,Career,,10006,Tokyo,2000,Turf,9,9
+902730,9242,Junior Make Debut,Career,,10006,Tokyo,1300,Dirt,9,9
+902790,9248,Junior Make Debut,Career,,10006,Tokyo,1600,Dirt,9,9
+902810,9250,Junior Make Debut,Career,,10006,Tokyo,2000,Turf,9,9
+904193,9399,Junior Make Debut,Career,,10006,Tokyo,1600,Turf,9,9
+904194,9400,Junior Make Debut,Career,,10006,Tokyo,1800,Turf,9,9
+910007,9506,URA Finale Qualifier,Career,G1,10006,Tokyo,1400,Turf,18,18
+910010,9512,URA Finale Qualifier,Career,G1,10006,Tokyo,1600,Turf,18,18
+910015,9517,URA Finale Qualifier,Career,G1,10006,Tokyo,1800,Turf,18,18
+910020,9524,URA Finale Qualifier,Career,G1,10006,Tokyo,2400,Turf,18,18
+910021,9525,URA Finale Qualifier,Career,G1,10006,Tokyo,2000,Turf,18,18
+910030,9534,URA Finale Qualifier,Career,G1,10006,Tokyo,2500,Turf,18,18
+910031,9535,URA Finale Qualifier,Career,G1,10006,Tokyo,3400,Turf,18,18
+910033,9540,URA Finale Qualifier,Career,G1,10006,Tokyo,1400,Dirt,16,18
+910037,9550,URA Finale Qualifier,Career,G1,10006,Tokyo,1600,Dirt,16,18
+910040,9561,URA Finale Qualifier,Career,G1,10006,Tokyo,2100,Dirt,16,18
+910107,9606,URA Finale Semifinal,Career,G1,10006,Tokyo,1400,Turf,18,18
+910110,9612,URA Finale Semifinal,Career,G1,10006,Tokyo,1600,Turf,18,18
+910115,9617,URA Finale Semifinal,Career,G1,10006,Tokyo,1800,Turf,18,18
+910120,9624,URA Finale Semifinal,Career,G1,10006,Tokyo,2400,Turf,18,18
+910121,9625,URA Finale Semifinal,Career,G1,10006,Tokyo,2000,Turf,18,18
+910130,9634,URA Finale Semifinal,Career,G1,10006,Tokyo,2500,Turf,18,18
+910131,9635,URA Finale Semifinal,Career,G1,10006,Tokyo,3400,Turf,18,18
+910133,9640,URA Finale Semifinal,Career,G1,10006,Tokyo,1400,Dirt,16,18
+910137,9650,URA Finale Semifinal,Career,G1,10006,Tokyo,1600,Dirt,16,18
+910140,9661,URA Finale Semifinal,Career,G1,10006,Tokyo,2100,Dirt,16,18
+910207,9706,URA Finale Finals,Career,G1,10006,Tokyo,1400,Turf,18,18
+910210,9712,URA Finale Finals,Career,G1,10006,Tokyo,1600,Turf,18,18
+910215,9717,URA Finale Finals,Career,G1,10006,Tokyo,1800,Turf,18,18
+910220,9724,URA Finale Finals,Career,G1,10006,Tokyo,2400,Turf,18,18
+910221,9725,URA Finale Finals,Career,G1,10006,Tokyo,2000,Turf,18,18
+910230,9734,URA Finale Finals,Career,G1,10006,Tokyo,2500,Turf,18,18
+910231,9735,URA Finale Finals,Career,G1,10006,Tokyo,3400,Turf,18,18
+910233,9740,URA Finale Finals,Career,G1,10006,Tokyo,1400,Dirt,16,18
+910237,9750,URA Finale Finals,Career,G1,10006,Tokyo,1600,Dirt,16,18
+910240,9761,URA Finale Finals,Career,G1,10006,Tokyo,2100,Dirt,16,18
+920007,9807,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,1400,Turf,16,18
+920010,9810,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,1600,Turf,16,18
+920015,9815,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,1800,Turf,16,18
+920020,9820,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,2400,Turf,16,18
+920021,9821,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,2000,Turf,16,18
+920030,9830,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,2500,Turf,16,18
+920031,9831,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,3400,Turf,16,18
+920033,9833,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,1400,Dirt,16,18
+920037,9837,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,1600,Dirt,16,18
+920040,9840,Twinkle Star Climax Race 1,Career,G1,10006,Tokyo,2100,Dirt,16,18
+920048,9848,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,1400,Turf,16,18
+920051,9851,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,1600,Turf,16,18
+920056,9856,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,1800,Turf,16,18
+920061,9861,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,2400,Turf,16,18
+920062,9862,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,2000,Turf,16,18
+920071,9871,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,2500,Turf,16,18
+920072,9872,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,3400,Turf,16,18
+920074,9874,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,1400,Dirt,16,18
+920078,9878,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,1600,Dirt,16,18
+920081,9881,Twinkle Star Climax Race 2,Career,G1,10006,Tokyo,2100,Dirt,16,18
+920089,9889,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,1400,Turf,16,18
+920092,9892,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,1600,Turf,16,18
+920097,9897,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,1800,Turf,16,18
+920102,9902,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,2400,Turf,16,18
+920103,9903,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,2000,Turf,16,18
+920112,9912,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,2500,Turf,16,18
+920113,9913,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,3400,Turf,16,18
+920115,9915,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,1400,Dirt,16,18
+920119,9919,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,1600,Dirt,16,18
+920122,9922,Twinkle Star Climax Race 3,Career,G1,10006,Tokyo,2100,Dirt,16,18
+999901,9999,URA Finale Finals,URA Finale,G1,10006,Tokyo,2400,Turf,18,18
+620004,10004,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+622001,10004,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+622007,10004,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+622016,10004,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+622019,10004,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+622021,10004,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+622024,10004,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+620014,10014,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+622027,10014,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+622033,10014,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+622042,10014,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+622045,10014,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+622047,10014,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+622050,10014,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+620024,10024,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+622053,10024,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+622059,10024,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+622068,10024,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+622071,10024,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+622073,10024,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+622076,10024,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+620034,10034,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+622079,10034,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+622085,10034,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+622094,10034,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+622097,10034,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+622099,10034,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+622102,10034,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+620044,10044,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+622105,10044,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+622111,10044,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+622120,10044,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+622123,10044,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+622125,10044,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+622128,10044,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+620052,10052,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+620055,10055,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+620058,10058,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+620061,10061,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+620064,10064,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+620096,10096,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+620099,10099,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+620102,10102,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+620105,10105,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+620108,10108,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+620140,10140,Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+620143,10143,Showdown: Mile,Showdown,,10006,Tokyo,1800,Turf,12,18
+620146,10146,Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+620149,10149,Showdown: Long,Showdown,,10006,Tokyo,3400,Turf,12,18
+620152,10152,Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+620155,10155,Team Zenith Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+620156,10156,Team Zenith Showdown: Mile,Showdown,,10006,Tokyo,1600,Turf,12,18
+620157,10157,Team Zenith Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+620158,10158,Team Zenith Showdown: Long,Showdown,,10006,Tokyo,2500,Turf,12,18
+620159,10159,Team Zenith Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+800001,10160,Room Match: February Stakes,Room Match,G1,10006,Tokyo,1600,Dirt,16,18
+800007,10166,Room Match: NHK Mile Cup,Room Match,G1,10006,Tokyo,1600,Turf,18,18
+800008,10167,Room Match: Victoria Mile,Room Match,G1,10006,Tokyo,1600,Turf,18,18
+800009,10168,Room Match: Japanese Oaks,Room Match,G1,10006,Tokyo,2400,Turf,18,18
+800010,10169,Room Match: Japanese Derby,Room Match,G1,10006,Tokyo,2400,Turf,18,18
+800011,10170,Room Match: Yasuda Kinen,Room Match,G1,10006,Tokyo,1600,Turf,18,18
+800016,10175,Room Match: Tenno Sho (Autumn),Room Match,G1,10006,Tokyo,2000,Turf,18,18
+800019,10178,Room Match: Japan Cup,Room Match,G1,10006,Tokyo,2400,Turf,18,18
+630005,11005,Challenge Race (Very Hard),Carnival,G1,10006,Tokyo,1600,Turf,12,18
+630006,11006,Challenge Race (Extreme),Carnival,G1,10006,Tokyo,1600,Turf,12,18
+630015,11015,Carnival Race (Hard),Carnival,G2,10006,Tokyo,1400,Turf,12,18
+650011,15011,Scout Race: Mile,Scout,G1,10006,Tokyo,1800,Turf,14,18
+650017,15017,Scout Race: Medium,Scout,G1,10006,Tokyo,2400,Turf,14,18
+621001,16001,Team Showdown Elite Sprint Ace,Showdown,,10006,Tokyo,1400,Turf,12,18
+621007,16007,Team Showdown Elite Sprint Ace,Showdown,,10006,Tokyo,1400,Turf,12,18
+621008,16008,Team Showdown Elite Sprint Ace,Showdown,,10006,Tokyo,1400,Turf,12,18
+621012,16012,Team Showdown Elite Sprint Ace,Showdown,,10006,Tokyo,1400,Turf,12,18
+621013,16013,Team Zenith Showdown: Sprint,Showdown,,10006,Tokyo,1400,Turf,12,18
+621101,16101,Team Showdown Elite Mile Ace,Showdown,,10006,Tokyo,1800,Turf,12,18
+621107,16107,Team Showdown Elite Mile Ace,Showdown,,10006,Tokyo,1800,Turf,12,18
+621108,16108,Team Showdown Elite Mile Ace,Showdown,,10006,Tokyo,1800,Turf,12,18
+621112,16112,Team Showdown Elite Mile Ace,Showdown,,10006,Tokyo,1800,Turf,12,18
+621113,16113,Team Zenith Showdown: Mile,Showdown,,10006,Tokyo,1600,Turf,12,18
+621201,16201,Team Showdown Elite Medium Ace,Showdown,,10006,Tokyo,2400,Turf,12,18
+621207,16207,Team Showdown Elite Medium Ace,Showdown,,10006,Tokyo,2400,Turf,12,18
+621208,16208,Team Showdown Elite Medium Ace,Showdown,,10006,Tokyo,2400,Turf,12,18
+621212,16212,Team Showdown Elite Medium Ace,Showdown,,10006,Tokyo,2400,Turf,12,18
+621213,16213,Team Zenith Showdown: Medium,Showdown,,10006,Tokyo,2000,Turf,12,18
+621301,16301,Team Showdown Elite Long Ace,Showdown,,10006,Tokyo,3400,Turf,12,18
+621307,16307,Team Showdown Elite Long Ace,Showdown,,10006,Tokyo,3400,Turf,12,18
+621308,16308,Team Showdown Elite Long Ace,Showdown,,10006,Tokyo,3400,Turf,12,18
+621312,16312,Team Showdown Elite Long Ace,Showdown,,10006,Tokyo,3400,Turf,12,18
+621313,16313,Team Zenith Showdown: Long,Showdown,,10006,Tokyo,2500,Turf,12,18
+621401,16401,Team Showdown Elite Dirt Ace,Showdown,,10006,Tokyo,1600,Dirt,12,18
+621407,16407,Team Showdown Elite Dirt Ace,Showdown,,10006,Tokyo,1600,Dirt,12,18
+621408,16408,Team Showdown Elite Dirt Ace,Showdown,,10006,Tokyo,1600,Dirt,12,18
+621412,16412,Team Showdown Elite Dirt Ace,Showdown,,10006,Tokyo,1600,Dirt,12,18
+621413,16413,Team Zenith Showdown: Dirt,Showdown,,10006,Tokyo,1600,Dirt,12,18
+100201,1002,Takamatsunomiya Kinen,Career,G1,10007,Chukyo,1200,Turf,18,18
+102001,1020,Champions Cup,Career,G1,10007,Chukyo,1800,Dirt,16,18
+200201,2002,Tokai Stakes,Career,G2,10007,Chukyo,1800,Dirt,16,18
+200701,2007,Kinko Sho,Career,G2,10007,Chukyo,2000,Turf,18,18
+300501,3005,Aichi Hai,Career,G3,10007,Chukyo,2000,Turf,18,18
+302101,3021,Falcon Stakes,Career,G3,10007,Chukyo,1400,Turf,18,18
+303501,3035,CBC Sho,Career,G3,10007,Chukyo,1200,Turf,18,18
+303701,3037,Procyon Stakes,Career,G3,10007,Chukyo,1400,Dirt,16,18
+304001,3040,Chukyo Kinen,Career,G3,10007,Chukyo,1600,Turf,16,18
+306801,3068,Chunichi Shimbun Hai,Career,G3,10007,Chukyo,2000,Turf,18,18
+402501,4025,Shoryu Stakes,Career,OP,10007,Chukyo,1400,Dirt,16,18
+406601,4066,Meitetsu Hai,Career,OP,10007,Chukyo,1800,Dirt,16,18
+406801,4068,Chukyo Junior Stakes,Career,OP,10007,Chukyo,1600,Turf,16,18
+451801,4518,Koyamaki Sho,Career,,10007,Chukyo,1600,Turf,16,18
+452201,4522,Tsuwabuki Sho,Career,,10007,Chukyo,1400,Turf,18,18
+452501,4525,Kantsubaki Sho,Career,,10007,Chukyo,1400,Dirt,16,18
+506101,5061,Practice,Practice,,10007,Chukyo,2200,Turf,18,18
+506201,5062,Practice,Practice,,10007,Chukyo,2000,Turf,18,18
+506301,5063,Practice,Practice,,10007,Chukyo,1600,Turf,16,18
+506401,5064,Practice,Practice,,10007,Chukyo,1400,Turf,18,18
+506501,5065,Practice,Practice,,10007,Chukyo,1200,Turf,18,18
+506701,5067,Practice,Practice,,10007,Chukyo,1800,Dirt,16,18
+506801,5068,Practice,Practice,,10007,Chukyo,1400,Dirt,16,18
+510901,5109,Practice: Takamatsunomiya Kinen,Practice,G1,10007,Chukyo,1200,Turf,18,18
+512701,5127,Practice: Champions Cup,Practice,G1,10007,Chukyo,1800,Dirt,16,18
+800081,5250,Trainers Cup,Room Match,,10007,Chukyo,2200,Turf,18,18
+800082,5251,Trainers Cup,Room Match,,10007,Chukyo,2000,Turf,18,18
+800083,5252,Trainers Cup,Room Match,,10007,Chukyo,1600,Turf,16,18
+800084,5253,Trainers Cup,Room Match,,10007,Chukyo,1400,Turf,18,18
+800085,5254,Trainers Cup,Room Match,,10007,Chukyo,1200,Turf,18,18
+800086,5255,Trainers Cup,Room Match,,10007,Chukyo,1800,Dirt,16,18
+800087,5256,Trainers Cup,Room Match,,10007,Chukyo,1400,Dirt,16,18
+600001,6001,Champions Meeting Capricorn Cup,Champions Meeting,G1,10007,Chukyo,1200,Turf,9,9
+600013,6013,Champions Meeting Capricorn Cup Finals,Champions Meeting,G1,10007,Chukyo,1200,Turf,9,9
+600025,6025,Champions Meeting Capricorn Cup,Champions Meeting,G1,10007,Chukyo,1200,Turf,9,9
+600037,6037,Capricorn Cup Finals,Champions Meeting,G1,10007,Chukyo,1200,Turf,9,9
+610135,6235,Team Race: Sprint,Team Trials,G1,10007,Chukyo,1200,Turf,12,18
+610136,6236,Team Race: Sprint,Team Trials,G1,10007,Chukyo,1200,Turf,12,18
+610137,6237,Team Race: Sprint,Team Trials,G1,10007,Chukyo,1200,Turf,12,18
+610138,6238,Team Race: Sprint,Team Trials,G1,10007,Chukyo,1400,Turf,12,18
+610139,6239,Team Race: Sprint,Team Trials,G1,10007,Chukyo,1400,Turf,12,18
+610140,6240,Team Race: Sprint,Team Trials,G1,10007,Chukyo,1400,Turf,12,18
+610141,6241,Team Race: Mile,Team Trials,G1,10007,Chukyo,1600,Turf,12,18
+610142,6242,Team Race: Mile,Team Trials,G1,10007,Chukyo,1600,Turf,12,18
+610143,6243,Team Race: Mile,Team Trials,G1,10007,Chukyo,1600,Turf,12,18
+610144,6244,Team Race: Medium,Team Trials,G1,10007,Chukyo,2000,Turf,12,18
+610145,6245,Team Race: Medium,Team Trials,G1,10007,Chukyo,2000,Turf,12,18
+610146,6246,Team Race: Medium,Team Trials,G1,10007,Chukyo,2000,Turf,12,18
+610147,6247,Team Race: Medium,Team Trials,G1,10007,Chukyo,2200,Turf,12,18
+610148,6248,Team Race: Medium,Team Trials,G1,10007,Chukyo,2200,Turf,12,18
+610149,6249,Team Race: Medium,Team Trials,G1,10007,Chukyo,2200,Turf,12,18
+610150,6250,Team Race: Dirt,Team Trials,G1,10007,Chukyo,1800,Dirt,12,18
+610151,6251,Team Race: Dirt,Team Trials,G1,10007,Chukyo,1800,Dirt,12,18
+610152,6252,Team Race: Dirt,Team Trials,G1,10007,Chukyo,1800,Dirt,12,18
+904181,9389,Junior Make Debut,Career,,10007,Chukyo,2000,Turf,9,9
+904187,9393,Junior Make Debut,Career,,10007,Chukyo,1600,Turf,9,9
+910001,9500,URA Finale Qualifier,Career,G1,10007,Chukyo,1200,Turf,18,18
+910002,9501,URA Finale Qualifier,Career,G1,10007,Chukyo,1400,Turf,18,18
+910025,9529,URA Finale Qualifier,Career,G1,10007,Chukyo,2000,Turf,18,18
+910034,9541,URA Finale Qualifier,Career,G1,10007,Chukyo,1400,Dirt,16,18
+910038,9551,URA Finale Qualifier,Career,G1,10007,Chukyo,1800,Dirt,16,18
+910101,9600,URA Finale Semifinal,Career,G1,10007,Chukyo,1200,Turf,18,18
+910102,9601,URA Finale Semifinal,Career,G1,10007,Chukyo,1400,Turf,18,18
+910125,9629,URA Finale Semifinal,Career,G1,10007,Chukyo,2000,Turf,18,18
+910134,9641,URA Finale Semifinal,Career,G1,10007,Chukyo,1400,Dirt,16,18
+910138,9651,URA Finale Semifinal,Career,G1,10007,Chukyo,1800,Dirt,16,18
+910201,9700,URA Finale Finals,Career,G1,10007,Chukyo,1200,Turf,18,18
+910202,9701,URA Finale Finals,Career,G1,10007,Chukyo,1400,Turf,18,18
+910225,9729,URA Finale Finals,Career,G1,10007,Chukyo,2000,Turf,18,18
+910234,9741,URA Finale Finals,Career,G1,10007,Chukyo,1400,Dirt,16,18
+910238,9751,URA Finale Finals,Career,G1,10007,Chukyo,1800,Dirt,16,18
+920001,9801,Twinkle Star Climax Race 1,Career,G1,10007,Chukyo,1200,Turf,16,18
+920002,9802,Twinkle Star Climax Race 1,Career,G1,10007,Chukyo,1400,Turf,16,18
+920025,9825,Twinkle Star Climax Race 1,Career,G1,10007,Chukyo,2000,Turf,16,18
+920034,9834,Twinkle Star Climax Race 1,Career,G1,10007,Chukyo,1400,Dirt,16,18
+920038,9838,Twinkle Star Climax Race 1,Career,G1,10007,Chukyo,1800,Dirt,16,18
+920042,9842,Twinkle Star Climax Race 2,Career,G1,10007,Chukyo,1200,Turf,16,18
+920043,9843,Twinkle Star Climax Race 2,Career,G1,10007,Chukyo,1400,Turf,16,18
+920066,9866,Twinkle Star Climax Race 2,Career,G1,10007,Chukyo,2000,Turf,16,18
+920075,9875,Twinkle Star Climax Race 2,Career,G1,10007,Chukyo,1400,Dirt,16,18
+920079,9879,Twinkle Star Climax Race 2,Career,G1,10007,Chukyo,1800,Dirt,16,18
+920083,9883,Twinkle Star Climax Race 3,Career,G1,10007,Chukyo,1200,Turf,16,18
+920084,9884,Twinkle Star Climax Race 3,Career,G1,10007,Chukyo,1400,Turf,16,18
+920107,9907,Twinkle Star Climax Race 3,Career,G1,10007,Chukyo,2000,Turf,16,18
+920116,9916,Twinkle Star Climax Race 3,Career,G1,10007,Chukyo,1400,Dirt,16,18
+920120,9920,Twinkle Star Climax Race 3,Career,G1,10007,Chukyo,1800,Dirt,16,18
+800002,10161,Room Match: Takamatsunomiya Kinen,Room Match,G1,10007,Chukyo,1200,Turf,18,18
+800020,10179,Room Match: Champions Cup,Room Match,G1,10007,Chukyo,1800,Dirt,16,18
+630016,11016,Carnival Race (Hard),Carnival,G3,10007,Chukyo,1200,Turf,12,18
+630017,11017,Challenge Race (Very Hard),Carnival,G1,10007,Chukyo,1200,Turf,12,18
+630018,11018,Challenge Race (Extreme),Carnival,G1,10007,Chukyo,1200,Turf,12,18
+100601,1006,Tenno Sho (Spring),Career,G1,10008,Kyoto,3200,Turf,18,18
+101401,1014,Shuka Sho,Career,G1,10008,Kyoto,2000,Turf,18,18
+101501,1015,Kikuka Sho,Career,G1,10008,Kyoto,3000,Turf,18,18
+101701,1017,Queen Elizabeth II Cup,Career,G1,10008,Kyoto,2200,Turf,18,18
+101801,1018,Mile Championship,Career,G1,10008,Kyoto,1600,Turf,18,18
+102501,1025,Takarazuka Kinen,Career,G1,10008,Kyoto,2200,Turf,18,18
+102601,1026,Kikuka Sho,Career,G1,10008,Kyoto,3000,Turf,17,18
+200101,2001,Nikkei Shinshun Hai,Career,G2,10008,Kyoto,2400,Turf,18,18
+200401,2004,Kyoto Kinen,Career,G2,10008,Kyoto,2200,Turf,18,18
+201401,2014,Milers Cup,Career,G2,10008,Kyoto,1600,Turf,18,18
+201701,2017,Kyoto Shimbun Hai,Career,G2,10008,Kyoto,2200,Turf,18,18
+202701,2027,Kyoto Daishoten,Career,G2,10008,Kyoto,2400,Turf,18,18
+202901,2029,Swan Stakes,Career,G2,10008,Kyoto,1400,Turf,18,18
+203201,2032,Daily Hai Junior Stakes,Career,G2,10008,Kyoto,1600,Turf,18,18
+300101,3001,Kyoto Kimpai,Career,G3,10008,Kyoto,1600,Turf,18,18
+300301,3003,Shinzan Kinen,Career,G3,10008,Kyoto,1600,Turf,18,18
+300701,3007,Silk Road Stakes,Career,G3,10008,Kyoto,1200,Turf,18,18
+300901,3009,Kisaragi Sho,Career,G3,10008,Kyoto,1800,Turf,18,18
+301301,3013,Kyoto Umamusume Stakes,Career,G3,10008,Kyoto,1400,Turf,18,18
+302901,3029,Heian Stakes,Career,G3,10008,Kyoto,1900,Dirt,16,18
+306001,3060,Fantasy Stakes,Career,G3,10008,Kyoto,1400,Turf,18,18
+306101,3061,Miyako Stakes,Career,G3,10008,Kyoto,1800,Dirt,16,18
+306501,3065,Kyoto Junior Stakes,Career,G3,10008,Kyoto,2000,Turf,18,18
+306601,3066,Keihan Hai,Career,G3,10008,Kyoto,1200,Turf,18,18
+400101,4001,Manyo Stakes,Career,OP,10008,Kyoto,3000,Turf,18,18
+400301,4003,Yodo Tankyori Stakes,Career,OP,10008,Kyoto,1200,Turf,18,18
+400701,4007,Kobai Stakes,Career,OP,10008,Kyoto,1400,Turf,18,18
+400801,4008,Subaru Stakes,Career,OP,10008,Kyoto,1400,Dirt,16,18
+400901,4009,Wakagoma Stakes,Career,OP,10008,Kyoto,2000,Turf,18,18
+401301,4013,Yamato Stakes,Career,OP,10008,Kyoto,1200,Dirt,16,18
+401401,4014,Elfin Stakes,Career,OP,10008,Kyoto,1600,Turf,18,18
+401501,4015,Rakuyo Stakes,Career,OP,10008,Kyoto,1600,Turf,18,18
+401601,4016,Aldebaran Stakes,Career,OP,10008,Kyoto,1900,Dirt,16,18
+403901,4039,Tachibana Stakes,Career,OP,10008,Kyoto,1400,Turf,18,18
+404101,4041,Tennozan Stakes,Career,OP,10008,Kyoto,1200,Dirt,16,18
+404201,4042,Tango Stakes,Career,OP,10008,Kyoto,1400,Dirt,16,18
+404701,4047,Kurama Stakes,Career,OP,10008,Kyoto,1200,Turf,18,18
+404901,4049,Miyakooji Stakes,Career,OP,10008,Kyoto,1800,Turf,18,18
+405001,4050,Aoi Stakes,Career,G3,10008,Kyoto,1200,Turf,18,18
+405101,4051,Ritto Stakes,Career,OP,10008,Kyoto,1400,Dirt,16,18
+405401,4054,Hosu Stakes,Career,OP,10008,Kyoto,1800,Dirt,16,18
+405601,4056,Shirayuri Stakes,Career,OP,10008,Kyoto,1800,Turf,18,18
+405801,4058,Azuchijo Stakes,Career,OP,10008,Kyoto,1400,Turf,18,18
+409101,4091,Opal Stakes,Career,OP,10008,Kyoto,1200,Turf,18,18
+409301,4093,Momiji Stakes,Career,OP,10008,Kyoto,1400,Turf,18,18
+409701,4097,Muromachi Stakes,Career,OP,10008,Kyoto,1200,Dirt,16,18
+409901,4099,Hagi Stakes,Career,OP,10008,Kyoto,1800,Turf,18,18
+410001,4100,Cassiopeia Stakes,Career,OP,10008,Kyoto,1800,Turf,18,18
+410401,4104,Andromeda Stakes,Career,OP,10008,Kyoto,2000,Turf,18,18
+410801,4108,Autumn Leaf Stakes,Career,OP,10008,Kyoto,1200,Dirt,16,18
+412401,4124,Uzumasa Stakes,Career,OP,10008,Kyoto,1800,Dirt,16,18
+450301,4503,Rindo Sho,Career,,10008,Kyoto,1400,Turf,18,18
+450401,4504,Shigiku Sho,Career,,10008,Kyoto,2000,Turf,18,18
+450601,4506,Nadeshiko Sho,Career,,10008,Kyoto,1400,Dirt,16,18
+451001,4510,Kigiku Sho,Career,,10008,Kyoto,2000,Turf,18,18
+451101,4511,Mochinoki Sho,Career,,10008,Kyoto,1800,Dirt,16,18
+451301,4513,Shumeigiku Sho,Career,,10008,Kyoto,1400,Turf,18,18
+451601,4516,Shiragiku Sho,Career,,10008,Kyoto,1600,Turf,18,18
+507001,5070,Practice,Practice,,10008,Kyoto,3200,Turf,18,18
+507101,5071,Practice,Practice,,10008,Kyoto,3000,Turf,18,18
+507201,5072,Practice,Practice,,10008,Kyoto,2400,Turf,18,18
+507301,5073,Practice,Practice,,10008,Kyoto,2200,Turf,18,18
+507401,5074,Practice,Practice,,10008,Kyoto,2000,Turf,18,18
+507501,5075,Practice,Practice,,10008,Kyoto,1800,Turf,18,18
+507601,5076,Practice,Practice,,10008,Kyoto,1600,Turf,18,18
+507701,5077,Practice,Practice,,10008,Kyoto,1600,Turf,18,18
+507801,5078,Practice,Practice,,10008,Kyoto,1400,Turf,18,18
+507901,5079,Practice,Practice,,10008,Kyoto,1400,Turf,18,18
+508001,5080,Practice,Practice,,10008,Kyoto,1200,Turf,18,18
+508101,5081,Practice,Practice,,10008,Kyoto,1900,Dirt,16,18
+508201,5082,Practice,Practice,,10008,Kyoto,1800,Dirt,16,18
+508301,5083,Practice,Practice,,10008,Kyoto,1400,Dirt,16,18
+508401,5084,Practice,Practice,,10008,Kyoto,1200,Dirt,16,18
+511301,5113,Practice: Tenno Sho (Spring),Practice,G1,10008,Kyoto,3200,Turf,18,18
+512101,5121,Practice: Shuka Sho,Practice,G1,10008,Kyoto,2000,Turf,18,18
+512201,5122,Practice: Kikuka Sho,Practice,G1,10008,Kyoto,3000,Turf,18,18
+512401,5124,Practice: Queen Elizabeth II Cup,Practice,G1,10008,Kyoto,2200,Turf,18,18
+512501,5125,Practice: Mile Championship,Practice,G1,10008,Kyoto,1600,Turf,18,18
+800088,5257,Trainers Cup,Room Match,,10008,Kyoto,3200,Turf,18,18
+800089,5258,Trainers Cup,Room Match,,10008,Kyoto,3000,Turf,18,18
+800090,5259,Trainers Cup,Room Match,,10008,Kyoto,2400,Turf,18,18
+800091,5260,Trainers Cup,Room Match,,10008,Kyoto,2200,Turf,18,18
+800092,5261,Trainers Cup,Room Match,,10008,Kyoto,2000,Turf,18,18
+800093,5262,Trainers Cup,Room Match,,10008,Kyoto,1800,Turf,18,18
+800094,5263,Trainers Cup,Room Match,,10008,Kyoto,1600,Turf,18,18
+800095,5264,Trainers Cup,Room Match,,10008,Kyoto,1600,Turf,18,18
+800096,5265,Trainers Cup,Room Match,,10008,Kyoto,1400,Turf,18,18
+800097,5266,Trainers Cup,Room Match,,10008,Kyoto,1400,Turf,18,18
+800098,5267,Trainers Cup,Room Match,,10008,Kyoto,1200,Turf,18,18
+800099,5268,Trainers Cup,Room Match,,10008,Kyoto,1900,Dirt,16,18
+800100,5269,Trainers Cup,Room Match,,10008,Kyoto,1800,Dirt,16,18
+800101,5270,Trainers Cup,Room Match,,10008,Kyoto,1400,Dirt,16,18
+800102,5271,Trainers Cup,Room Match,,10008,Kyoto,1200,Dirt,16,18
+580001,5801,Moonlight Sho,group 2,,10008,Kyoto,1600,Turf,18,18
+580002,5802,Moonlight Sho,group 2,,10008,Kyoto,1600,Turf,18,18
+580003,5803,Moonlight Sho,group 2,,10008,Kyoto,1600,Turf,18,18
+580004,5804,Moonlight Sho,group 2,,10008,Kyoto,1600,Turf,18,18
+593001,5930,Tenno Sho (Spring),group 8,G1,10008,Kyoto,3200,Turf,18,18
+593002,5930,Tenno Sho (Spring),group 8,G1,10008,Kyoto,3200,Turf,18,18
+593003,5930,Tenno Sho (Spring),group 8,G1,10008,Kyoto,3200,Turf,18,18
+593004,5930,Tenno Sho (Spring),group 8,G1,10008,Kyoto,3200,Turf,18,18
+594001,5940,Takarazuka Kinen,group 8,G1,10008,Kyoto,2200,Turf,18,18
+595001,5950,Kikuka Sho,group 8,G1,10008,Kyoto,3000,Turf,18,18
+595002,5950,Kikuka Sho,group 8,G1,10008,Kyoto,3000,Turf,18,18
+595003,5950,Kikuka Sho,group 8,G1,10008,Kyoto,3000,Turf,18,18
+600006,6006,Champions Meeting: Gemini Cup,Champions Meeting,G1,10008,Kyoto,3200,Turf,9,9
+600010,6010,Champions Meeting Libra Cup,Champions Meeting,G1,10008,Kyoto,3000,Turf,9,9
+600018,6018,Champions Meeting: Gemini Cup Finals,Champions Meeting,G1,10008,Kyoto,3200,Turf,9,9
+600022,6022,Champions Meeting Libra Cup Finals,Champions Meeting,G1,10008,Kyoto,3000,Turf,9,9
+600035,6035,Champions Meeting Scorpio Cup,Champions Meeting,G1,10008,Kyoto,2200,Turf,9,9
+600047,6047,Scorpio Cup Finals,Champions Meeting,G1,10008,Kyoto,2200,Turf,9,9
+610153,6253,Team Race: Sprint,Team Trials,G1,10008,Kyoto,1200,Turf,12,18
+610154,6254,Team Race: Sprint,Team Trials,G1,10008,Kyoto,1200,Turf,12,18
+610155,6255,Team Race: Sprint,Team Trials,G1,10008,Kyoto,1200,Turf,12,18
+610156,6256,Team Race: Sprint,Team Trials,G1,10008,Kyoto,1400,Turf,12,18
+610157,6257,Team Race: Sprint,Team Trials,G1,10008,Kyoto,1400,Turf,12,18
+610158,6258,Team Race: Sprint,Team Trials,G1,10008,Kyoto,1400,Turf,12,18
+610159,6259,Team Race: Sprint,Team Trials,G1,10008,Kyoto,1400,Turf,12,18
+610160,6260,Team Race: Sprint,Team Trials,G1,10008,Kyoto,1400,Turf,12,18
+610161,6261,Team Race: Sprint,Team Trials,G1,10008,Kyoto,1400,Turf,12,18
+610162,6262,Team Race: Mile,Team Trials,G1,10008,Kyoto,1600,Turf,12,18
+610163,6263,Team Race: Mile,Team Trials,G1,10008,Kyoto,1600,Turf,12,18
+610164,6264,Team Race: Mile,Team Trials,G1,10008,Kyoto,1600,Turf,12,18
+610165,6265,Team Race: Mile,Team Trials,G1,10008,Kyoto,1600,Turf,12,18
+610166,6266,Team Race: Mile,Team Trials,G1,10008,Kyoto,1600,Turf,12,18
+610167,6267,Team Race: Mile,Team Trials,G1,10008,Kyoto,1600,Turf,12,18
+610168,6268,Team Race: Mile,Team Trials,G1,10008,Kyoto,1800,Turf,12,18
+610169,6269,Team Race: Mile,Team Trials,G1,10008,Kyoto,1800,Turf,12,18
+610170,6270,Team Race: Mile,Team Trials,G1,10008,Kyoto,1800,Turf,12,18
+610171,6271,Team Race: Medium,Team Trials,G1,10008,Kyoto,2000,Turf,12,18
+610172,6272,Team Race: Medium,Team Trials,G1,10008,Kyoto,2000,Turf,12,18
+610173,6273,Team Race: Medium,Team Trials,G1,10008,Kyoto,2000,Turf,12,18
+610174,6274,Team Race: Medium,Team Trials,G1,10008,Kyoto,2200,Turf,12,18
+610175,6275,Team Race: Medium,Team Trials,G1,10008,Kyoto,2200,Turf,12,18
+610176,6276,Team Race: Medium,Team Trials,G1,10008,Kyoto,2200,Turf,12,18
+610177,6277,Team Race: Medium,Team Trials,G1,10008,Kyoto,2400,Turf,12,18
+610178,6278,Team Race: Medium,Team Trials,G1,10008,Kyoto,2400,Turf,12,18
+610179,6279,Team Race: Medium,Team Trials,G1,10008,Kyoto,2400,Turf,12,18
+610180,6280,Team Race: Long,Team Trials,G1,10008,Kyoto,3000,Turf,12,18
+610181,6281,Team Race: Long,Team Trials,G1,10008,Kyoto,3000,Turf,12,18
+610182,6282,Team Race: Long,Team Trials,G1,10008,Kyoto,3000,Turf,12,18
+610183,6283,Team Race: Long,Team Trials,G1,10008,Kyoto,3200,Turf,12,18
+610184,6284,Team Race: Long,Team Trials,G1,10008,Kyoto,3200,Turf,12,18
+610185,6285,Team Race: Long,Team Trials,G1,10008,Kyoto,3200,Turf,12,18
+610186,6286,Team Race: Dirt,Team Trials,G1,10008,Kyoto,1800,Dirt,12,18
+610187,6287,Team Race: Dirt,Team Trials,G1,10008,Kyoto,1800,Dirt,12,18
+610188,6288,Team Race: Dirt,Team Trials,G1,10008,Kyoto,1800,Dirt,12,18
+700101,7001,Team Practice,group 4,,10008,Kyoto,3000,Turf,18,18
+700401,7004,Practice Race,group 4,,10008,Kyoto,3200,Turf,18,18
+701001,7010,Kikuka Sho,Career,G1,10008,Kyoto,3000,Turf,18,18
+701401,7014,Team Practice,group 4,,10008,Kyoto,1800,Turf,18,18
+701801,7018,Scrimmage,group 4,,10008,Kyoto,3200,Turf,12,18
+904182,9390,Junior Make Debut,Career,,10008,Kyoto,1600,Turf,9,9
+904183,9391,Junior Make Debut,Career,,10008,Kyoto,2000,Turf,9,9
+904197,9403,Junior Make Debut,Career,,10008,Kyoto,1200,Turf,9,9
+904200,9406,Junior Make Debut,Career,,10008,Kyoto,1800,Dirt,9,9
+904201,9407,Junior Make Debut,Career,,10008,Kyoto,1400,Turf,9,9
+910004,9503,URA Finale Qualifier,Career,G1,10008,Kyoto,1200,Turf,18,18
+910005,9504,URA Finale Qualifier,Career,G1,10008,Kyoto,1400,Turf,18,18
+910011,9513,URA Finale Qualifier,Career,G1,10008,Kyoto,1600,Turf,18,18
+910012,9514,URA Finale Qualifier,Career,G1,10008,Kyoto,1800,Turf,18,18
+910022,9526,URA Finale Qualifier,Career,G1,10008,Kyoto,2000,Turf,18,18
+910023,9527,URA Finale Qualifier,Career,G1,10008,Kyoto,2200,Turf,18,18
+910024,9528,URA Finale Qualifier,Career,G1,10008,Kyoto,2400,Turf,18,18
+910026,9530,URA Finale Qualifier,Career,G1,10008,Kyoto,3200,Turf,18,18
+910027,9531,URA Finale Qualifier,Career,G1,10008,Kyoto,3000,Turf,18,18
+910035,9542,URA Finale Qualifier,Career,G1,10008,Kyoto,1200,Dirt,16,18
+910036,9543,URA Finale Qualifier,Career,G1,10008,Kyoto,1400,Dirt,16,18
+910039,9552,URA Finale Qualifier,Career,G1,10008,Kyoto,1800,Dirt,16,18
+910041,9562,URA Finale Qualifier,Career,G1,10008,Kyoto,1900,Dirt,16,18
+910104,9603,URA Finale Semifinal,Career,G1,10008,Kyoto,1200,Turf,18,18
+910105,9604,URA Finale Semifinal,Career,G1,10008,Kyoto,1400,Turf,18,18
+910111,9613,URA Finale Semifinal,Career,G1,10008,Kyoto,1600,Turf,18,18
+910112,9614,URA Finale Semifinal,Career,G1,10008,Kyoto,1800,Turf,18,18
+910122,9626,URA Finale Semifinal,Career,G1,10008,Kyoto,2000,Turf,18,18
+910123,9627,URA Finale Semifinal,Career,G1,10008,Kyoto,2200,Turf,18,18
+910124,9628,URA Finale Semifinal,Career,G1,10008,Kyoto,2400,Turf,18,18
+910126,9630,URA Finale Semifinal,Career,G1,10008,Kyoto,3200,Turf,18,18
+910127,9631,URA Finale Semifinal,Career,G1,10008,Kyoto,3000,Turf,18,18
+910135,9642,URA Finale Semifinal,Career,G1,10008,Kyoto,1200,Dirt,16,18
+910136,9643,URA Finale Semifinal,Career,G1,10008,Kyoto,1400,Dirt,16,18
+910139,9652,URA Finale Semifinal,Career,G1,10008,Kyoto,1800,Dirt,16,18
+910141,9662,URA Finale Semifinal,Career,G1,10008,Kyoto,1900,Dirt,16,18
+910204,9703,URA Finale Finals,Career,G1,10008,Kyoto,1200,Turf,18,18
+910205,9704,URA Finale Finals,Career,G1,10008,Kyoto,1400,Turf,18,18
+910211,9713,URA Finale Finals,Career,G1,10008,Kyoto,1600,Turf,18,18
+910212,9714,URA Finale Finals,Career,G1,10008,Kyoto,1800,Turf,18,18
+910222,9726,URA Finale Finals,Career,G1,10008,Kyoto,2000,Turf,18,18
+910223,9727,URA Finale Finals,Career,G1,10008,Kyoto,2200,Turf,18,18
+910224,9728,URA Finale Finals,Career,G1,10008,Kyoto,2400,Turf,18,18
+910226,9730,URA Finale Finals,Career,G1,10008,Kyoto,3200,Turf,18,18
+910227,9731,URA Finale Finals,Career,G1,10008,Kyoto,3000,Turf,18,18
+910235,9742,URA Finale Finals,Career,G1,10008,Kyoto,1200,Dirt,16,18
+910236,9743,URA Finale Finals,Career,G1,10008,Kyoto,1400,Dirt,16,18
+910239,9752,URA Finale Finals,Career,G1,10008,Kyoto,1800,Dirt,16,18
+910241,9762,URA Finale Finals,Career,G1,10008,Kyoto,1900,Dirt,16,18
+920004,9804,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,1200,Turf,16,18
+920005,9805,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,1400,Turf,16,18
+920011,9811,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,1600,Turf,16,18
+920012,9812,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,1800,Turf,16,18
+920022,9822,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,2000,Turf,16,18
+920023,9823,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,2200,Turf,16,18
+920024,9824,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,2400,Turf,16,18
+920026,9826,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,3200,Turf,16,18
+920027,9827,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,3000,Turf,16,18
+920035,9835,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,1200,Dirt,16,18
+920036,9836,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,1400,Dirt,16,18
+920039,9839,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,1800,Dirt,16,18
+920041,9841,Twinkle Star Climax Race 1,Career,G1,10008,Kyoto,1900,Dirt,16,18
+920045,9845,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,1200,Turf,16,18
+920046,9846,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,1400,Turf,16,18
+920052,9852,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,1600,Turf,16,18
+920053,9853,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,1800,Turf,16,18
+920063,9863,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,2000,Turf,16,18
+920064,9864,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,2200,Turf,16,18
+920065,9865,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,2400,Turf,16,18
+920067,9867,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,3200,Turf,16,18
+920068,9868,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,3000,Turf,16,18
+920076,9876,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,1200,Dirt,16,18
+920077,9877,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,1400,Dirt,16,18
+920080,9880,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,1800,Dirt,16,18
+920082,9882,Twinkle Star Climax Race 2,Career,G1,10008,Kyoto,1900,Dirt,16,18
+920086,9886,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,1200,Turf,16,18
+920087,9887,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,1400,Turf,16,18
+920093,9893,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,1600,Turf,16,18
+920094,9894,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,1800,Turf,16,18
+920104,9904,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,2000,Turf,16,18
+920105,9905,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,2200,Turf,16,18
+920106,9906,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,2400,Turf,16,18
+920108,9908,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,3200,Turf,16,18
+920109,9909,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,3000,Turf,16,18
+920117,9917,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,1200,Dirt,16,18
+920118,9918,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,1400,Dirt,16,18
+920121,9921,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,1800,Dirt,16,18
+920123,9923,Twinkle Star Climax Race 3,Career,G1,10008,Kyoto,1900,Dirt,16,18
+620005,10005,Showdown: Sprint,Showdown,,10008,Kyoto,1200,Turf,12,18
+622006,10005,Showdown: Sprint,Showdown,,10008,Kyoto,1200,Turf,12,18
+622008,10005,Showdown: Sprint,Showdown,,10008,Kyoto,1200,Turf,12,18
+622012,10005,Showdown: Sprint,Showdown,,10008,Kyoto,1200,Turf,12,18
+622014,10005,Showdown: Sprint,Showdown,,10008,Kyoto,1200,Turf,12,18
+622022,10005,Showdown: Sprint,Showdown,,10008,Kyoto,1200,Turf,12,18
+620015,10015,Showdown: Mile,Showdown,,10008,Kyoto,1600,Turf,12,18
+622032,10015,Showdown: Mile,Showdown,,10008,Kyoto,1600,Turf,12,18
+622034,10015,Showdown: Mile,Showdown,,10008,Kyoto,1600,Turf,12,18
+622038,10015,Showdown: Mile,Showdown,,10008,Kyoto,1600,Turf,12,18
+622040,10015,Showdown: Mile,Showdown,,10008,Kyoto,1600,Turf,12,18
+622048,10015,Showdown: Mile,Showdown,,10008,Kyoto,1600,Turf,12,18
+620025,10025,Showdown: Medium,Showdown,,10008,Kyoto,2000,Turf,12,18
+622058,10025,Showdown: Medium,Showdown,,10008,Kyoto,2000,Turf,12,18
+622060,10025,Showdown: Medium,Showdown,,10008,Kyoto,2000,Turf,12,18
+622064,10025,Showdown: Medium,Showdown,,10008,Kyoto,2000,Turf,12,18
+622066,10025,Showdown: Medium,Showdown,,10008,Kyoto,2000,Turf,12,18
+622074,10025,Showdown: Medium,Showdown,,10008,Kyoto,2000,Turf,12,18
+620035,10035,Showdown: Long,Showdown,,10008,Kyoto,3000,Turf,12,18
+622084,10035,Showdown: Long,Showdown,,10008,Kyoto,3000,Turf,12,18
+622086,10035,Showdown: Long,Showdown,,10008,Kyoto,3000,Turf,12,18
+622090,10035,Showdown: Long,Showdown,,10008,Kyoto,3000,Turf,12,18
+622092,10035,Showdown: Long,Showdown,,10008,Kyoto,3000,Turf,12,18
+622100,10035,Showdown: Long,Showdown,,10008,Kyoto,3000,Turf,12,18
+620045,10045,Showdown: Dirt,Showdown,,10008,Kyoto,1800,Dirt,12,18
+622110,10045,Showdown: Dirt,Showdown,,10008,Kyoto,1800,Dirt,12,18
+622112,10045,Showdown: Dirt,Showdown,,10008,Kyoto,1800,Dirt,12,18
+622116,10045,Showdown: Dirt,Showdown,,10008,Kyoto,1800,Dirt,12,18
+622118,10045,Showdown: Dirt,Showdown,,10008,Kyoto,1800,Dirt,12,18
+622126,10045,Showdown: Dirt,Showdown,,10008,Kyoto,1800,Dirt,12,18
+620065,10065,Showdown: Sprint,Showdown,,10008,Kyoto,1200,Turf,12,18
+620068,10068,Showdown: Mile,Showdown,,10008,Kyoto,1600,Turf,12,18
+620071,10071,Showdown: Medium,Showdown,,10008,Kyoto,2000,Turf,12,18
+620074,10074,Showdown: Long,Showdown,,10008,Kyoto,3000,Turf,12,18
+620077,10077,Showdown: Dirt,Showdown,,10008,Kyoto,1800,Dirt,12,18
+620097,10097,Showdown: Sprint,Showdown,,10008,Kyoto,1200,Turf,12,18
+620100,10100,Showdown: Mile,Showdown,,10008,Kyoto,1600,Turf,12,18
+620103,10103,Showdown: Medium,Showdown,,10008,Kyoto,2000,Turf,12,18
+620106,10106,Showdown: Long,Showdown,,10008,Kyoto,3000,Turf,12,18
+620109,10109,Showdown: Dirt,Showdown,,10008,Kyoto,1800,Dirt,12,18
+620141,10141,Showdown: Sprint,Showdown,,10008,Kyoto,1200,Turf,12,18
+620144,10144,Showdown: Mile,Showdown,,10008,Kyoto,1600,Turf,12,18
+620147,10147,Showdown: Medium,Showdown,,10008,Kyoto,2000,Turf,12,18
+620150,10150,Showdown: Long,Showdown,,10008,Kyoto,3000,Turf,12,18
+620153,10153,Showdown: Dirt,Showdown,,10008,Kyoto,1800,Dirt,12,18
+800006,10165,Room Match: Tenno Sho (Spring),Room Match,G1,10008,Kyoto,3200,Turf,18,18
+800014,10173,Room Match: Shuka Sho,Room Match,G1,10008,Kyoto,2000,Turf,18,18
+800015,10174,Room Match: Kikuka Sho,Room Match,G1,10008,Kyoto,3000,Turf,18,18
+800017,10176,Room Match: Queen Elizabeth II Cup,Room Match,G1,10008,Kyoto,2200,Turf,18,18
+800018,10177,Room Match: Mile Championship,Room Match,G1,10008,Kyoto,1600,Turf,18,18
+630013,11013,Carnival Race (Hard),Carnival,G2,10008,Kyoto,1400,Turf,12,18
+1200001,12000,Tenno Sho (Spring),group 8,G1,10008,Kyoto,3200,Turf,18,18
+1200002,12000,Tenno Sho (Spring),group 8,G1,10008,Kyoto,3200,Turf,18,18
+1200003,12000,Tenno Sho (Spring),group 8,G1,10008,Kyoto,3200,Turf,18,18
+1200301,12003,Shuka Sho,group 8,G1,10008,Kyoto,2000,Turf,18,18
+1200302,12003,Shuka Sho,group 8,G1,10008,Kyoto,2000,Turf,18,18
+650010,15010,Scout Race: Medium,Scout,G1,10008,Kyoto,2200,Turf,14,18
+650013,15013,Scout Race: Mile,Scout,G1,10008,Kyoto,1600,Turf,14,18
+621005,16005,Team Showdown Elite Sprint Ace,Showdown,,10008,Kyoto,1200,Turf,12,18
+621105,16105,Team Showdown Elite Mile Ace,Showdown,,10008,Kyoto,1600,Turf,12,18
+621205,16205,Team Showdown Elite Medium Ace,Showdown,,10008,Kyoto,2000,Turf,12,18
+621305,16305,Team Showdown Elite Long Ace,Showdown,,10008,Kyoto,3200,Turf,12,18
+621405,16405,Team Showdown Elite Dirt Ace,Showdown,,10008,Kyoto,1800,Dirt,12,18
+100301,1003,Osaka Hai,Career,G1,10009,Hanshin,2000,Turf,16,18
+100401,1004,Oka Sho,Career,G1,10009,Hanshin,1600,Turf,18,18
+101201,1012,Takarazuka Kinen,Career,G1,10009,Hanshin,2200,Turf,18,18
+102101,1021,Hanshin Juvenile Fillies,Career,G1,10009,Hanshin,1600,Turf,18,18
+102201,1022,Asahi Hai Futurity Stakes,Career,G1,10009,Hanshin,1600,Turf,18,18
+102701,1027,Tenno Sho (Spring),Career,G1,10009,Hanshin,3200,Turf,18,18
+200801,2008,Fillies' Revue,Career,G2,10009,Hanshin,1400,Turf,18,18
+200901,2009,Hanshin Daishoten,Career,G2,10009,Hanshin,3000,Turf,16,18
+201201,2012,Hanshin Umamusume Stakes,Career,G2,10009,Hanshin,1600,Turf,18,18
+202101,2021,Centaur Stakes,Career,G2,10009,Hanshin,1200,Turf,16,18
+202201,2022,Rose Stakes,Career,G2,10009,Hanshin,1800,Turf,18,18
+202401,2024,Kobe Shimbun Hai,Career,G2,10009,Hanshin,2400,Turf,18,18
+203401,2034,Hanshin Cup,Career,G2,10009,Hanshin,1400,Turf,18,18
+301601,3016,Arlington Cup,Career,G3,10009,Hanshin,1600,Turf,18,18
+301701,3017,Hankyu Hai,Career,G3,10009,Hanshin,1400,Turf,18,18
+301801,3018,Tulip Sho,Career,G2,10009,Hanshin,1600,Turf,18,18
+302301,3023,Mainichi Hai,Career,G3,10009,Hanshin,1800,Turf,18,18
+302601,3026,Antares Stakes,Career,G3,10009,Hanshin,1800,Dirt,16,18
+303001,3030,Naruo Kinen,Career,G3,10009,Hanshin,2000,Turf,16,18
+303101,3031,Mermaid Stakes,Career,G3,10009,Hanshin,2000,Turf,16,18
+305601,3056,Sirius Stakes,Career,G3,10009,Hanshin,2000,Dirt,16,18
+306701,3067,Challenge Cup,Career,G3,10009,Hanshin,2000,Turf,16,18
+402001,4020,Sumire Stakes,Career,OP,10009,Hanshin,2200,Turf,18,18
+402101,4021,Osakajo Stakes,Career,OP,10009,Hanshin,1800,Turf,18,18
+402201,4022,Polaris Stakes,Career,OP,10009,Hanshin,1400,Dirt,16,18
+402301,4023,Nigawa Stakes,Career,OP,10009,Hanshin,2000,Dirt,16,18
+402701,4027,Wakaba Stakes,Career,OP,10009,Hanshin,2000,Turf,16,18
+403001,4030,Rokko Stakes,Career,OP,10009,Hanshin,1600,Turf,18,18
+403101,4031,Coral Stakes,Career,OP,10009,Hanshin,1400,Dirt,16,18
+403201,4032,Marguerite Stakes,Career,OP,10009,Hanshin,1200,Turf,16,18
+403501,4035,Wasurenagusa Sho,Career,OP,10009,Hanshin,2000,Turf,16,18
+406001,4060,Tempozan Stakes,Career,OP,10009,Hanshin,1400,Dirt,16,18
+406101,4061,Yonago Stakes,Career,OP,10009,Hanshin,1600,Turf,18,18
+408401,4084,Enif Stakes,Career,OP,10009,Hanshin,1400,Dirt,16,18
+408501,4085,Nojigiku Stakes,Career,OP,10009,Hanshin,1800,Turf,18,18
+408701,4087,Kikyo Stakes,Career,OP,10009,Hanshin,1400,Turf,18,18
+409001,4090,Port Island Stakes,Career,OP,10009,Hanshin,1600,Turf,18,18
+411101,4111,Rigel Stakes,Career,OP,10009,Hanshin,1600,Turf,18,18
+411201,4112,Tanzanite Stakes,Career,OP,10009,Hanshin,1200,Turf,16,18
+411501,4115,Galaxy Stakes,Career,OP,10009,Hanshin,1400,Dirt,16,18
+411601,4116,Betelgeuse Stakes,Career,OP,10009,Hanshin,1800,Dirt,16,18
+412101,4121,Sannomiya Stakes,Career,OP,10009,Hanshin,1800,Dirt,16,18
+451901,4519,Manryo Sho,Career,,10009,Hanshin,1400,Turf,18,18
+452101,4521,Erica Sho,Career,,10009,Hanshin,2000,Turf,16,18
+452401,4524,Sazanka Sho,Career,,10009,Hanshin,1200,Turf,16,18
+452601,4526,Senryo Sho,Career,,10009,Hanshin,1600,Turf,18,18
+508501,5085,Practice,Practice,,10009,Hanshin,3200,Turf,18,18
+508601,5086,Practice,Practice,,10009,Hanshin,3000,Turf,16,18
+508701,5087,Practice,Practice,,10009,Hanshin,2600,Turf,18,18
+508801,5088,Practice,Practice,,10009,Hanshin,2400,Turf,18,18
+508901,5089,Practice,Practice,,10009,Hanshin,2200,Turf,18,18
+509001,5090,Practice,Practice,,10009,Hanshin,2000,Turf,16,18
+509101,5091,Practice,Practice,,10009,Hanshin,1800,Turf,18,18
+509201,5092,Practice,Practice,,10009,Hanshin,1600,Turf,18,18
+509301,5093,Practice,Practice,,10009,Hanshin,1400,Turf,18,18
+509401,5094,Practice,Practice,,10009,Hanshin,1200,Turf,16,18
+509501,5095,Practice,Practice,,10009,Hanshin,2000,Dirt,16,18
+509601,5096,Practice,Practice,,10009,Hanshin,1800,Dirt,16,18
+509701,5097,Practice,Practice,,10009,Hanshin,1400,Dirt,16,18
+511001,5110,Practice: Osaka Hai,Practice,G1,10009,Hanshin,2000,Turf,16,18
+511101,5111,Practice: Oka Sho,Practice,G1,10009,Hanshin,1600,Turf,18,18
+511901,5119,Practice: Takarazuka Kinen,Practice,G1,10009,Hanshin,2200,Turf,18,18
+512801,5128,Practice: Hanshin Juvenile Fillies,Practice,G1,10009,Hanshin,1600,Turf,18,18
+512901,5129,Practice: Asahi Hai Futurity Stakes,Practice,G1,10009,Hanshin,1600,Turf,18,18
+800103,5272,Trainers Cup,Room Match,,10009,Hanshin,3200,Turf,18,18
+800104,5273,Trainers Cup,Room Match,,10009,Hanshin,3000,Turf,16,18
+800105,5274,Trainers Cup,Room Match,,10009,Hanshin,2600,Turf,18,18
+800106,5275,Trainers Cup,Room Match,,10009,Hanshin,2400,Turf,18,18
+800107,5276,Trainers Cup,Room Match,,10009,Hanshin,2200,Turf,18,18
+800108,5277,Trainers Cup,Room Match,,10009,Hanshin,2000,Turf,16,18
+800109,5278,Trainers Cup,Room Match,,10009,Hanshin,1800,Turf,18,18
+800110,5279,Trainers Cup,Room Match,,10009,Hanshin,1600,Turf,18,18
+800111,5280,Trainers Cup,Room Match,,10009,Hanshin,1400,Turf,18,18
+800112,5281,Trainers Cup,Room Match,,10009,Hanshin,1200,Turf,16,18
+800113,5282,Trainers Cup,Room Match,,10009,Hanshin,2000,Dirt,16,18
+800114,5283,Trainers Cup,Room Match,,10009,Hanshin,1800,Dirt,16,18
+800115,5284,Trainers Cup,Room Match,,10009,Hanshin,1400,Dirt,16,18
+594002,5941,Takarazuka Kinen,group 8,G1,10009,Hanshin,2200,Turf,18,18
+594003,5941,Takarazuka Kinen,group 8,G1,10009,Hanshin,2200,Turf,18,18
+596001,5960,Asahi Hai F.S.,group 8,G1,10009,Hanshin,1600,Turf,18,18
+596002,5960,Asahi Hai F.S.,group 8,G1,10009,Hanshin,1600,Turf,18,18
+596003,5960,Asahi Hai F.S.,group 8,G1,10009,Hanshin,1600,Turf,18,18
+597001,5970,Hanshin J.F.,group 8,G1,10009,Hanshin,1600,Turf,18,18
+597002,5970,Hanshin J.F.,group 8,G1,10009,Hanshin,1600,Turf,18,18
+597003,5970,Hanshin J.F.,group 8,G1,10009,Hanshin,1600,Turf,18,18
+600003,6003,Champions Meeting: Pisces Cup,Champions Meeting,G1,10009,Hanshin,3200,Turf,9,9
+600008,6008,Champions Meeting: Leo Cup,Champions Meeting,G1,10009,Hanshin,2200,Turf,9,9
+600009,6009,Champions Meeting Virgo Cup,Champions Meeting,G1,10009,Hanshin,1600,Turf,9,9
+600015,6015,Champions Meeting: Pisces Cup Finals,Champions Meeting,G1,10009,Hanshin,3200,Turf,9,9
+600020,6020,Champions Meeting: Leo Cup Finals,Champions Meeting,G1,10009,Hanshin,2200,Turf,9,9
+600021,6021,Champions Meeting Virgo Cup Finals,Champions Meeting,G1,10009,Hanshin,1600,Turf,9,9
+600031,6031,Champions Meeting: Cancer Cup,Champions Meeting,G1,10009,Hanshin,2200,Turf,9,9
+600034,6034,Champions Meeting Libra Cup,Champions Meeting,G1,10009,Hanshin,1600,Turf,9,9
+600043,6043,Champions Meeting: Cancer Cup Finals,Champions Meeting,G1,10009,Hanshin,2200,Turf,9,9
+600046,6046,Libra Cup Finals,Champions Meeting,G1,10009,Hanshin,1600,Turf,9,9
+610189,6289,Team Race: Sprint,Team Trials,G1,10009,Hanshin,1200,Turf,12,18
+610190,6290,Team Race: Sprint,Team Trials,G1,10009,Hanshin,1200,Turf,12,18
+610191,6291,Team Race: Sprint,Team Trials,G1,10009,Hanshin,1200,Turf,12,18
+610192,6292,Team Race: Sprint,Team Trials,G1,10009,Hanshin,1400,Turf,12,18
+610193,6293,Team Race: Sprint,Team Trials,G1,10009,Hanshin,1400,Turf,12,18
+610194,6294,Team Race: Sprint,Team Trials,G1,10009,Hanshin,1400,Turf,12,18
+610195,6295,Team Race: Mile,Team Trials,G1,10009,Hanshin,1600,Turf,12,18
+610196,6296,Team Race: Mile,Team Trials,G1,10009,Hanshin,1600,Turf,12,18
+610197,6297,Team Race: Mile,Team Trials,G1,10009,Hanshin,1600,Turf,12,18
+610198,6298,Team Race: Mile,Team Trials,G1,10009,Hanshin,1800,Turf,12,18
+610199,6299,Team Race: Mile,Team Trials,G1,10009,Hanshin,1800,Turf,12,18
+610200,6300,Team Race: Mile,Team Trials,G1,10009,Hanshin,1800,Turf,12,18
+610201,6301,Team Race: Medium,Team Trials,G1,10009,Hanshin,2000,Turf,12,18
+610202,6302,Team Race: Medium,Team Trials,G1,10009,Hanshin,2000,Turf,12,18
+610203,6303,Team Race: Medium,Team Trials,G1,10009,Hanshin,2000,Turf,12,18
+610204,6304,Team Race: Medium,Team Trials,G1,10009,Hanshin,2200,Turf,12,18
+610205,6305,Team Race: Medium,Team Trials,G1,10009,Hanshin,2200,Turf,12,18
+610206,6306,Team Race: Medium,Team Trials,G1,10009,Hanshin,2200,Turf,12,18
+610207,6307,Team Race: Medium,Team Trials,G1,10009,Hanshin,2400,Turf,12,18
+610208,6308,Team Race: Medium,Team Trials,G1,10009,Hanshin,2400,Turf,12,18
+610209,6309,Team Race: Medium,Team Trials,G1,10009,Hanshin,2400,Turf,12,18
+610210,6310,Team Race: Long,Team Trials,G1,10009,Hanshin,2600,Turf,12,18
+610211,6311,Team Race: Long,Team Trials,G1,10009,Hanshin,2600,Turf,12,18
+610212,6312,Team Race: Long,Team Trials,G1,10009,Hanshin,2600,Turf,12,18
+610213,6313,Team Race: Long,Team Trials,G1,10009,Hanshin,3000,Turf,12,18
+610214,6314,Team Race: Long,Team Trials,G1,10009,Hanshin,3000,Turf,12,18
+610215,6315,Team Race: Long,Team Trials,G1,10009,Hanshin,3000,Turf,12,18
+610216,6316,Team Race: Dirt,Team Trials,G1,10009,Hanshin,1800,Dirt,12,18
+610217,6317,Team Race: Dirt,Team Trials,G1,10009,Hanshin,1800,Dirt,12,18
+610218,6318,Team Race: Dirt,Team Trials,G1,10009,Hanshin,1800,Dirt,12,18
+700901,7009,Asahi Hai Futurity Stakes,Career,G1,10009,Hanshin,1600,Turf,18,18
+702001,7020,Team Practice,group 4,,10009,Hanshin,2200,Turf,18,18
+904186,9183,Junior Make Debut,Career,,10009,Hanshin,1600,Turf,9,9
+904185,9187,Junior Make Debut,Career,,10009,Hanshin,2000,Turf,9,9
+904188,9394,Junior Make Debut,Career,,10009,Hanshin,1200,Turf,9,9
+904198,9404,Junior Make Debut,Career,,10009,Hanshin,1800,Dirt,9,9
+910006,9505,URA Finale Qualifier,Career,G1,10009,Hanshin,1400,Turf,18,18
+910008,9510,URA Finale Qualifier,Career,G1,10009,Hanshin,1600,Turf,18,18
+910009,9511,URA Finale Qualifier,Career,G1,10009,Hanshin,1800,Turf,18,18
+910016,9520,URA Finale Qualifier,Career,G1,10009,Hanshin,2000,Turf,16,18
+910017,9521,URA Finale Qualifier,Career,G1,10009,Hanshin,2200,Turf,18,18
+910032,9536,URA Finale Qualifier,Career,G1,10009,Hanshin,3000,Turf,16,18
+910106,9605,URA Finale Semifinal,Career,G1,10009,Hanshin,1400,Turf,18,18
+910108,9610,URA Finale Semifinal,Career,G1,10009,Hanshin,1600,Turf,18,18
+910109,9611,URA Finale Semifinal,Career,G1,10009,Hanshin,1800,Turf,18,18
+910116,9620,URA Finale Semifinal,Career,G1,10009,Hanshin,2000,Turf,16,18
+910117,9621,URA Finale Semifinal,Career,G1,10009,Hanshin,2200,Turf,18,18
+910132,9636,URA Finale Semifinal,Career,G1,10009,Hanshin,3000,Turf,16,18
+910206,9705,URA Finale Finals,Career,G1,10009,Hanshin,1400,Turf,18,18
+910208,9710,URA Finale Finals,Career,G1,10009,Hanshin,1600,Turf,18,18
+910209,9711,URA Finale Finals,Career,G1,10009,Hanshin,1800,Turf,18,18
+910216,9720,URA Finale Finals,Career,G1,10009,Hanshin,2000,Turf,16,18
+910217,9721,URA Finale Finals,Career,G1,10009,Hanshin,2200,Turf,18,18
+910232,9736,URA Finale Finals,Career,G1,10009,Hanshin,3000,Turf,16,18
+920006,9806,Twinkle Star Climax Race 1,Career,G1,10009,Hanshin,1400,Turf,16,18
+920008,9808,Twinkle Star Climax Race 1,Career,G1,10009,Hanshin,1600,Turf,16,18
+920009,9809,Twinkle Star Climax Race 1,Career,G1,10009,Hanshin,1800,Turf,16,18
+920016,9816,Twinkle Star Climax Race 1,Career,G1,10009,Hanshin,2000,Turf,16,18
+920017,9817,Twinkle Star Climax Race 1,Career,G1,10009,Hanshin,2200,Turf,16,18
+920032,9832,Twinkle Star Climax Race 1,Career,G1,10009,Hanshin,3000,Turf,16,18
+920047,9847,Twinkle Star Climax Race 2,Career,G1,10009,Hanshin,1400,Turf,16,18
+920049,9849,Twinkle Star Climax Race 2,Career,G1,10009,Hanshin,1600,Turf,16,18
+920050,9850,Twinkle Star Climax Race 2,Career,G1,10009,Hanshin,1800,Turf,16,18
+920057,9857,Twinkle Star Climax Race 2,Career,G1,10009,Hanshin,2000,Turf,16,18
+920058,9858,Twinkle Star Climax Race 2,Career,G1,10009,Hanshin,2200,Turf,16,18
+920073,9873,Twinkle Star Climax Race 2,Career,G1,10009,Hanshin,3000,Turf,16,18
+920088,9888,Twinkle Star Climax Race 3,Career,G1,10009,Hanshin,1400,Turf,16,18
+920090,9890,Twinkle Star Climax Race 3,Career,G1,10009,Hanshin,1600,Turf,16,18
+920091,9891,Twinkle Star Climax Race 3,Career,G1,10009,Hanshin,1800,Turf,16,18
+920098,9898,Twinkle Star Climax Race 3,Career,G1,10009,Hanshin,2000,Turf,16,18
+920099,9899,Twinkle Star Climax Race 3,Career,G1,10009,Hanshin,2200,Turf,16,18
+920114,9914,Twinkle Star Climax Race 3,Career,G1,10009,Hanshin,3000,Turf,16,18
+620006,10006,Showdown: Sprint,Showdown,,10009,Hanshin,1200,Turf,12,18
+622004,10006,Showdown: Sprint,Showdown,,10009,Hanshin,1200,Turf,12,18
+622011,10006,Showdown: Sprint,Showdown,,10009,Hanshin,1200,Turf,12,18
+622017,10006,Showdown: Sprint,Showdown,,10009,Hanshin,1200,Turf,12,18
+622018,10006,Showdown: Sprint,Showdown,,10009,Hanshin,1200,Turf,12,18
+620016,10016,Showdown: Mile,Showdown,,10009,Hanshin,1600,Turf,12,18
+622030,10016,Showdown: Mile,Showdown,,10009,Hanshin,1600,Turf,12,18
+622037,10016,Showdown: Mile,Showdown,,10009,Hanshin,1600,Turf,12,18
+622043,10016,Showdown: Mile,Showdown,,10009,Hanshin,1600,Turf,12,18
+622044,10016,Showdown: Mile,Showdown,,10009,Hanshin,1600,Turf,12,18
+620026,10026,Showdown: Medium,Showdown,,10009,Hanshin,2200,Turf,12,18
+622056,10026,Showdown: Medium,Showdown,,10009,Hanshin,2200,Turf,12,18
+622063,10026,Showdown: Medium,Showdown,,10009,Hanshin,2200,Turf,12,18
+622069,10026,Showdown: Medium,Showdown,,10009,Hanshin,2200,Turf,12,18
+622070,10026,Showdown: Medium,Showdown,,10009,Hanshin,2200,Turf,12,18
+620036,10036,Showdown: Long,Showdown,,10009,Hanshin,2600,Turf,12,18
+622082,10036,Showdown: Long,Showdown,,10009,Hanshin,2600,Turf,12,18
+622089,10036,Showdown: Long,Showdown,,10009,Hanshin,2600,Turf,12,18
+622095,10036,Showdown: Long,Showdown,,10009,Hanshin,2600,Turf,12,18
+622096,10036,Showdown: Long,Showdown,,10009,Hanshin,2600,Turf,12,18
+620046,10046,Showdown: Dirt,Showdown,,10009,Hanshin,1800,Dirt,12,18
+622108,10046,Showdown: Dirt,Showdown,,10009,Hanshin,1800,Dirt,12,18
+622115,10046,Showdown: Dirt,Showdown,,10009,Hanshin,1800,Dirt,12,18
+622121,10046,Showdown: Dirt,Showdown,,10009,Hanshin,1800,Dirt,12,18
+622122,10046,Showdown: Dirt,Showdown,,10009,Hanshin,1800,Dirt,12,18
+620066,10066,Showdown: Sprint,Showdown,,10009,Hanshin,1200,Turf,12,18
+620069,10069,Showdown: Mile,Showdown,,10009,Hanshin,1600,Turf,12,18
+620072,10072,Showdown: Medium,Showdown,,10009,Hanshin,2200,Turf,12,18
+620075,10075,Showdown: Long,Showdown,,10009,Hanshin,2600,Turf,12,18
+620078,10078,Showdown: Dirt,Showdown,,10009,Hanshin,1800,Dirt,12,18
+620110,10110,Showdown: Sprint,Showdown,,10009,Hanshin,1200,Turf,12,18
+620113,10113,Showdown: Mile,Showdown,,10009,Hanshin,1600,Turf,12,18
+620116,10116,Showdown: Medium,Showdown,,10009,Hanshin,2200,Turf,12,18
+620119,10119,Showdown: Long,Showdown,,10009,Hanshin,2600,Turf,12,18
+620122,10122,Showdown: Dirt,Showdown,,10009,Hanshin,1800,Dirt,12,18
+620142,10142,Showdown: Sprint,Showdown,,10009,Hanshin,1200,Turf,12,18
+620145,10145,Showdown: Mile,Showdown,,10009,Hanshin,1600,Turf,12,18
+620148,10148,Showdown: Medium,Showdown,,10009,Hanshin,2200,Turf,12,18
+620151,10151,Showdown: Long,Showdown,,10009,Hanshin,2600,Turf,12,18
+620154,10154,Showdown: Dirt,Showdown,,10009,Hanshin,1800,Dirt,12,18
+800003,10162,Room Match: Osaka Hai,Room Match,G1,10009,Hanshin,2000,Turf,16,18
+800004,10163,Room Match: Oka Sho,Room Match,G1,10009,Hanshin,1600,Turf,18,18
+800012,10171,Room Match: Takarazuka Kinen,Room Match,G1,10009,Hanshin,2200,Turf,18,18
+800021,10180,Room Match: Hanshin Juvenile Fillies,Room Match,G1,10009,Hanshin,1600,Turf,18,18
+800022,10181,Room Match: Asahi Hai Futurity Stakes,Room Match,G1,10009,Hanshin,1600,Turf,18,18
+1200101,12001,Takarazuka Kinen,group 8,G1,10009,Hanshin,2200,Turf,18,18
+1200102,12001,Takarazuka Kinen,group 8,G1,10009,Hanshin,2200,Turf,18,18
+650001,15001,Scout Race: Sprint,Scout,G1,10009,Hanshin,1200,Turf,14,18
+650002,15002,Scout Race: Mile,Scout,G1,10009,Hanshin,1600,Turf,14,18
+650003,15003,Scout Race: Mile,Scout,G1,10009,Hanshin,1800,Turf,14,18
+650004,15004,Scout Race: Medium,Scout,G1,10009,Hanshin,2000,Turf,14,18
+650005,15005,Scout Race: Medium,Scout,G1,10009,Hanshin,2200,Turf,14,18
+650006,15006,Scout Race: Long,Scout,G1,10009,Hanshin,3000,Turf,14,18
+650007,15007,Scout Race: Dirt,Scout,G1,10009,Hanshin,1400,Dirt,14,18
+650008,15008,Scout Race: Dirt,Scout,G1,10009,Hanshin,1800,Dirt,14,18
+650009,15009,Scout Race: Dirt,Scout,G1,10009,Hanshin,2000,Dirt,14,18
+621006,16006,Team Showdown Elite Sprint Ace,Showdown,,10009,Hanshin,1200,Turf,12,18
+621010,16010,Team Showdown Elite Sprint Ace,Showdown,,10009,Hanshin,1200,Turf,12,18
+621106,16106,Team Showdown Elite Mile Ace,Showdown,,10009,Hanshin,1600,Turf,12,18
+621110,16110,Team Showdown Elite Mile Ace,Showdown,,10009,Hanshin,1600,Turf,12,18
+621206,16206,Team Showdown Elite Medium Ace,Showdown,,10009,Hanshin,2200,Turf,12,18
+621210,16210,Team Showdown Elite Medium Ace,Showdown,,10009,Hanshin,2200,Turf,12,18
+621306,16306,Team Showdown Elite Long Ace,Showdown,,10009,Hanshin,3000,Turf,12,18
+621310,16310,Team Showdown Elite Long Ace,Showdown,,10009,Hanshin,2600,Turf,12,18
+621406,16406,Team Showdown Elite Dirt Ace,Showdown,,10009,Hanshin,1800,Dirt,12,18
+621410,16410,Team Showdown Elite Dirt Ace,Showdown,,10009,Hanshin,1800,Dirt,12,18
+301501,3015,Kokura Daishoten,Career,G3,10010,Kokura,1800,Turf,16,18
+304401,3044,Kokura Kinen,Career,G3,10010,Kokura,2000,Turf,18,18
+304801,3048,Kitakyushu Kinen,Career,G3,10010,Kokura,1200,Turf,18,18
+305201,3052,Kokura Junior Stakes,Career,G3,10010,Kokura,1200,Turf,18,18
+407301,4073,Aso Stakes,Career,OP,10010,Kokura,1700,Dirt,16,18
+407401,4074,Phoenix Sho,Career,OP,10010,Kokura,1200,Turf,18,18
+407801,4078,Himawari Sho,Career,OP,10010,Kokura,1200,Turf,18,18
+408001,4080,Kokura Nikkei Open,Career,OP,10010,Kokura,1800,Turf,16,18
+411801,4118,Kitakyushu Tankyori Stakes,Career,OP,10010,Kokura,1200,Turf,18,18
+509801,5098,Practice,Practice,,10010,Kokura,2600,Turf,16,18
+509901,5099,Practice,Practice,,10010,Kokura,2000,Turf,18,18
+510001,5100,Practice,Practice,,10010,Kokura,1800,Turf,16,18
+510101,5101,Practice,Practice,,10010,Kokura,1200,Turf,18,18
+510301,5103,Practice,Practice,,10010,Kokura,1700,Dirt,16,18
+800116,5285,Trainers Cup,Room Match,,10010,Kokura,2600,Turf,16,18
+800117,5286,Trainers Cup,Room Match,,10010,Kokura,2000,Turf,18,18
+800118,5287,Trainers Cup,Room Match,,10010,Kokura,1800,Turf,16,18
+800119,5288,Trainers Cup,Room Match,,10010,Kokura,1200,Turf,18,18
+800120,5289,Trainers Cup,Room Match,,10010,Kokura,1700,Dirt,16,18
+610219,6319,Team Race: Sprint,Team Trials,G1,10010,Kokura,1200,Turf,12,18
+610220,6320,Team Race: Sprint,Team Trials,G1,10010,Kokura,1200,Turf,12,18
+610221,6321,Team Race: Sprint,Team Trials,G1,10010,Kokura,1200,Turf,12,18
+610222,6322,Team Race: Mile,Team Trials,G1,10010,Kokura,1800,Turf,12,18
+610223,6323,Team Race: Mile,Team Trials,G1,10010,Kokura,1800,Turf,12,18
+610224,6324,Team Race: Mile,Team Trials,G1,10010,Kokura,1800,Turf,12,18
+610225,6325,Team Race: Medium,Team Trials,G1,10010,Kokura,2000,Turf,12,18
+610226,6326,Team Race: Medium,Team Trials,G1,10010,Kokura,2000,Turf,12,18
+610227,6327,Team Race: Medium,Team Trials,G1,10010,Kokura,2000,Turf,12,18
+610228,6328,Team Race: Long,Team Trials,G1,10010,Kokura,2600,Turf,12,18
+610229,6329,Team Race: Long,Team Trials,G1,10010,Kokura,2600,Turf,12,18
+610230,6330,Team Race: Long,Team Trials,G1,10010,Kokura,2600,Turf,12,18
+610231,6331,Team Race: Dirt,Team Trials,G1,10010,Kokura,1700,Dirt,12,18
+610232,6332,Team Race: Dirt,Team Trials,G1,10010,Kokura,1700,Dirt,12,18
+610233,6333,Team Race: Dirt,Team Trials,G1,10010,Kokura,1700,Dirt,12,18
+904199,9405,Junior Make Debut,Career,,10010,Kokura,1200,Turf,9,9
+620007,10007,Showdown: Sprint,Showdown,,10010,Kokura,1200,Turf,12,18
+622015,10007,Showdown: Sprint,Showdown,,10010,Kokura,1200,Turf,12,18
+620017,10017,Showdown: Mile,Showdown,,10010,Kokura,1800,Turf,12,18
+622041,10017,Showdown: Mile,Showdown,,10010,Kokura,1800,Turf,12,18
+620027,10027,Showdown: Medium,Showdown,,10010,Kokura,2000,Turf,12,18
+622067,10027,Showdown: Medium,Showdown,,10010,Kokura,2000,Turf,12,18
+620037,10037,Showdown: Long,Showdown,,10010,Kokura,2600,Turf,12,18
+622093,10037,Showdown: Long,Showdown,,10010,Kokura,2600,Turf,12,18
+620047,10047,Showdown: Dirt,Showdown,,10010,Kokura,1700,Dirt,12,18
+622119,10047,Showdown: Dirt,Showdown,,10010,Kokura,1700,Dirt,12,18
+620067,10067,Showdown: Sprint,Showdown,,10010,Kokura,1200,Turf,12,18
+620070,10070,Showdown: Mile,Showdown,,10010,Kokura,1800,Turf,12,18
+620073,10073,Showdown: Medium,Showdown,,10010,Kokura,2000,Turf,12,18
+620076,10076,Showdown: Long,Showdown,,10010,Kokura,2600,Turf,12,18
+620079,10079,Showdown: Dirt,Showdown,,10010,Kokura,1700,Dirt,12,18
+620111,10111,Showdown: Sprint,Showdown,,10010,Kokura,1200,Turf,12,18
+620114,10114,Showdown: Mile,Showdown,,10010,Kokura,1800,Turf,12,18
+620117,10117,Showdown: Medium,Showdown,,10010,Kokura,2000,Turf,12,18
+620120,10120,Showdown: Long,Showdown,,10010,Kokura,2600,Turf,12,18
+620123,10123,Showdown: Dirt,Showdown,,10010,Kokura,1700,Dirt,12,18
+110101,1101,Teio Sho,Career,G1,10101,Oi,2000,Dirt,16,own
+110201,1102,Japan Dirt Derby,Career,G1,10101,Oi,2000,Dirt,16,own
+110301,1103,JBC Ladies’ Classic,Career,G1,10101,Oi,1800,Dirt,16,own
+110401,1104,JBC Sprint,Career,G1,10101,Oi,1200,Dirt,16,own
+110501,1105,JBC Classic,Career,G1,10101,Oi,2000,Dirt,16,own
+110601,1106,Tokyo Daishoten,Career,G1,10101,Oi,2000,Dirt,16,own
+203601,2036,Ladies' Prelude,Career,G2,10101,Oi,1800,Dirt,16,own
+203701,2037,Tokyo Hai,Career,G2,10101,Oi,1200,Dirt,16,own
+307101,3071,TCK Jo-o Hai,Career,G3,10101,Oi,1800,Dirt,16,own
+307201,3072,Tokyo Sprint,Career,G3,10101,Oi,1200,Dirt,16,own
+510501,5105,Practice,Practice,,10101,Oi,2000,Dirt,16,own
+510502,5105,Practice,Practice,,10101,Oi,2000,Dirt,16,own
+510503,5105,Practice,Practice,,10101,Oi,2000,Dirt,16,own
+510601,5106,Practice,Practice,,10101,Oi,1800,Dirt,16,own
+510602,5106,Practice,Practice,,10101,Oi,1800,Dirt,16,own
+510603,5106,Practice,Practice,,10101,Oi,1800,Dirt,16,own
+510701,5107,Practice,Practice,,10101,Oi,1200,Dirt,16,own
+510702,5107,Practice,Practice,,10101,Oi,1200,Dirt,16,own
+510703,5107,Practice,Practice,,10101,Oi,1200,Dirt,16,own
+513201,5132,Practice: Teio Sho,Practice,G1,10101,Oi,2000,Dirt,16,own
+513301,5133,Practice: Japan Dirt Derby,Practice,G1,10101,Oi,2000,Dirt,16,own
+513401,5134,Practice: JBC Ladies’ Classic,Practice,G1,10101,Oi,1800,Dirt,16,own
+513501,5135,Practice: JBC Sprint,Practice,G1,10101,Oi,1200,Dirt,16,own
+513601,5136,Practice: JBC Classic,Practice,G1,10101,Oi,2000,Dirt,16,own
+513701,5137,Practice: Tokyo Daishoten,Practice,G1,10101,Oi,2000,Dirt,16,own
+800121,5290,Trainers Cup,Room Match,,10101,Oi,2000,Dirt,16,own
+800139,5290,Trainers Cup,Room Match,,10101,Oi,2000,Dirt,16,own
+800153,5290,Trainers Cup,Room Match,,10101,Oi,2000,Dirt,16,own
+800122,5291,Trainers Cup,Room Match,,10101,Oi,1800,Dirt,16,own
+800140,5291,Trainers Cup,Room Match,,10101,Oi,1800,Dirt,16,own
+800154,5291,Trainers Cup,Room Match,,10101,Oi,1800,Dirt,16,own
+800123,5292,Trainers Cup,Room Match,,10101,Oi,1200,Dirt,16,own
+800141,5292,Trainers Cup,Room Match,,10101,Oi,1200,Dirt,16,own
+800155,5292,Trainers Cup,Room Match,,10101,Oi,1200,Dirt,16,own
+600033,6033,Champions Meeting Virgo Cup,Champions Meeting,G1,10101,Oi,2000,Dirt,9,own
+600045,6045,Virgo Cup Finals,Champions Meeting,G1,10101,Oi,2000,Dirt,9,own
+610234,6334,Team Race: Dirt,Team Trials,G1,10101,Oi,1800,Dirt,12,own
+610235,6335,Team Race: Dirt,Team Trials,G1,10101,Oi,1800,Dirt,12,own
+610236,6336,Team Race: Dirt,Team Trials,G1,10101,Oi,1800,Dirt,12,own
+800025,10184,Room Match: Teio Sho,Room Match,G1,10101,Oi,2000,Dirt,16,own
+800026,10185,Room Match: Japan Dirt Derby,Room Match,G1,10101,Oi,2000,Dirt,16,own
+800027,10186,Room Match: JBC Ladies’ Classic,Room Match,G1,10101,Oi,1800,Dirt,16,own
+800028,10187,Room Match: JBC Sprint,Room Match,G1,10101,Oi,1200,Dirt,16,own
+800029,10188,Room Match: JBC Classic,Room Match,G1,10101,Oi,2000,Dirt,16,own
+800030,10189,Room Match: Tokyo Daishoten,Room Match,G1,10101,Oi,2000,Dirt,16,own
+110701,1107,Kawasaki Kinen,Career,G1,10103,Kawasaki,2100,Dirt,14,own
+110801,1108,Zen-Nippon Junior Yushun,Career,G1,10103,Kawasaki,1600,Dirt,14,own
+111101,1111,JBC Ladies’ Classic,Career,G1,10103,Kawasaki,1600,Dirt,14,own
+111201,1112,JBC Sprint,Career,G1,10103,Kawasaki,1400,Dirt,12,own
+111301,1113,JBC Classic,Career,G1,10103,Kawasaki,2100,Dirt,14,own
+203801,2038,Empress Hai,Career,G2,10103,Kawasaki,2100,Dirt,14,own
+203901,2039,Kanto Oaks,Career,G2,10103,Kawasaki,2100,Dirt,14,own
+307301,3073,Sparking Lady Cup,Career,G3,10103,Kawasaki,1600,Dirt,14,own
+513801,5138,Practice: Kawasaki Kinen,Practice,G1,10103,Kawasaki,2100,Dirt,14,own
+513901,5139,Practice: Zen-Nippon Junior Yushun,Practice,G1,10103,Kawasaki,1600,Dirt,14,own
+514201,5142,Practice: Kawasaki Dirt Left 2100m,Practice,,10103,Kawasaki,2100,Dirt,14,own
+514202,5142,Practice: Kawasaki Dirt Left 2100m,Practice,,10103,Kawasaki,2100,Dirt,14,own
+514203,5142,Practice: Kawasaki Dirt Left 2100m,Practice,,10103,Kawasaki,2100,Dirt,14,own
+514301,5143,Practice: Kawasaki Dirt Left 1600m,Practice,,10103,Kawasaki,1600,Dirt,14,own
+514302,5143,Practice: Kawasaki Dirt Left 1600m,Practice,,10103,Kawasaki,1600,Dirt,14,own
+514303,5143,Practice: Kawasaki Dirt Left 1600m,Practice,,10103,Kawasaki,1600,Dirt,14,own
+514401,5144,Practice: Kawasaki Dirt Left 1400m,Practice,,10103,Kawasaki,1400,Dirt,12,own
+514402,5144,Practice: Kawasaki Dirt Left 1400m,Practice,,10103,Kawasaki,1400,Dirt,12,own
+514403,5144,Practice: Kawasaki Dirt Left 1400m,Practice,,10103,Kawasaki,1400,Dirt,12,own
+800124,5293,Trainers Cup,Room Match,,10103,Kawasaki,2100,Dirt,14,own
+800142,5293,Trainers Cup,Room Match,,10103,Kawasaki,2100,Dirt,14,own
+800156,5293,Trainers Cup,Room Match,,10103,Kawasaki,2100,Dirt,14,own
+800125,5294,Trainers Cup,Room Match,,10103,Kawasaki,1600,Dirt,14,own
+800143,5294,Trainers Cup,Room Match,,10103,Kawasaki,1600,Dirt,14,own
+800157,5294,Trainers Cup,Room Match,,10103,Kawasaki,1600,Dirt,14,own
+800126,5295,Trainers Cup,Room Match,,10103,Kawasaki,1400,Dirt,12,own
+800144,5295,Trainers Cup,Room Match,,10103,Kawasaki,1400,Dirt,12,own
+800158,5295,Trainers Cup,Room Match,,10103,Kawasaki,1400,Dirt,12,own
+610237,6337,Team Race: Dirt,Team Trials,G1,10103,Kawasaki,1600,Dirt,12,own
+610238,6338,Team Race: Dirt,Team Trials,G1,10103,Kawasaki,1600,Dirt,12,own
+610239,6339,Team Race: Dirt,Team Trials,G1,10103,Kawasaki,1600,Dirt,12,own
+800135,10190,Room Match: Kawasaki Kinen Conditions,Room Match,G1,10103,Kawasaki,2100,Dirt,14,own
+800136,10191,Room Match: Zen-Nippon Junior Yushun Conditions,Room Match,G1,10103,Kawasaki,1600,Dirt,14,own
+110901,1109,Kashiwa Kinen,Career,G1,10104,Funabashi,1600,Dirt,14,own
+111401,1114,JBC Ladies’ Classic,Career,G1,10104,Funabashi,1600,Dirt,14,own
+111501,1115,JBC Sprint,Career,G1,10104,Funabashi,1000,Dirt,14,own
+111601,1116,JBC Classic,Career,G1,10104,Funabashi,1800,Dirt,14,own
+204001,2040,Diolite Kinen,Career,G2,10104,Funabashi,2400,Dirt,14,own
+204101,2041,Sazanka TV Hai,Career,G2,10104,Funabashi,1800,Dirt,14,own
+307401,3074,Marine Cup,Career,G3,10104,Funabashi,1600,Dirt,14,own
+307501,3075,Queen Sho,Career,G3,10104,Funabashi,1800,Dirt,14,own
+514001,5140,Practice: Kashiwa Kinen,Practice,G1,10104,Funabashi,1600,Dirt,14,own
+514501,5145,Practice: Funabashi Dirt Left 2400m,Practice,,10104,Funabashi,2400,Dirt,14,own
+514502,5145,Practice: Funabashi Dirt Left 2400m,Practice,,10104,Funabashi,2400,Dirt,14,own
+514503,5145,Practice: Funabashi Dirt Left 2400m,Practice,,10104,Funabashi,2400,Dirt,14,own
+514601,5146,Practice: Funabashi Dirt Left 1800m,Practice,,10104,Funabashi,1800,Dirt,14,own
+514602,5146,Practice: Funabashi Dirt Left 1800m,Practice,,10104,Funabashi,1800,Dirt,14,own
+514603,5146,Practice: Funabashi Dirt Left 1800m,Practice,,10104,Funabashi,1800,Dirt,14,own
+514701,5147,Practice: Funabashi Dirt Left 1600m,Practice,,10104,Funabashi,1600,Dirt,14,own
+514702,5147,Practice: Funabashi Dirt Left 1600m,Practice,,10104,Funabashi,1600,Dirt,14,own
+514703,5147,Practice: Funabashi Dirt Left 1600m,Practice,,10104,Funabashi,1600,Dirt,14,own
+514801,5148,Practice: Funabashi Dirt Left 1000m,Practice,,10104,Funabashi,1000,Dirt,14,own
+514802,5148,Practice: Funabashi Dirt Left 1000m,Practice,,10104,Funabashi,1000,Dirt,14,own
+514803,5148,Practice: Funabashi Dirt Left 1000m,Practice,,10104,Funabashi,1000,Dirt,14,own
+800127,5296,Trainers Cup,Room Match,,10104,Funabashi,2400,Dirt,14,own
+800145,5296,Trainers Cup,Room Match,,10104,Funabashi,2400,Dirt,14,own
+800159,5296,Trainers Cup,Room Match,,10104,Funabashi,2400,Dirt,14,own
+800128,5297,Trainers Cup,Room Match,,10104,Funabashi,1800,Dirt,14,own
+800146,5297,Trainers Cup,Room Match,,10104,Funabashi,1800,Dirt,14,own
+800160,5297,Trainers Cup,Room Match,,10104,Funabashi,1800,Dirt,14,own
+800129,5298,Trainers Cup,Room Match,,10104,Funabashi,1600,Dirt,14,own
+800147,5298,Trainers Cup,Room Match,,10104,Funabashi,1600,Dirt,14,own
+800161,5298,Trainers Cup,Room Match,,10104,Funabashi,1600,Dirt,14,own
+800130,5299,Trainers Cup,Room Match,,10104,Funabashi,1000,Dirt,14,own
+800148,5299,Trainers Cup,Room Match,,10104,Funabashi,1000,Dirt,14,own
+800162,5299,Trainers Cup,Room Match,,10104,Funabashi,1000,Dirt,14,own
+610240,6340,Team Race: Dirt,Team Trials,G1,10104,Funabashi,1600,Dirt,12,own
+610241,6341,Team Race: Dirt,Team Trials,G1,10104,Funabashi,1600,Dirt,12,own
+610242,6342,Team Race: Dirt,Team Trials,G1,10104,Funabashi,1600,Dirt,12,own
+610243,6343,Team Race: Dirt,Team Trials,G1,10104,Funabashi,1800,Dirt,12,own
+610244,6344,Team Race: Dirt,Team Trials,G1,10104,Funabashi,1800,Dirt,12,own
+610245,6345,Team Race: Dirt,Team Trials,G1,10104,Funabashi,1800,Dirt,12,own
+800137,10192,Room Match: Kashiwa Kinen Conditions,Room Match,G1,10104,Funabashi,1600,Dirt,14,own
+111001,1110,Mile Championship Nambu Hai,Career,G1,10105,Morioka,1600,Dirt,16,own
+111701,1117,JBC Ladies’ Classic,Career,G1,10105,Morioka,1800,Dirt,16,own
+111801,1118,JBC Sprint,Career,G1,10105,Morioka,1200,Dirt,16,own
+111901,1119,JBC Classic,Career,G1,10105,Morioka,2000,Dirt,16,own
+307601,3076,Mercury Cup,Career,G3,10105,Morioka,2000,Dirt,14,own
+307701,3077,Cluster Cup,Career,G3,10105,Morioka,1200,Dirt,14,own
+514101,5141,Practice: Mile Championship Nambu Hai,Practice,G1,10105,Morioka,1600,Dirt,16,own
+514901,5149,Practice: Morioka Dirt Left 2000m,Practice,,10105,Morioka,2000,Dirt,16,own
+514902,5149,Practice: Morioka Dirt Left 2000m,Practice,,10105,Morioka,2000,Dirt,16,own
+514903,5149,Practice: Morioka Dirt Left 2000m,Practice,,10105,Morioka,2000,Dirt,16,own
+515001,5150,Practice: Morioka Dirt Left 1800m,Practice,,10105,Morioka,1800,Dirt,16,own
+515002,5150,Practice: Morioka Dirt Left 1800m,Practice,,10105,Morioka,1800,Dirt,16,own
+515003,5150,Practice: Morioka Dirt Left 1800m,Practice,,10105,Morioka,1800,Dirt,16,own
+515101,5151,Practice: Morioka Dirt Left 1600m,Practice,,10105,Morioka,1600,Dirt,16,own
+515102,5151,Practice: Morioka Dirt Left 1600m,Practice,,10105,Morioka,1600,Dirt,16,own
+515103,5151,Practice: Morioka Dirt Left 1600m,Practice,,10105,Morioka,1600,Dirt,16,own
+515201,5152,Practice: Morioka Dirt Left 1200m,Practice,,10105,Morioka,1200,Dirt,16,own
+515202,5152,Practice: Morioka Dirt Left 1200m,Practice,,10105,Morioka,1200,Dirt,16,own
+515203,5152,Practice: Morioka Dirt Left 1200m,Practice,,10105,Morioka,1200,Dirt,16,own
+800131,5300,Trainers Cup,Room Match,,10105,Morioka,2000,Dirt,16,own
+800149,5300,Trainers Cup,Room Match,,10105,Morioka,2000,Dirt,16,own
+800163,5300,Trainers Cup,Room Match,,10105,Morioka,2000,Dirt,16,own
+800132,5301,Trainers Cup,Room Match,,10105,Morioka,1800,Dirt,16,own
+800150,5301,Trainers Cup,Room Match,,10105,Morioka,1800,Dirt,16,own
+800164,5301,Trainers Cup,Room Match,,10105,Morioka,1800,Dirt,16,own
+800133,5302,Trainers Cup,Room Match,,10105,Morioka,1600,Dirt,16,own
+800151,5302,Trainers Cup,Room Match,,10105,Morioka,1600,Dirt,16,own
+800165,5302,Trainers Cup,Room Match,,10105,Morioka,1600,Dirt,16,own
+800134,5303,Trainers Cup,Room Match,,10105,Morioka,1200,Dirt,16,own
+800152,5303,Trainers Cup,Room Match,,10105,Morioka,1200,Dirt,16,own
+800166,5303,Trainers Cup,Room Match,,10105,Morioka,1200,Dirt,16,own
+610246,6346,Team Race: Dirt,Team Trials,G1,10105,Morioka,1600,Dirt,12,own
+610247,6347,Team Race: Dirt,Team Trials,G1,10105,Morioka,1600,Dirt,12,own
+610248,6348,Team Race: Dirt,Team Trials,G1,10105,Morioka,1600,Dirt,12,own
+610249,6349,Team Race: Dirt,Team Trials,G1,10105,Morioka,1800,Dirt,12,own
+610250,6350,Team Race: Dirt,Team Trials,G1,10105,Morioka,1800,Dirt,12,own
+610251,6351,Team Race: Dirt,Team Trials,G1,10105,Morioka,1800,Dirt,12,own
+800138,10193,Room Match: Mile Championship Nambu Hai Conditions,Room Match,G1,10105,Morioka,1600,Dirt,16,own
+650012,15012,Scout Race: Dirt,Scout,G1,10105,Morioka,1800,Dirt,14,own
+650015,15015,Scout Race: Dirt,Scout,G1,10105,Morioka,1200,Dirt,14,own
+650018,15018,Scout Race: Dirt,Scout,G1,10105,Morioka,2000,Dirt,14,own
+120101,1201,Prix de l'Arc de Triomphe,Career,G1,10201,Longchamp,2400,Turf,18,own

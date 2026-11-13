@@ -248,11 +248,79 @@ pub unsafe fn gc_handle(obj: Obj) -> u32 {
     fns().map(|f| (f.gchandle_new)(obj, false)).unwrap_or(0)
 }
 
+/// Releases a handle from `gc_handle` (0 is ignored).
+pub unsafe fn gc_free(handle: u32) {
+    type FreeFn = unsafe extern "C" fn(h: u32);
+    if handle != 0 {
+        if let Some(f) = api::get().il2cpp_fn::<FreeFn>("il2cpp_gchandle_free") {
+            f(handle)
+        }
+    }
+}
+
 pub unsafe fn gc_target(handle: u32) -> Obj {
     match fns() {
         Ok(f) if handle != 0 => (f.gchandle_target)(handle),
         _ => std::ptr::null_mut(),
     }
+}
+
+/// A new, unconstructed object of `klass` (call its `.ctor` next).
+pub unsafe fn object_new(klass: *mut c_void) -> Result<Obj, String> {
+    type NewFn = unsafe extern "C" fn(k: *mut c_void) -> Obj;
+    let f = api::get().il2cpp_fn::<NewFn>("il2cpp_object_new").ok_or("il2cpp_object_new not found")?;
+    let o = f(klass);
+    if o.is_null() { Err("il2cpp_object_new failed".to_owned()) } else { Ok(o) }
+}
+
+/// A new managed array `T[len]` of element class `elem`, filled with `items`
+/// (value types: their raw bytes, e.g. `[f32; 3]` for Vector3).
+pub unsafe fn array_of<T: Copy>(elem: *mut c_void, items: &[T]) -> Result<Obj, String> {
+    type NewFn = unsafe extern "C" fn(k: *mut c_void, len: usize) -> Obj;
+    let f = api::get().il2cpp_fn::<NewFn>("il2cpp_array_new").ok_or("il2cpp_array_new not found")?;
+    let arr = f(elem, items.len());
+    if arr.is_null() {
+        return Err("il2cpp_array_new failed".to_owned());
+    }
+    // Il2CppArray: klass, monitor, bounds, max_length, then the elements.
+    std::ptr::copy_nonoverlapping(items.as_ptr(), (arr as *mut u8).add(0x20) as *mut T, items.len());
+    Ok(arr)
+}
+
+/// Copies the elements of a managed value-type array (`Vector2[]` as
+/// `[f32; 2]`, ...). Empty for null; at most `max` elements.
+pub unsafe fn array_values<T: Copy>(arr: Obj, max: usize) -> Vec<T> {
+    if arr.is_null() {
+        return Vec::new();
+    }
+    let len = read::<usize>(arr, 0x18).min(max);
+    std::slice::from_raw_parts((arr as *const u8).add(0x20) as *const T, len).to_vec()
+}
+
+/// "Namespace.Name" of a class.
+pub unsafe fn class_full_name(klass: *mut c_void) -> String {
+    let Ok(f) = fns() else { return String::new() };
+    let ns = lossy((f.class_namespace)(klass));
+    let name = lossy((f.class_name)(klass));
+    if ns.is_empty() { name } else { format!("{ns}.{name}") }
+}
+
+/// Every class of an assembly (generic definitions included).
+pub unsafe fn classes(assembly: &str) -> Vec<*mut c_void> {
+    type CountFn = unsafe extern "C" fn(image: *const c_void) -> usize;
+    type AtFn = unsafe extern "C" fn(image: *const c_void, i: usize) -> *mut c_void;
+    let api = api::get();
+    let (Some(count), Some(at)) = (
+        api.il2cpp_fn::<CountFn>("il2cpp_image_get_class_count"),
+        api.il2cpp_fn::<AtFn>("il2cpp_image_get_class"),
+    ) else {
+        return Vec::new();
+    };
+    let image = (api.il2cpp_get_assembly_image)(cstr(assembly).as_ptr());
+    if image.is_null() {
+        return Vec::new();
+    }
+    (0..count(image)).map(|i| at(image, i)).filter(|k| !k.is_null()).collect()
 }
 
 /// Elements of a managed reference-type array (`T[]`).
