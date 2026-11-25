@@ -12,8 +12,10 @@ Goal: study the race flow, later build esport-spectator features on top.
   `Extra` (`api::extra()`), resolved one by one, None when the host lacks them.
 - `src/stub.rs`: generic x86-64 entry stubs (Win64 ABI). Changing the asm: keep `cargo test` green.
 - `src/tracer.rs`: method enumeration, hook install (on the main thread via
-  `il2cpp_schedule_on_thread`), recording sessions, log files.
-- `src/targets.rs`: `trace_targets.txt` parsing and glob matching.
+  `il2cpp_schedule_on_thread`), recording sessions, log files. Line limit per recording =
+  menu slider (`trace_max_lines_m`, 1-100 million, default 10); a new `_partN.log` every `PART_LINES`.
+- `src/targets.rs`: `trace_targets.txt` parsing and glob matching. Patterns match classes of every
+  loaded assembly (umamusume.dll first, then CriWare, Cute.*, Unity modules: `tracer::other_images`).
 - `src/sig.rs`: method signatures from IL2CPP metadata (main thread / init only).
 - `src/settings.rs`: one `settings.txt` for everything: menu toggles (`TOGGLES`, `is_on`/`set`)
   and free key/values (`get_bool`/`get_f32`/`set_value`, used by the leaderboard). Every save

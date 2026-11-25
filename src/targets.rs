@@ -8,7 +8,8 @@ pub const FILE_NAME: &str = "trace_targets.txt";
 pub const DEFAULT_FILE: &str = "\
 # uma-esport-spectator: trace targets
 #
-# One pattern per line, matched against classes in umamusume.dll.
+# One pattern per line, matched against classes in every loaded assembly
+# (umamusume.dll first; CriWare, Cute.*, Unity modules too).
 #   Namespace.Class          hook every method of that class
 #   Namespace.Prefix*        `*` matches anything
 #   Outer+Inner              nested classes use `+`

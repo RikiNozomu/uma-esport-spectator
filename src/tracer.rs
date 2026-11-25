@@ -27,7 +27,22 @@ const MAX_HOOKS: usize = 8000;
 /// An address shared by more methods than this is linker-folded trivial code
 /// (empty bodies, simple getters); hooking it would log under the wrong name.
 const MAX_SHARED_NAMES: usize = 4;
-const MAX_LINES: u64 = 2_000_000;
+/// A new log file every this many lines (~140 MB), so each part still opens
+/// in an editor.
+const PART_LINES: u64 = 2_000_000;
+/// Line limit per recording, in millions (menu slider, `trace_max_lines_m`).
+pub const MIN_LIMIT_M: f32 = 1.0;
+pub const MAX_LIMIT_M: f32 = 100.0;
+const DEFAULT_LIMIT_M: f32 = 10.0;
+const LIMIT_KEY: &str = "trace_max_lines_m";
+
+pub fn limit_millions() -> f32 {
+    crate::settings::get_f32(LIMIT_KEY, DEFAULT_LIMIT_M).clamp(MIN_LIMIT_M, MAX_LIMIT_M).round()
+}
+
+pub fn set_limit_millions(m: f32) {
+    crate::settings::set_value(LIMIT_KEY, m.clamp(MIN_LIMIT_M, MAX_LIMIT_M).round());
+}
 
 pub static GAME_READY: AtomicBool = AtomicBool::new(false);
 pub static EVERY_CALL: AtomicBool = AtomicBool::new(false);
@@ -54,9 +69,54 @@ static TABLE: OnceLock<Box<[Entry]>> = OnceLock::new();
 
 struct Session {
     out: BufWriter<File>,
+    /// First part's path; later parts add `_partN`.
     path: PathBuf,
+    part: u32,
     started: Instant,
     lines: u64,
+    max_lines: u64,
+    /// Lines per file (`PART_LINES`; small in tests).
+    part_lines: u64,
+}
+
+impl Session {
+    fn part_path(&self, part: u32) -> PathBuf {
+        if part <= 1 {
+            return self.path.clone();
+        }
+        let stem = self.path.file_stem().map(|s| s.to_string_lossy().into_owned()).unwrap_or_default();
+        self.path.with_file_name(format!("{stem}_part{part}.log"))
+    }
+
+    /// Continues the log in a new file. Keeps the current one on failure.
+    fn next_part(&mut self) {
+        let path = self.part_path(self.part + 1);
+        if let Ok(file) = File::create(&path) {
+            let _ = writeln!(self.out, "# continued in {}", path.display());
+            let _ = self.out.flush();
+            self.out = BufWriter::with_capacity(256 * 1024, file);
+            self.part += 1;
+            let _ = writeln!(self.out, "# uma-esport-spectator function trace, part {}", self.part);
+        }
+    }
+
+    /// Writes one call line, starting a new part file every `part_lines`.
+    /// False once the line limit is reached.
+    fn write_line(&mut self, thread: u32, name: &str, flush: bool) -> bool {
+        if self.lines >= self.max_lines {
+            return false;
+        }
+        if self.lines > 0 && self.lines % self.part_lines == 0 {
+            self.next_part();
+        }
+        self.lines += 1;
+        let ms = self.started.elapsed().as_secs_f64() * 1000.0;
+        let _ = writeln!(self.out, "{ms:>12.3}\t{thread}\t{name}");
+        if flush {
+            let _ = self.out.flush();
+        }
+        true
+    }
 }
 
 static SESSION: Mutex<Option<Session>> = Mutex::new(None);
@@ -91,16 +151,8 @@ extern "win64" fn enter(index: u32) -> usize {
 fn write_call(entry: &Entry, first: bool) {
     let mut guard = session();
     let Some(s) = guard.as_mut() else { return };
-    if s.lines >= MAX_LINES {
-        return;
-    }
-    s.lines += 1;
-    let ms = s.started.elapsed().as_secs_f64() * 1000.0;
-    let _ = writeln!(s.out, "{ms:>12.3}\t{}\t{}", sys::thread_id(), entry.name);
-    if first {
-        // First-seen lines are rare and the most valuable if the game crashes.
-        let _ = s.out.flush();
-    }
+    // First-seen lines are rare and the most valuable if the game crashes: flushed.
+    s.write_line(sys::thread_id(), &entry.name, first);
 }
 
 // ---------------------------------------------------------------- control
@@ -143,7 +195,10 @@ pub fn status() -> String {
         ),
     };
     match session().as_ref() {
-        Some(s) => format!("{hooks} | recording, {} lines", s.lines),
+        Some(s) if s.lines >= s.max_lines => {
+            format!("{hooks} | recording, line limit reached ({} lines, {} files)", s.lines, s.part)
+        }
+        Some(s) => format!("{hooks} | recording, {} / {} lines, {} files", s.lines, s.max_lines, s.part),
         None => format!("{hooks} | idle"),
     }
 }
@@ -184,7 +239,8 @@ fn start() {
     let mode = if EVERY_CALL.load(Ordering::Relaxed) { "every call" } else { "first call of each method" };
     let _ = writeln!(out, "# uma-esport-spectator function trace ({mode})");
     let _ = writeln!(out, "# columns: ms since start, thread id, method(arg count)");
-    *guard = Some(Session { out, path, started: Instant::now(), lines: 0 });
+    let max_lines = limit_millions() as u64 * 1_000_000;
+    *guard = Some(Session { out, path, part: 1, started: Instant::now(), lines: 0, max_lines, part_lines: PART_LINES });
     drop(guard);
     RECORDING.store(true, Ordering::Release);
     api.notify("Function trace: recording");
@@ -204,16 +260,21 @@ fn stop() {
 
     let secs = s.started.elapsed().as_secs_f64();
     let _ = writeln!(s.out, "\n# ---- summary: {} methods called in {secs:.1}s ----", called.len());
-    if s.lines >= MAX_LINES {
-        let _ = writeln!(s.out, "# line limit reached ({MAX_LINES}); later calls are only counted below");
+    if s.lines >= s.max_lines {
+        let _ = writeln!(s.out, "# line limit reached ({}); later calls are only counted below", s.max_lines);
     }
     let _ = writeln!(s.out, "# calls\tmethod");
     for (n, name) in &called {
         let _ = writeln!(s.out, "{n}\t{name}");
     }
     let _ = s.out.flush();
-    api.info(&format!("trace saved: {}", s.path.display()));
-    api.notify(&format!("Function trace saved: {}", s.path.display()));
+    let saved = if s.part > 1 {
+        format!("{} (+{} parts)", s.path.display(), s.part - 1)
+    } else {
+        s.path.display().to_string()
+    };
+    api.info(&format!("trace saved: {saved}"));
+    api.notify(&format!("Function trace saved: {saved}"));
 }
 
 // ---------------------------------------------------------------- install
@@ -306,6 +367,27 @@ unsafe fn lossy(p: *const c_char) -> String {
     if p.is_null() { String::new() } else { CStr::from_ptr(p).to_string_lossy().into_owned() }
 }
 
+/// Every loaded assembly image except `skip`.
+unsafe fn other_images(skip: *const c_void) -> Vec<*const c_void> {
+    type DomainGet = unsafe extern "C" fn() -> *mut c_void;
+    type GetAssemblies = unsafe extern "C" fn(domain: *mut c_void, size: *mut usize) -> *const *const c_void;
+    type AssemblyImage = unsafe extern "C" fn(assembly: *const c_void) -> *const c_void;
+    let api = api::get();
+    let (Some(domain_get), Some(get_assemblies), Some(image_of)) = (
+        api.il2cpp_fn::<DomainGet>("il2cpp_domain_get"),
+        api.il2cpp_fn::<GetAssemblies>("il2cpp_domain_get_assemblies"),
+        api.il2cpp_fn::<AssemblyImage>("il2cpp_assembly_get_image"),
+    ) else {
+        return Vec::new();
+    };
+    let mut n = 0usize;
+    let list = get_assemblies(domain_get(), &mut n);
+    if list.is_null() {
+        return Vec::new();
+    }
+    (0..n.min(4096)).map(|i| image_of(*list.add(i))).filter(|img| !img.is_null() && *img != skip).collect()
+}
+
 unsafe fn install() -> Result<(), String> {
     let api = api::get();
     let il2cpp = Il2Cpp::resolve()?;
@@ -314,6 +396,10 @@ unsafe fn install() -> Result<(), String> {
     if image.is_null() {
         return Err(format!("assembly not found: {ASSEMBLY}"));
     }
+    // The game assembly first, then every other loaded one (CriWare, Cute.*,
+    // Unity modules): targets only match the classes they name.
+    let mut images = vec![image];
+    images.extend(other_images(image));
 
     let dir = plugin_dir();
     fs::create_dir_all(&dir).map_err(|e| format!("cannot create {}: {e}", dir.display()))?;
@@ -324,8 +410,9 @@ unsafe fn install() -> Result<(), String> {
     let mut order: Vec<usize> = Vec::new();
     // (label for the trace log, signature for hooked_methods.txt)
     let mut by_addr: HashMap<usize, Vec<(String, String)>> = HashMap::new();
-    for i in 0..(il2cpp.class_count)(image) {
-        let klass = (il2cpp.class_at)(image, i);
+    let classes: Vec<*mut c_void> =
+        images.iter().flat_map(|&img| (0..(il2cpp.class_count)(img)).map(move |i| (il2cpp.class_at)(img, i))).collect();
+    for klass in classes {
         if klass.is_null() || (il2cpp.class_is_generic)(klass) {
             continue;
         }
@@ -409,4 +496,32 @@ unsafe fn install() -> Result<(), String> {
         api.warn(&format!("{over_limit} methods skipped: narrow {} down", targets::FILE_NAME));
     }
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn splits_into_parts_and_stops_at_the_limit() {
+        let dir = std::env::temp_dir().join(format!("uma_trace_test_{}", std::process::id()));
+        let _ = fs::remove_dir_all(&dir);
+        fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("trace_test.log");
+        let out = BufWriter::new(File::create(&path).unwrap());
+        let mut s =
+            Session { out, path: path.clone(), part: 1, started: Instant::now(), lines: 0, max_lines: 25, part_lines: 10 };
+        let written = (0..40).filter(|_| s.write_line(1, "A::b(0)", false)).count();
+        s.out.flush().unwrap();
+        drop(s);
+
+        assert_eq!(written, 25);
+        let lines = |p: &std::path::Path| fs::read_to_string(p).unwrap().lines().filter(|l| !l.starts_with('#')).count();
+        assert_eq!(lines(&path), 10);
+        assert_eq!(lines(&dir.join("trace_test_part2.log")), 10);
+        assert_eq!(lines(&dir.join("trace_test_part3.log")), 5);
+        assert!(!dir.join("trace_test_part4.log").exists());
+        assert!(fs::read_to_string(&path).unwrap().contains("# continued in"));
+        let _ = fs::remove_dir_all(&dir);
+    }
 }

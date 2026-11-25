@@ -110,6 +110,13 @@ pub extern "C" fn menu_section(ui: *mut c_void, _userdata: *mut c_void) {
             tracer::EVERY_CALL.store(every, Ordering::Relaxed);
         }
 
+        // Applies to the next recording. ~70 MB per million lines.
+        let mut limit = tracer::limit_millions();
+        let label = text("Line limit (millions, ~70 MB each; next recording)");
+        if (api.gui_ui_slider_f32)(ui, label.as_ptr(), &mut limit, tracer::MIN_LIMIT_M, tracer::MAX_LIMIT_M) {
+            tracer::set_limit_millions(limit);
+        }
+
         (api.gui_ui_small)(ui, text(&tracer::status()).as_ptr());
         (api.gui_ui_separator)(ui);
     }
